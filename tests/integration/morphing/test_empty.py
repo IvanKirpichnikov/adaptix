@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from tests_helpers.morphing import JSONSchemaFork, assert_morphing
+from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
 
 from adaptix import Retort
 
@@ -22,7 +22,7 @@ def test_simple(accum):
         json_schema={
             "$defs": {
                 "Empty": {
-                    "additionalProperties": JSONSchemaFork(input=True, output=False),
+                    "additionalProperties": JSONSchemaOptItem(input=True),
                     "properties": {},
                     "required": [],
                     "type": "object",

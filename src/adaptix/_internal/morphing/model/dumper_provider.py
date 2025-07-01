@@ -26,7 +26,7 @@ from .basic_gen import (
     get_optional_fields_at_list_crown,
     get_wild_extra_targets,
 )
-from .crown_definitions import OutExtraMove, OutputNameLayout, OutputNameLayoutRequest
+from .crown_definitions import OutputNameLayout, OutputNameLayoutRequest
 from .dumper_gen import BuiltinModelDumperGen, ModelOutputJSONSchemaGen
 
 
@@ -88,7 +88,7 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
         name_layout = self._fetch_name_layout(mediator, request, shape)
         self._validate_params(shape, name_layout)
 
-        schema_gen = self._get_schema_gen(mediator, request, shape, name_layout.extra_move)
+        schema_gen = self._get_schema_gen(mediator, request, shape)
         return schema_gen.convert_crown(name_layout.crown)
 
     def _get_schema_gen(
@@ -96,13 +96,11 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
         mediator: Mediator,
         request: JSONSchemaRequest,
         shape: OutputShape,
-        extra_move: OutExtraMove,
     ) -> ModelOutputJSONSchemaGen:
         return ModelOutputJSONSchemaGen(
             shape=shape,
             field_default_dumper=partial(self._dump_field_default, mediator, request),
             field_json_schema_getter=partial(self._get_field_json_schema, mediator, request),
-            extra_move=extra_move,
             placeholder_dumper=self._dump_placeholder,
         )
 

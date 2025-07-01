@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from tests_helpers.morphing import JSONSchemaFork, assert_morphing
+from tests_helpers.morphing import JSONSchemaFork, JSONSchemaOptItem, assert_morphing
 
 from adaptix import Retort
 
@@ -24,7 +24,7 @@ def test_readme(accum):
         json_schema={
             "$defs": {
                 "Book": {
-                    "additionalProperties": JSONSchemaFork(input=True, output=False),
+                    "additionalProperties": JSONSchemaOptItem(input=True),
                     "properties": {
                         "author": {"type": "string", "default": "Unknown author"},
                         "price": {"type": "integer"},

@@ -1,16 +1,15 @@
 from attr import Factory, define, field
-from tests_helpers.morphing import JSONSchemaFork, assert_morphing
+from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
 
 from adaptix import Retort, name_mapping
 
 
-@define
-class Coordinates:
-    x: int
-    y: int
-
-
 def test_coordinates(accum):
+    @define
+    class Coordinates:
+        x: int
+        y: int
+
     retort = Retort(recipe=[accum])
 
     assert_morphing(
@@ -22,7 +21,7 @@ def test_coordinates(accum):
         json_schema={
             "$defs": {
                 "Coordinates": {
-                    "additionalProperties": JSONSchemaFork(input=True, output=False),
+                    "additionalProperties": JSONSchemaOptItem(input=True),
                     "properties": {
                         "x": {"type": "integer"},
                         "y": {"type": "integer"},

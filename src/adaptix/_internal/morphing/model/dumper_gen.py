@@ -46,7 +46,6 @@ from .crown_definitions import (
     ExtraTargets,
     OutCrown,
     OutDictCrown,
-    OutExtraMove,
     OutFieldCrown,
     OutListCrown,
     OutNoneCrown,
@@ -849,13 +848,11 @@ class ModelOutputJSONSchemaGen:
     def __init__(
         self,
         shape: OutputShape,
-        extra_move: OutExtraMove,
         field_json_schema_getter: Callable[[OutputField], JSONSchema],
         field_default_dumper: Callable[[OutputField], Omittable[JSONValue]],
         placeholder_dumper: Callable[[Any], JSONValue],
     ):
         self._shape = shape
-        self._extra_move = extra_move
         self._field_json_schema_getter = field_json_schema_getter
         self._field_default_dumper = field_default_dumper
         self._placeholder_dumper = placeholder_dumper
@@ -872,7 +869,6 @@ class ModelOutputJSONSchemaGen:
                 key: self.convert_crown(value)
                 for key, value in crown.map.items()
             },
-            additional_properties=self._extra_move is not None,
         )
 
     def _convert_list_crown(self, crown: OutListCrown) -> JSONSchema:

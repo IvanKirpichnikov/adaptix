@@ -37,22 +37,39 @@ class JSONSchemaFork:
     output: Any
 
 
-def _resolve_fork(data, direction: Direction):
+class JSONSchemaOptItem:
+    def __init__(self, input: Any = Omitted(), output: Any = Omitted()): # noqa: A002
+        assert isinstance(input, Omitted) ^ isinstance(output, Omitted)
+        self.value = input if not isinstance(input, Omitted) else output
+        self.direction = Direction.INPUT if not isinstance(input, Omitted) else Direction.OUTPUT
+
+
+def _keep_item(data, direction: Direction) -> bool:
+    if not isinstance(data, JSONSchemaOptItem):
+        return True
+    return data.direction == direction
+
+
+def _resolve_json_schema(data, direction: Direction):
     if isinstance(data, JSONSchemaFork):
         if direction == Direction.INPUT:
             return data.input
         if direction == Direction.OUTPUT:
             return data.output
         raise ValueError
+    if isinstance(data, JSONSchemaOptItem):
+        return data.value
     if isinstance(data, dict):
         return {
-            _resolve_fork(k, direction): _resolve_fork(v, direction)
+            _resolve_json_schema(k, direction): _resolve_json_schema(v, direction)
             for k, v in data.items()
+            if _keep_item(k, direction) and _keep_item(v, direction)
         }
     if isinstance(data, list):
         return [
-            _resolve_fork(element, direction)
+            _resolve_json_schema(element, direction)
             for element in data
+            if _keep_item(element, direction)
         ]
     return data
 
@@ -77,8 +94,8 @@ def assert_morphing(
     _validate_json_schema(input_json_schema)
     _validate_json_schema(output_json_schema)
 
-    expected_input_json_schema = _resolve_fork(json_schema, Direction.INPUT)
-    expected_output_json_schema = _resolve_fork(json_schema, Direction.OUTPUT)
+    expected_input_json_schema = _resolve_json_schema(json_schema, Direction.INPUT)
+    expected_output_json_schema = _resolve_json_schema(json_schema, Direction.OUTPUT)
     assert input_json_schema == expected_input_json_schema
     assert output_json_schema == expected_output_json_schema
 

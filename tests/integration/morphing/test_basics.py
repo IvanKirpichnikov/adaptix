@@ -3,19 +3,19 @@ from typing import Any
 
 import pytest
 from tests_helpers import raises_exc, with_trail
+from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
 
 from adaptix import DebugTrail, Retort, loader as loader_recipe
 from adaptix.load_error import AggregateLoadError, TypeLoadError
 from adaptix.struct_trail import get_trail
 
 
-@dataclass
-class ExampleAny:
-    field1: Any
-    field2: Any
-
-
 def test_any(accum):
+    @dataclass
+    class ExampleAny:
+        field1: Any
+        field2: Any
+
     retort = Retort(recipe=[accum])
 
     loader = retort.get_loader(ExampleAny)
@@ -25,13 +25,12 @@ def test_any(accum):
     assert dumper(ExampleAny(field1=1, field2=1)) == {"field1": 1, "field2": 1}
 
 
-@dataclass
-class ExampleObject:
-    field1: object
-    field2: object
-
-
 def test_object(accum):
+    @dataclass
+    class ExampleObject:
+        field1: object
+        field2: object
+
     retort = Retort(recipe=[accum])
 
     loader = retort.get_loader(ExampleObject)
@@ -50,10 +49,29 @@ class ExampleInt:
 def test_int(accum):
     retort = Retort(recipe=[accum])
 
+    assert_morphing(
+        retort=retort,
+        tp=ExampleInt,
+        data={"field1": 1, "field2": 1},
+        loaded=ExampleInt(field1=1, field2=1),
+        dumped={"field1": 1, "field2": 1},
+        json_schema={
+            "$defs": {
+                "ExampleInt": {
+                    "additionalProperties": JSONSchemaOptItem(input=True),
+                    "properties": {
+                        "field1": {"type": "integer"},
+                        "field2": {"type": "integer"},
+                    },
+                    "required": ["field1", "field2"],
+                    "type": "object",
+                },
+            },
+            "$ref": "#/$defs/ExampleInt",
+        },
+    )
+
     loader = retort.get_loader(ExampleInt)
-
-    assert loader({"field1": 1, "field2": 1}) == ExampleInt(field1=1, field2=1)
-
     raises_exc(
         AggregateLoadError(
             f"while loading model {ExampleInt}",
@@ -66,9 +84,6 @@ def test_int(accum):
         ),
         lambda: loader({"field1": 1, "field2": "1"}),
     )
-
-    dumper = retort.get_dumper(ExampleInt)
-    assert dumper(ExampleInt(field1=1, field2=1)) == {"field1": 1, "field2": 1}
 
 
 def test_int_lax_coercion(accum):
