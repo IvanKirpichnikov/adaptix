@@ -130,6 +130,8 @@ class OperatingRetort(SearchingRetort):
             return LocatedRequestErrorRepresentor("Cannot find loader")
         if issubclass(request_cls, DumperRequest):
             return LocatedRequestErrorRepresentor("Cannot find dumper")
+        if issubclass(request_cls, JSONSchemaRequest):
+            return LocatedRequestErrorRepresentor("Cannot find JSON Schema")
 
         if issubclass(request_cls, CoercerRequest):
             return CoercerRequestErrorRepresentor("Cannot find coercer")  # type: ignore[return-value]
