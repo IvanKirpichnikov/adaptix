@@ -79,7 +79,7 @@ class BasicRequestBus(RequestBus[RequestT, ResponseT], Generic[RequestT, Respons
                 exc = AggregateCannotProvide.make(
                     self._error_representor.get_provider_not_found_description(request),
                     exceptions,
-                    is_demonstrative=True,
+                    is_demonstrative=search_offset == 0,
                 )
                 self._attach_request_context_notes(exc, request)
                 self._attach_sub_exceptions_notes(exc, exceptions)
@@ -92,7 +92,7 @@ class BasicRequestBus(RequestBus[RequestT, ResponseT], Generic[RequestT, Respons
                 response = handler(mediator, request)
             except CannotProvide as e:
                 if e.is_terminal:
-                    raise self._attach_request_context_notes(e, request)
+                    raise self._attach_request_context_notes(e, request) if search_offset == 0 else e
                 exceptions.append(e)
                 continue
 
