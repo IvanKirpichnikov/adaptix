@@ -136,13 +136,15 @@ class JSONSchemaErrorAssertionBuilder:
             rs_asserter=rs,
         )
 
-    def type(self, expected: JSONSchemaType) -> JSONSchemaErrorTemplate:
+    def type(self, *, expected: JSONSchemaType) -> JSONSchemaErrorTemplate:
         def py_asserter(error) -> None:
             assert error.validator == "type"
             assert error.validator_value == expected.value
 
         def rs_asserter(error) -> None:
-            assert error.kind == jsonschema_rs.ValidationErrorKind.Type(types=[expected.value])
+            # There is no appropriate __eq__
+            assert isinstance(error.kind, jsonschema_rs.ValidationErrorKind.Type)
+            assert error.kind.types == [expected.value]
 
         return self._with_assertion(py=py_asserter, rs=rs_asserter)
 
@@ -190,7 +192,7 @@ def assert_load_error(
         )
     if jsonschema_rs is not None:
         _assert_json_schema_errors(
-            errors=jsonschema_rs.iter_errors(data, input_json_schema),
+            errors=jsonschema_rs.iter_errors(input_json_schema, data),
             templates=json_schema_errors,
             asserter_getter=lambda t: t.rs_asserter,
             path_getter=lambda e: tuple(e.instance_path),
