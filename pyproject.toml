@@ -2,7 +2,6 @@
 requires = ["uv_build == 0.7.19"]
 build-backend = "uv_build"
 
-
 [project]
 name = 'adaptix'
 version = '3.0.0b11'
