@@ -19,7 +19,7 @@ class SimpleRouter(RequestRouter[RequestT]):
     def __init__(self, checkers_and_handlers: Sequence[CheckerAndHandler]):
         self._checkers_and_handlers = checkers_and_handlers
 
-    def route_handler(
+    def find_handler(
         self,
         mediator: DirectMediator,
         request: RequestT,
@@ -47,7 +47,7 @@ class LocatedRequestRouter(RequestRouter[LocatedRequest]):
     def __init__(self, items: Sequence[Union[CheckerAndHandler, OriginToHandler]]):
         self._items = items
 
-    def route_handler(
+    def find_handler(
         self,
         mediator: DirectMediator,
         request: LocatedRequest,

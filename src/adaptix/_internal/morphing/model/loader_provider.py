@@ -149,7 +149,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
                 request.append_loc(input_field_to_loc(field))
                 for field in shape.fields
             ],
-            lambda: "Cannot create JSONSchema for model. JSONSchemas for some fields cannot be created",
+            lambda: "Cannot create JSON Schema for model. JSON Schemas for some fields cannot be created",
         )
         return {field.id: json_schema for field, json_schema in zip(shape.fields, json_schemas)}
 
@@ -175,7 +175,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
                 DumperRequest(loc_stack=request.loc_stack.append_with(input_field_to_loc(field)))
                 for field, _default in fields_and_defaults
             ],
-            lambda: "Cannot create JSONSchema for model. Dumpers for some field defaults cannot be created",
+            lambda: "Cannot create JSON Schema for model. Dumpers for some field defaults cannot be created",
         )
         return {field.id: dumper(default) for (field, default), dumper in zip(fields_and_defaults, dumpers)}
 
