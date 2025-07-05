@@ -1,8 +1,14 @@
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable, Union
+
+from tests_helpers import raises_exc
 
 from adaptix import Direction, Omitted, Retort, TypeHint
+from adaptix._internal.common import VarTuple
 from adaptix._internal.morphing.facade.func import DumpedJSONSchema, generate_json_schema
+from adaptix._internal.morphing.json_schema.schema_model import JSONSchemaType
+from adaptix._internal.morphing.load_error import LoadError
 
 try:
     import jsonschema
@@ -101,3 +107,91 @@ def assert_morphing(
 
     _validate_by_json_schema(data, input_json_schema)
     _validate_by_json_schema(produced_dumped, output_json_schema)
+
+
+JSONSchemaErrorPathItem = Union[str, int]
+JSONSchemaErrorAsserter = Callable[[Any], None]
+
+
+@dataclass
+class JSONSchemaErrorTemplate:
+    path: VarTuple[JSONSchemaErrorPathItem]
+    py_asserter: JSONSchemaErrorAsserter
+    rs_asserter: JSONSchemaErrorAsserter
+
+
+class JSONSchemaErrorAssertionBuilder:
+    def __init__(self, path: VarTuple[JSONSchemaErrorPathItem]):
+        self._path = path
+
+    def _with_assertion(
+        self,
+        *,
+        py: JSONSchemaErrorAsserter,
+        rs: JSONSchemaErrorAsserter,
+    ) -> JSONSchemaErrorTemplate:
+        return JSONSchemaErrorTemplate(
+            path=self._path,
+            py_asserter=py,
+            rs_asserter=rs,
+        )
+
+    def type(self, expected: JSONSchemaType) -> JSONSchemaErrorTemplate:
+        def py_asserter(error) -> None:
+            assert error.validator == "type"
+            assert error.validator_value == expected.value
+
+        def rs_asserter(error) -> None:
+            assert error.kind == jsonschema_rs.ValidationErrorKind.Type(types=[expected.value])
+
+        return self._with_assertion(py=py_asserter, rs=rs_asserter)
+
+
+class JSONSchemaErrorBuilder:
+    def at(self, *items: JSONSchemaErrorPathItem) -> JSONSchemaErrorAssertionBuilder:
+        return JSONSchemaErrorAssertionBuilder(items)
+
+
+def _assert_json_schema_errors(
+    *,
+    errors: Iterable[Any],
+    templates: Sequence[JSONSchemaErrorTemplate],
+    asserter_getter: Callable[[JSONSchemaErrorTemplate], JSONSchemaErrorAsserter],
+    path_getter: Callable[[Any], VarTuple[JSONSchemaErrorPathItem]],
+) -> None:
+    for error, template in zip(errors, templates):
+        assert path_getter(error) == template.path
+        asserter_getter(template)(error)
+
+
+json_schema_error = JSONSchemaErrorBuilder()
+
+
+def assert_load_error(
+    *,
+    retort: Retort,
+    tp: TypeHint,
+    data: Any,
+    exc: LoadError,
+    json_schema_errors: Sequence[JSONSchemaErrorTemplate],
+) -> None:
+    raises_exc(
+        exc,
+        lambda: retort.load(data, tp),
+    )
+    input_json_schema = generate_json_schema(retort, tp, direction=Direction.INPUT)
+
+    if jsonschema is not None:
+        _assert_json_schema_errors(
+            errors=jsonschema.Draft202012Validator(input_json_schema).iter_errors(data),
+            templates=json_schema_errors,
+            asserter_getter=lambda t: t.py_asserter,
+            path_getter=lambda e: tuple(e.path),
+        )
+    if jsonschema_rs is not None:
+        _assert_json_schema_errors(
+            errors=jsonschema_rs.iter_errors(data, input_json_schema),
+            templates=json_schema_errors,
+            asserter_getter=lambda t: t.rs_asserter,
+            path_getter=lambda e: tuple(e.instance_path),
+        )

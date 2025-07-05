@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from typing import Any
 
 import pytest
-from tests_helpers import raises_exc, with_trail
-from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
+from tests_helpers import with_trail
+from tests_helpers.morphing import JSONSchemaOptItem, assert_load_error, assert_morphing, json_schema_error
 
 from adaptix import DebugTrail, Retort, loader as loader_recipe
+from adaptix._internal.morphing.json_schema.schema_model import JSONSchemaType
 from adaptix.load_error import AggregateLoadError, TypeLoadError
 from adaptix.struct_trail import get_trail
 
@@ -71,9 +72,11 @@ def test_int(accum):
         },
     )
 
-    loader = retort.get_loader(ExampleInt)
-    raises_exc(
-        AggregateLoadError(
+    assert_load_error(
+        retort=retort,
+        tp=ExampleInt,
+        data={"field1": 1, "field2": "1"},
+        exc=AggregateLoadError(
             f"while loading model {ExampleInt}",
             [
                 with_trail(
@@ -82,7 +85,9 @@ def test_int(accum):
                 ),
             ],
         ),
-        lambda: loader({"field1": 1, "field2": "1"}),
+        json_schema_errors=[
+            json_schema_error.at("field2").type(expected=JSONSchemaType.INTEGER),
+        ],
     )
 
 
