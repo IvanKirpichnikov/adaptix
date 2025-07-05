@@ -168,6 +168,10 @@ HAS_TV_SYNTAX = HAS_PY_312
 HAS_PY_313 = PythonVersionRequirement((3, 13))
 HAS_TV_DEFAULT = HAS_PY_313
 
+HAS_PY_314 = PythonVersionRequirement((3, 14))
+NO_BYTE_STRING = HAS_PY_314
+HAS_UNION_TYPE_MERGED = HAS_PY_314
+
 HAS_SUPPORTED_ATTRS_PKG = DistributionVersionRequirement("attrs", "21.3.0")
 HAS_ATTRS_PKG = DistributionRequirement("attrs")
 

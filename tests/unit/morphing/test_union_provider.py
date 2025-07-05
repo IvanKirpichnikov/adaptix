@@ -8,6 +8,7 @@ from tests_helpers.misc import raises_exc_text
 
 from adaptix import DebugTrail, Omitted, Retort, dumper, loader
 from adaptix._internal.compat import CompatExceptionGroup
+from adaptix._internal.feature_requirement import HAS_UNION_TYPE_MERGED
 from adaptix._internal.morphing.load_error import BadVariantLoadError, LoadError, TypeLoadError, UnionLoadError
 from adaptix._internal.type_tools import normalize_type
 
@@ -167,6 +168,19 @@ def test_bad_optional_dumping(debug_trail):
         field: Union[int, Callable[[int], str]]
 
     retort = Retort()
+    trace_text = """
+        adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.SomeClass'>
+          × Cannot create dumper for model. Dumpers for some fields cannot be created
+          │ Location: ‹SomeClass›
+          ╰──▷ All cases of union must be class or Literal
+             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
+             ╰──▷ Found ‹Callable[[int], str]›
+    """
+    if HAS_UNION_TYPE_MERGED:
+        trace_text = trace_text.replace(
+            "Union[int, typing.Callable[[int], str]]",
+            "int | typing.Callable[[int], str]",
+        )
     raises_exc_text(
         lambda: (
             retort.replace(
@@ -179,14 +193,7 @@ def test_bad_optional_dumping(debug_trail):
                 SomeClass,
             )
         ),
-        """
-        adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.SomeClass'>
-          × Cannot create dumper for model. Dumpers for some fields cannot be created
-          │ Location: ‹SomeClass›
-          ╰──▷ All cases of union must be class or Literal
-             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
-             ╰──▷ Found ‹Callable[[int], str]›
-        """,
+        trace_text,
         {
             "SomeClass": SomeClass.__qualname__,
             "__main__": __name__,

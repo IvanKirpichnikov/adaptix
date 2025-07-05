@@ -4,6 +4,9 @@ from types import MappingProxyType
 from typing import Annotated, Any, NamedTuple
 from unittest.mock import ANY
 
+import pytest
+
+from adaptix._internal.feature_requirement import HAS_PY_313
 from adaptix._internal.model_tools.definitions import (
     DefaultValue,
     InputField,
@@ -354,6 +357,8 @@ def test_rename():
     )
 
 
+@pytest.mark.skipif(HAS_PY_313,
+                    reason="Creating NamedTuple classes using keyword arguments was deprecated in 3.13")
 def test_class_hinted_namedtuple():
     BarA = NamedTuple("BarA", a=int, b=str)
 
