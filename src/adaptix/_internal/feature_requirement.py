@@ -47,6 +47,19 @@ class PythonVersionRequirement(Requirement):
         return f'Python >= {".".join(map(str, self.min_version))} is required'
 
 
+class MaxPythonVersionRequirement(Requirement):
+    def __init__(self, max_version: VarTuple[int]):
+        self.max_version = max_version
+        super().__init__()
+
+    def _evaluate(self) -> bool:
+        return sys.version_info < self.max_version
+
+    @property
+    def fail_reason(self) -> str:
+        return f'Python < {".".join(map(str, self.max_version))} is required'
+
+
 class DistributionRequirement(Requirement):
     def __init__(self, distribution_name: str):
         self.distribution_name = distribution_name
@@ -166,10 +179,12 @@ HAS_PY_312 = PythonVersionRequirement((3, 12))
 HAS_TV_SYNTAX = HAS_PY_312
 
 HAS_PY_313 = PythonVersionRequirement((3, 13))
+MAX_PY_313 = MaxPythonVersionRequirement((3, 13))
 HAS_TV_DEFAULT = HAS_PY_313
 
 HAS_PY_314 = PythonVersionRequirement((3, 14))
-NO_BYTE_STRING = HAS_PY_314
+MAX_PY_314 = MaxPythonVersionRequirement((3, 14))
+HAS_BYTE_STRING = MAX_PY_314
 HAS_UNION_TYPE_MERGED = HAS_PY_314
 
 HAS_SUPPORTED_ATTRS_PKG = DistributionVersionRequirement("attrs", "21.3.0")

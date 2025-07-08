@@ -10,7 +10,7 @@ from uuid import UUID
 
 from ...common import Dumper, Loader, TypeHint, VarTuple
 from ...definitions import DebugTrail
-from ...feature_requirement import NO_BYTE_STRING
+from ...feature_requirement import HAS_BYTE_STRING
 from ...provider.essential import Provider, Request
 from ...provider.loc_stack_filtering import LocStack, P, VarTupleLSC
 from ...provider.location import TypeHintLoc
@@ -79,7 +79,7 @@ from .provider import (
     name_mapping,
 )
 
-if not NO_BYTE_STRING:
+if HAS_BYTE_STRING:
     from collections.abc import ByteString  # noqa: PYI057
 
 
@@ -160,10 +160,9 @@ class FilledRetort(OperatingRetort, ABC):
         ABCProxy(Mapping, dict),
         ABCProxy(MutableMapping, dict),
 
-        ConcatProvider()
-        if NO_BYTE_STRING
-        else
-        ABCProxy(ByteString, bytes),
+         (
+             ABCProxy(ByteString, bytes) if HAS_BYTE_STRING else ConcatProvider()
+         ),
 
         ToVarTupleProxy(collections.abc.Iterable),
         ToVarTupleProxy(collections.abc.Reversible),
