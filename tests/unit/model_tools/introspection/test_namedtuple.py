@@ -6,7 +6,7 @@ from unittest.mock import ANY
 
 from tests_helpers import requires
 
-from adaptix._internal.feature_requirement import MAX_PY_312
+from adaptix._internal.feature_requirement import MAX_PY_314
 from adaptix._internal.model_tools.definitions import (
     DefaultValue,
     InputField,
@@ -356,7 +356,7 @@ def test_rename():
         )
     )
 
-@requires(MAX_PY_312)
+@requires(MAX_PY_314)
 def test_class_hinted_namedtuple():
     BarA = NamedTuple("BarA", a=int, b=str)
 
