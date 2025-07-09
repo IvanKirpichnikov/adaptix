@@ -175,7 +175,7 @@ class AdornedConversionRetort(OperatingRetort):
         ensure_function_is_stub(stub_function)
         retort = self.extend(recipe=recipe) if recipe else self
         return retort._produce_converter(
-            signature=inspect.signature(stub_function),
+            signature=inspect.signature(stub_function, eval_str=True),
             stub_function=stub_function,
             function_name=None,
         )
