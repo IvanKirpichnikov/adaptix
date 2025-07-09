@@ -53,11 +53,11 @@ class MaxPythonVersionRequirement(Requirement):
         super().__init__()
 
     def _evaluate(self) -> bool:
-        return sys.version_info < self.max_version
+        return sys.version_info <= self.max_version
 
     @property
     def fail_reason(self) -> str:
-        return f'Python < {".".join(map(str, self.max_version))} is required'
+        return f'Python <= {".".join(map(str, self.max_version))} is required'
 
 
 class DistributionRequirement(Requirement):
@@ -176,15 +176,15 @@ HAS_TV_TUPLE = HAS_PY_311
 HAS_UNPACK = HAS_PY_311
 
 HAS_PY_312 = PythonVersionRequirement((3, 12))
+MAX_PY_312 = MaxPythonVersionRequirement((3, 12))
 HAS_TV_SYNTAX = HAS_PY_312
 
 HAS_PY_313 = PythonVersionRequirement((3, 13))
 MAX_PY_313 = MaxPythonVersionRequirement((3, 13))
+HAS_BYTE_STRING = MAX_PY_313
 HAS_TV_DEFAULT = HAS_PY_313
 
 HAS_PY_314 = PythonVersionRequirement((3, 14))
-MAX_PY_314 = MaxPythonVersionRequirement((3, 14))
-HAS_BYTE_STRING = MAX_PY_314
 HAS_UNION_TYPE_MERGED = HAS_PY_314
 
 HAS_SUPPORTED_ATTRS_PKG = DistributionVersionRequirement("attrs", "21.3.0")
