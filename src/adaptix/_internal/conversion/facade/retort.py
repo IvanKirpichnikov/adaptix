@@ -5,6 +5,7 @@ from inspect import Parameter, Signature
 from typing import Any, Callable, Optional, TypeVar, overload
 
 from ...common import Converter, TypeHint
+from ...feature_requirement import HAS_PY_310
 from ...provider.essential import Provider
 from ...provider.loc_stack_filtering import P
 from ...provider.shape_provider import BUILTIN_SHAPE_PROVIDER
@@ -174,8 +175,12 @@ class AdornedConversionRetort(OperatingRetort):
 
         ensure_function_is_stub(stub_function)
         retort = self.extend(recipe=recipe) if recipe else self
+        if HAS_PY_310:
+            signature = inspect.signature(stub_function, eval_str=True)
+        else:
+            signature = inspect.signature(stub_function)
         return retort._produce_converter(
-            signature=inspect.signature(stub_function, eval_str=True),
+            signature=signature,
             stub_function=stub_function,
             function_name=None,
         )
