@@ -168,19 +168,12 @@ def test_bad_optional_dumping(debug_trail):
         field: Union[int, Callable[[int], str]]
 
     retort = Retort()
-    trace_text = """
-        adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.SomeClass'>
-          × Cannot create dumper for model. Dumpers for some fields cannot be created
-          │ Location: ‹SomeClass›
-          ╰──▷ All cases of union must be class or Literal
-             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
-             ╰──▷ Found ‹Callable[[int], str]›
-    """
+    replaces = {
+        "SomeClass": SomeClass.__qualname__,
+        "__main__": __name__,
+    }
     if HAS_UNION_TYPE_MERGED:
-        trace_text = trace_text.replace(
-            "Union[int, typing.Callable[[int], str]]",
-            "int | typing.Callable[[int], str]",
-        )
+        replaces["Union[int, typing.Callable[[int], str]]"] = "int | typing.Callable[[int], str]"
     raises_exc_text(
         lambda: (
             retort.replace(
@@ -193,11 +186,15 @@ def test_bad_optional_dumping(debug_trail):
                 SomeClass,
             )
         ),
-        trace_text,
-        {
-            "SomeClass": SomeClass.__qualname__,
-            "__main__": __name__,
-        },
+        """
+        adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.SomeClass'>
+          × Cannot create dumper for model. Dumpers for some fields cannot be created
+          │ Location: ‹SomeClass›
+          ╰──▷ All cases of union must be class or Literal
+             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
+             ╰──▷ Found ‹Callable[[int], str]›
+        """,
+        replaces,
     )
 
 

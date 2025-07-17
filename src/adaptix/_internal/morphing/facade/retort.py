@@ -160,9 +160,9 @@ class FilledRetort(OperatingRetort, ABC):
         ABCProxy(Mapping, dict),
         ABCProxy(MutableMapping, dict),
 
-         (
-             ABCProxy(ByteString, bytes) if HAS_BYTE_STRING else ConcatProvider()
-         ),
+        (
+            ABCProxy(ByteString, bytes) if HAS_BYTE_STRING else ConcatProvider()
+        ),
 
         ToVarTupleProxy(collections.abc.Iterable),
         ToVarTupleProxy(collections.abc.Reversible),
