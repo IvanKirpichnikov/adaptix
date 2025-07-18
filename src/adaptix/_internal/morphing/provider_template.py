@@ -6,7 +6,7 @@ from ..common import Dumper, Loader, TypeHint
 from ..provider.essential import CannotProvide, Mediator, Provider, RequestChecker, RequestHandlerRegisterRecord
 from ..provider.loc_stack_filtering import ExactOriginLSC
 from ..provider.loc_stack_tools import format_type
-from ..provider.located_request import LocatedRequestChecker, LocatedRequestMethodsProvider
+from ..provider.located_request import LocatedRequest, LocatedRequestChecker, LocatedRequestMethodsProvider
 from ..provider.methods_provider import method_handler
 from ..provider.request_checkers import AlwaysTrueRequestChecker
 from ..type_tools import get_generic_args, normalize_type
@@ -71,7 +71,7 @@ class ProxyProvider(Provider, ABC):
             )
         return result
 
-    def _provide_proxy(self, mediator: Mediator, request: LoaderRequest) -> Loader:
+    def _provide_proxy(self, mediator: Mediator, request: LocatedRequest) -> Loader:
         return mediator.mandatory_provide(
             request.with_loc_stack(
                 request.loc_stack.replace_last_type(

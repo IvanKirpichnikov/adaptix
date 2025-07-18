@@ -8,7 +8,7 @@ from typing import Any, ForwardRef, Literal, Optional, TypeVar
 from ..common import Dumper, Loader, TypeHint
 from ..provider.essential import CannotProvide, Mediator
 from ..provider.loc_stack_filtering import LocStack
-from ..provider.located_request import for_predicate
+from ..provider.located_request import LocatedRequest, for_predicate
 from ..provider.location import TypeHintLoc
 from ..special_cases_optimization import as_is_stub
 from ..type_tools import NormTypeAlias, is_new_type, strip_tags
@@ -31,19 +31,6 @@ class NewTypeUnwrappingProvider(DelegatingProvider):
 
     def _get_error_text(self) -> str:
         return "Try to unwrap NewType"
-
-
-class TypeHintTagsUnwrappingProvider(DelegatingProvider):
-    def _get_proxy_target(self, tp: TypeHint) -> TypeHint:
-        norm = try_normalize_type(tp)
-        unwrapped = strip_tags(norm)
-        if unwrapped.source == tp:  # type has not changed, continue search
-            raise CannotProvide
-
-        return unwrapped.source
-
-    def _get_error_text(self) -> str:
-        return "Try to unwrap type hints tag"
 
 
 class TypeAliasUnwrappingProvider(DelegatingProvider):
@@ -70,6 +57,32 @@ class ForwardRefEvaluatingProvider(DelegatingProvider):
 
     def _get_error_text(self) -> str:
         return "Try to evaluate ForwardRef"
+
+
+class TypeHintTagsUnwrappingProvider(LoaderProvider, DumperProvider):
+    def _unwrap_type_hint(self, tp: TypeHint) -> TypeHint:
+        norm = try_normalize_type(tp)
+        unwrapped = strip_tags(norm)
+        if unwrapped.source == tp:  # type has not changed, continue search
+            raise CannotProvide
+
+        return unwrapped.source
+
+    def _provide_proxy(self, mediator: Mediator, request: LocatedRequest) -> Loader:
+        return mediator.mandatory_provide(
+            request.with_loc_stack(
+                request.loc_stack.append_with(
+                    TypeHintLoc(self._unwrap_type_hint(request.loc_stack.last.type)),
+                ),
+            ),
+            lambda x: "Try to unwrap type hints tag",
+        )
+
+    def provide_loader(self, mediator: Mediator[Loader], request: LoaderRequest) -> Loader:
+        return self._provide_proxy(mediator, request)
+
+    def provide_dumper(self, mediator: Mediator[Dumper], request: DumperRequest) -> Dumper:
+        return self._provide_proxy(mediator, request)
 
 
 def _is_exact_zero_or_one(arg):
@@ -211,13 +224,11 @@ class LiteralProvider(LoaderProvider, DumperProvider):
             return loaders[0]
 
         def wrapped_loader_many(data):
-            for c, loader in enumerate(loaders):
+            for loader in loaders:
                 try:
                     return loader(data)
                 except LoadError:
-                    last_iteration = len(loaders) - 1
-                    if c != last_iteration:
-                        continue
+                    pass
             return basic_loader(data)
 
         return wrapped_loader_many

@@ -205,9 +205,9 @@ class FilledRetort(OperatingRetort, ABC):
         BUILTIN_SHAPE_PROVIDER,
 
         NewTypeUnwrappingProvider(),
-        TypeHintTagsUnwrappingProvider(),
         TypeAliasUnwrappingProvider(),
         ForwardRefEvaluatingProvider(),
+        TypeHintTagsUnwrappingProvider(),
     ]
 
 
