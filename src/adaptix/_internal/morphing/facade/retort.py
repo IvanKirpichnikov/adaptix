@@ -1,6 +1,6 @@
 import collections.abc
 from abc import ABC
-from collections.abc import ByteString, Iterable, Mapping, MutableMapping  # noqa: PYI057
+from collections.abc import Iterable, Mapping, MutableMapping
 from datetime import date, datetime, time
 from ipaddress import IPv4Address, IPv4Interface, IPv4Network, IPv6Address, IPv6Interface, IPv6Network
 from itertools import chain
@@ -10,9 +10,11 @@ from uuid import UUID
 
 from ...common import Dumper, Loader, TypeHint, VarTuple
 from ...definitions import DebugTrail
+from ...feature_requirement import HAS_BYTE_STRING
 from ...provider.essential import Provider, Request
 from ...provider.loc_stack_filtering import LocStack, P, VarTupleLSC
 from ...provider.location import TypeHintLoc
+from ...provider.provider_wrapper import ConcatProvider
 from ...provider.shape_provider import BUILTIN_SHAPE_PROVIDER
 from ...provider.value_provider import ValueProvider
 from ...retort.error_renderer import ErrorRenderer
@@ -76,6 +78,9 @@ from .provider import (
     loader,
     name_mapping,
 )
+
+if HAS_BYTE_STRING:
+    from collections.abc import ByteString  # noqa: PYI057
 
 
 class FilledRetort(OperatingRetort, ABC):
@@ -154,7 +159,10 @@ class FilledRetort(OperatingRetort, ABC):
 
         ABCProxy(Mapping, dict),
         ABCProxy(MutableMapping, dict),
-        ABCProxy(ByteString, bytes),
+
+        (
+            ABCProxy(ByteString, bytes) if HAS_BYTE_STRING else ConcatProvider()
+        ),
 
         ToVarTupleProxy(collections.abc.Iterable),
         ToVarTupleProxy(collections.abc.Reversible),

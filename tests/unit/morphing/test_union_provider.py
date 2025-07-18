@@ -8,6 +8,7 @@ from tests_helpers.misc import raises_exc_text
 
 from adaptix import DebugTrail, Omitted, Retort, dumper, loader
 from adaptix._internal.compat import CompatExceptionGroup
+from adaptix._internal.feature_requirement import HAS_UNION_TYPE_MERGED
 from adaptix._internal.morphing.load_error import BadVariantLoadError, LoadError, TypeLoadError, UnionLoadError
 from adaptix._internal.type_tools import normalize_type
 
@@ -167,6 +168,12 @@ def test_bad_optional_dumping(debug_trail):
         field: Union[int, Callable[[int], str]]
 
     retort = Retort()
+    replaces = {
+        "SomeClass": SomeClass.__qualname__,
+        "__main__": __name__,
+    }
+    if HAS_UNION_TYPE_MERGED:
+        replaces["Union[int, typing.Callable[[int], str]]"] = "int | typing.Callable[[int], str]"
     raises_exc_text(
         lambda: (
             retort.replace(
@@ -187,10 +194,7 @@ def test_bad_optional_dumping(debug_trail):
              │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
              ╰──▷ Found ‹Callable[[int], str]›
         """,
-        {
-            "SomeClass": SomeClass.__qualname__,
-            "__main__": __name__,
-        },
+        replaces,
     )
 
 
