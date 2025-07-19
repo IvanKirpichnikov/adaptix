@@ -1,0 +1,1 @@
+Switched package build-backend from `setuptools <https://pypi.org/project/setuptools/>`_ to `uv_build <https://pypi.org/project/uv-build/>`_.
