@@ -161,7 +161,9 @@ def _assert_json_schema_errors(
     asserter_getter: Callable[[JSONSchemaErrorTemplate], JSONSchemaErrorAsserter],
     path_getter: Callable[[Any], VarTuple[JSONSchemaErrorPathItem]],
 ) -> None:
-    for error, template in zip(errors, templates):
+    errors_list = list(errors)
+    assert len(errors_list) == len(templates)
+    for error, template in zip(errors_list, templates):
         assert path_getter(error) == template.path
         asserter_getter(template)(error)
 
