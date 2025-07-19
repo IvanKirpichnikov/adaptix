@@ -89,15 +89,15 @@ def _concatenate_iters(args: Iterable[Iterable[T]]) -> Collection[T]:
     return list(itertools.chain.from_iterable(args))
 
 
-def _inner_collect_used_direct_fields(crown: BaseCrown) -> Iterable[str]:
+def _inner_collect_used_fields(crown: BaseCrown) -> Iterable[str]:
     if isinstance(crown, BaseDictCrown):
         return _concatenate_iters(
-            _inner_collect_used_direct_fields(sub_crown)
+            _inner_collect_used_fields(sub_crown)
             for sub_crown in crown.map.values()
         )
     if isinstance(crown, BaseListCrown):
         return _concatenate_iters(
-            _inner_collect_used_direct_fields(sub_crown)
+            _inner_collect_used_fields(sub_crown)
             for sub_crown in crown.map
         )
     if isinstance(crown, BaseFieldCrown):
@@ -107,8 +107,8 @@ def _inner_collect_used_direct_fields(crown: BaseCrown) -> Iterable[str]:
     raise TypeError
 
 
-def _collect_used_direct_fields(crown: BaseCrown) -> set[str]:
-    lst = _inner_collect_used_direct_fields(crown)
+def _collect_used_fields(crown: BaseCrown) -> Set[str]:
+    lst = _inner_collect_used_fields(crown)
 
     used_set = set()
     for f_name in lst:
@@ -120,11 +120,11 @@ def _collect_used_direct_fields(crown: BaseCrown) -> set[str]:
 
 
 def get_skipped_fields(shape: BaseShape, name_layout: BaseNameLayout) -> Set[str]:
-    used_direct_fields = _collect_used_direct_fields(name_layout.crown)
+    used_fields = _collect_used_fields(name_layout.crown)
     extra_targets = name_layout.extra_move.fields if isinstance(name_layout.extra_move, ExtraTargets) else ()
     return {
         field.id for field in shape.fields
-        if field.id not in used_direct_fields and field.id not in extra_targets
+        if field.id not in used_fields and field.id not in extra_targets
     }
 
 

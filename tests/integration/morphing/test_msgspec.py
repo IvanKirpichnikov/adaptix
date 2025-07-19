@@ -1,6 +1,7 @@
 from typing import ClassVar, Generic, TypeVar
 
 from msgspec import Struct, field
+from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
 
 from adaptix import Retort
 
@@ -11,8 +12,28 @@ def test_basic(accum):
         f2: str
 
     retort = Retort(recipe=[accum])
-    assert retort.load({"f1": 0, "f2": "a"}, MyModel) == MyModel(f1=0, f2="a")
-    assert retort.dump(MyModel(f1=0, f2="a")) == {"f1": 0, "f2": "a"}
+
+    assert_morphing(
+        retort=retort,
+        tp=MyModel,
+        data={"f1": 0, "f2": "a"},
+        loaded=MyModel(f1=0, f2="a"),
+        dumped={"f1": 0, "f2": "a"},
+        json_schema={
+            "$defs": {
+                "MyModel": {
+                    "additionalProperties": JSONSchemaOptItem(input=True),
+                    "properties": {
+                        "f1": {"type": "integer"},
+                        "f2": {"type": "string"},
+                    },
+                    "required": ["f1", "f2"],
+                    "type": "object",
+                },
+            },
+            "$ref": "#/$defs/MyModel",
+        },
+    )
 
 
 T = TypeVar("T")

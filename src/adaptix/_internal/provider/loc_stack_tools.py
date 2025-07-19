@@ -7,19 +7,21 @@ from .loc_stack_filtering import LocStack
 from .location import AnyLoc, FieldLoc, InputFuncFieldLoc, TypeHintLoc
 
 
-def _format_type(tp: TypeHint) -> str:
+def _format_type(tp: TypeHint, *, qualname: bool = True) -> str:
     if isinstance(tp, type) and not is_parametrized(tp):
-        return tp.__qualname__
+        if qualname:
+            return tp.__qualname__
+        return tp.__name__
     str_tp = str(tp)
     if str_tp.startswith("typing."):
         return str_tp[7:]
     return str_tp
 
 
-def format_type(tp: TypeHint, *, brackets: bool = True) -> str:
+def format_type(tp: TypeHint, *, brackets: bool = True, qualname: bool = True) -> str:
     if brackets:
-        return f"‹{_format_type(tp)}›"
-    return _format_type(tp)
+        return f"‹{_format_type(tp, qualname=qualname)}›"
+    return _format_type(tp, qualname=qualname)
 
 
 def get_callable_name(func: Callable) -> str:
