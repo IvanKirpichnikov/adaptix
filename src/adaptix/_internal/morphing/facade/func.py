@@ -10,7 +10,7 @@ from ..json_schema.mangling import CompoundRefMangler, IndexRefMangler, Qualname
 from ..json_schema.ref_generator import BuiltinRefGenerator
 from ..json_schema.request_cls import JSONSchemaContext
 from ..json_schema.resolver import BuiltinJSONSchemaResolver, JSONSchemaResolver
-from ..json_schema.schema_model import JSONSchemaDialect, _JSONSchemaCore
+from ..json_schema.schema_model import _JSONSchemaCore
 from ..provider_template import ABCProxy
 from .provider import name_mapping
 from .retort import AdornedRetort, Retort
@@ -74,10 +74,9 @@ def generate_json_schemas(
     *,
     direction: Direction,
     resolver: JSONSchemaResolver = _global_resolver,
-    dialect: str = JSONSchemaDialect.DRAFT_2020_12,
     local_ref_prefix: str = "#/$defs/",
 ) -> tuple[DumpedJSONSchema, Iterable[DumpedJSONSchema]]:
-    ctx = JSONSchemaContext(dialect=dialect, direction=direction)
+    ctx = JSONSchemaContext(direction=direction)
     defs, schemas = resolver.resolve(
         (),
         [retort.make_json_schema(tp, ctx) for tp in tps],
@@ -94,7 +93,6 @@ def generate_json_schema(
     *,
     direction: Direction,
     resolver: JSONSchemaResolver = _global_resolver,
-    dialect: str = JSONSchemaDialect.DRAFT_2020_12,
     local_ref_prefix: str = "#/$defs/",
 ) -> DumpedJSONSchema:
     defs, [schema] = generate_json_schemas(
@@ -102,7 +100,6 @@ def generate_json_schema(
         [tp],
         direction=direction,
         resolver=resolver,
-        dialect=dialect,
         local_ref_prefix=local_ref_prefix,
     )
     return {**schema, "$defs": defs}

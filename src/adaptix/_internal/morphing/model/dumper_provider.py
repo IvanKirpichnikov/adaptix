@@ -80,7 +80,7 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
             file_name=file_name,
         )
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         if request.ctx.direction != Direction.OUTPUT:
             raise CannotProvide
 
