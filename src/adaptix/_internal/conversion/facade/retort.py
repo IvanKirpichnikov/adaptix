@@ -175,10 +175,7 @@ class AdornedConversionRetort(OperatingRetort):
 
         ensure_function_is_stub(stub_function)
         retort = self.extend(recipe=recipe) if recipe else self
-        if HAS_PY_310:
-            signature = inspect.signature(stub_function, eval_str=True)
-        else:
-            signature = inspect.signature(stub_function)
+        signature = inspect.signature(stub_function, eval_str=True) if HAS_PY_310 else inspect.signature(stub_function)
         return retort._produce_converter(
             signature=signature,
             stub_function=stub_function,
