@@ -22,7 +22,7 @@ from ...provider.loc_stack_filtering import (
     create_loc_stack_checker,
 )
 from ...provider.overlay_schema import OverlayProvider
-from ...provider.provider_wrapper import Chain, ChainingProvider
+from ...provider.provider_wrapper import Chain, ChainingProvider, ConcatProvider
 from ...provider.shape_provider import PropertyExtender
 from ...provider.value_provider import ValueProvider
 from ...special_cases_optimization import as_is_stub
@@ -36,6 +36,15 @@ from ..enum_provider import (
     EnumValueProvider,
     FlagByExactValueProvider,
     FlagByListProvider,
+)
+from ..json_schema.definitions import JSONSchema
+from ..json_schema.providers import (
+    ConstantJSONSchemaRefProvider,
+    EraseJSONSchema,
+    InlineJSONSchemaProvider,
+    JSONSchemaOverride,
+    JSONSchemaOverrideProvider,
+    KeepJSONSchema,
 )
 from ..load_error import LoadError, ValidationLoadError
 from ..model.loader_provider import InlinedShapeModelLoaderProvider
@@ -60,7 +69,13 @@ def make_chain(chain: Optional[Chain], provider: Provider) -> Provider:
     return ChainingProvider(chain, provider)
 
 
-def loader(pred: Pred, func: Loader, chain: Optional[Chain] = None) -> Provider:
+def loader(
+    pred: Pred,
+    func: Loader,
+    chain: Optional[Chain] = None,
+    *,
+    json_schema: JSONSchemaOverride = EraseJSONSchema(),
+) -> Provider:
     """Basic provider to define custom loader.
 
     :param pred: Predicate specifying where loader should be used. See :ref:`predicate-system` for details.
@@ -74,19 +89,34 @@ def loader(pred: Pred, func: Loader, chain: Optional[Chain] = None) -> Provider:
         the specified function will take raw data and its result will be passed to previous loader.
 
         If the parameter is ``Chain.LAST``, the specified function gets result of the previous loader.
+    :param json_schema: JSON schema value associated with the loader.
+        By default, when the loader is overridden, the previous schema is erased.
+        You can preserve the existing schema by using ``KeepJSONSchema()``,
+        pass your own schema or patch the previous schema.
 
     :return: Desired provider
     """
     return bound(
         pred,
-        make_chain(
-            chain,
-            ValueProvider(LoaderRequest, func),
+        ConcatProvider(
+            make_chain(
+                chain,
+                ValueProvider(LoaderRequest, func),
+            ),
+            JSONSchemaOverrideProvider(
+                override=json_schema,
+            ),
         ),
     )
 
 
-def dumper(pred: Pred, func: Dumper, chain: Optional[Chain] = None) -> Provider:
+def dumper(
+    pred: Pred,
+    func: Dumper,
+    chain: Optional[Chain] = None,
+    *,
+    json_schema: JSONSchemaOverride = EraseJSONSchema(),
+) -> Provider:
     """Basic provider to define custom dumper.
 
     :param pred: Predicate specifying where dumper should be used. See :ref:`predicate-system` for details.
@@ -100,15 +130,50 @@ def dumper(pred: Pred, func: Dumper, chain: Optional[Chain] = None) -> Provider:
         the specified function will take raw data and its result will be passed to previous dumper.
 
         If the parameter is ``Chain.LAST``, the specified function gets result of the previous dumper.
+    :param json_schema: JSON schema value associated with the dumper.
+        By default, when the loader is overridden, the previous schema is erased.
+        You can preserve the existing schema by using ``KeepJSONSchema()``,
+        pass your own schema or patch the previous schema.
 
     :return: Desired provider
     """
     return bound(
         pred,
-        make_chain(
-            chain,
-            ValueProvider(DumperRequest, func),
+        ConcatProvider(
+            make_chain(
+                chain,
+                ValueProvider(DumperRequest, func),
+            ),
+            JSONSchemaOverrideProvider(
+                override=json_schema,
+            ),
         ),
+    )
+
+
+def json_schema(
+    pred: Pred,
+    value: Omittable[JSONSchemaOverride] = Omitted(),
+    *,
+    inline: Omittable[bool] = Omitted(),
+    ref: Omittable[str] = Omitted(),
+) -> Provider:
+    providers: list[Provider] = []
+    if not isinstance(value, Omitted):
+        providers.append(
+            JSONSchemaOverrideProvider(override=value),
+        )
+    if not isinstance(inline, Omitted):
+        providers.append(
+            InlineJSONSchemaProvider(inline=inline),
+        )
+    if not isinstance(ref, Omitted):
+        providers.append(
+            ConstantJSONSchemaRefProvider(ref=ref),
+        )
+    return bound(
+        pred,
+        ConcatProvider(*providers),
     )
 
 
@@ -118,7 +183,7 @@ def as_is_loader(pred: Pred) -> Provider:
     :param pred: Predicate specifying where loader should be used. See :ref:`predicate-system` for details.
     :return: Desired provider
     """
-    return loader(pred, as_is_stub)
+    return loader(pred, as_is_stub, json_schema=JSONSchema())
 
 
 def as_is_dumper(pred: Pred) -> Provider:
@@ -127,7 +192,7 @@ def as_is_dumper(pred: Pred) -> Provider:
     :param pred: Predicate specifying where dumper should be used. See :ref:`predicate-system` for details.
     :return: Desired provider
     """
-    return dumper(pred, as_is_stub)
+    return dumper(pred, as_is_stub, json_schema=JSONSchema())
 
 
 def constructor(pred: Pred, func: Callable) -> Provider:
@@ -445,7 +510,7 @@ def validator(
             return data
         raise exception_factory(data)
 
-    return loader(pred, validating_loader, chain)
+    return loader(pred, validating_loader, chain, json_schema=KeepJSONSchema())
 
 
 def default_dict(pred: Pred, default_factory: Callable) -> Provider:

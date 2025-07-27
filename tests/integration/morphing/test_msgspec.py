@@ -20,6 +20,7 @@ def test_basic(accum):
         loaded=MyModel(f1=0, f2="a"),
         dumped={"f1": 0, "f2": "a"},
         json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
                 "MyModel": {
                     "additionalProperties": JSONSchemaOptItem(input=True),
