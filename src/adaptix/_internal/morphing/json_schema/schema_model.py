@@ -173,7 +173,3 @@ class BaseJSONSchema(
             if value != ({} if key == "extra_keywords" else Omitted())
         )
         return f"{type(self).__name__}({body})"
-
-
-class JSONSchemaDialect(str, Enum):
-    DRAFT_2020_12 = "https://json-schema.org/draft/2020-12/schema"

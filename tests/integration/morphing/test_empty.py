@@ -20,6 +20,7 @@ def test_simple(accum):
         loaded=Empty(),
         dumped={},
         json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
                 "Empty": {
                     "additionalProperties": JSONSchemaOptItem(input=True),

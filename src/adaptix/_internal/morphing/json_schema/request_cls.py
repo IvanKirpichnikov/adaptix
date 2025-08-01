@@ -7,7 +7,6 @@ from .definitions import JSONSchema, LocalRefSource
 
 @dataclass(frozen=True)
 class JSONSchemaContext:
-    dialect: str
     direction: Direction
 
 

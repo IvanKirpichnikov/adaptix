@@ -22,6 +22,7 @@ def test_readme(accum):
         loaded=Book(title="Fahrenheit 451", price=100),
         dumped={"title": "Fahrenheit 451", "price": 100, "author": "Unknown author"},
         json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
                 "Book": {
                     "additionalProperties": JSONSchemaOptItem(input=True),

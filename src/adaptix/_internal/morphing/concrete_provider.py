@@ -60,7 +60,7 @@ class IsoFormatProvider(MorphingProvider):
     def _make_dumper(self):
         return self._cls.isoformat
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.STRING, format=self._CLS_TO_JSON_FORMAT[self._cls])
 
 
@@ -99,7 +99,7 @@ class DatetimeFormatProvider(MorphingProvider):
 
         return datetime_format_dumper
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.STRING)
 
 
@@ -137,7 +137,7 @@ class DatetimeTimestampProvider(MorphingProvider):
             return data.timestamp()
         return datetime_timestamp_dumper
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.NUMBER)
 
 
@@ -204,7 +204,7 @@ class DateTimestampProvider(MorphingProvider):
             return dt.timestamp()
         return date_timestamp_dumper
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.NUMBER)
 
 
@@ -231,7 +231,7 @@ class SecondsTimedeltaProvider(MorphingProvider):
     def _make_dumper(self):
         return timedelta.total_seconds
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.NUMBER)
 
 
@@ -249,7 +249,7 @@ class NoneProvider(MorphingProvider):
     def provide_dumper(self, mediator: Mediator, request: DumperRequest) -> Dumper:
         return as_is_stub
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.NULL)
 
 
@@ -264,7 +264,7 @@ class _Base64DumperMixin(DumperProvider):
 
 
 class _Base64JSONSchemaMixin(JSONSchemaProvider):
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.STRING, content_encoding="base64")
 
 
@@ -382,7 +382,7 @@ class RegexPatternProvider(MorphingProvider):
     def provide_dumper(self, mediator: Mediator, request: DumperRequest) -> Dumper:
         return _regex_dumper
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.STRING, format=JSONSchemaBuiltinFormat.REGEX)
 
 
@@ -418,7 +418,7 @@ class ScalarProvider(MorphingProvider, Generic[T]):
     def provide_dumper(self, mediator: Mediator, request: DumperRequest) -> Dumper:
         return self._dumper
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return self._json_schema
 
 
@@ -637,7 +637,7 @@ class SelfTypeProvider(MorphingProvider):
     def provide_dumper(self, mediator: Mediator[Dumper], request: DumperRequest) -> Dumper:
         return self._substituting_provide(mediator, request)
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return self._substituting_provide(mediator, request)
 
 
@@ -650,5 +650,5 @@ class LiteralStringProvider(MorphingProvider):
     def provide_dumper(self, mediator: Mediator, request: DumperRequest) -> Dumper:
         return as_is_stub
 
-    def _generate_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         return JSONSchema(type=JSONSchemaType.STRING)

@@ -57,6 +57,7 @@ def test_int(accum):
         loaded=ExampleInt(field1=1, field2=1),
         dumped={"field1": 1, "field2": 1},
         json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
                 "ExampleInt": {
                     "additionalProperties": JSONSchemaOptItem(input=True),

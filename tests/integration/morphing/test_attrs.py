@@ -19,6 +19,7 @@ def test_coordinates(accum):
         loaded=Coordinates(x=1, y=2),
         dumped={"x": 1, "y": 2},
         json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
                 "Coordinates": {
                     "additionalProperties": JSONSchemaOptItem(input=True),
