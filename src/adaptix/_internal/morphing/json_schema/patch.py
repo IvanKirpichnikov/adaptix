@@ -25,6 +25,11 @@ class JSONSchemaPatch:
         target: str,
         mutator: Callable[[Any], Any],
     ) -> S:
+        """Creates patcher that received a copy of specified attribute
+
+        :param target: Attribute of :class:`.JSONSchema` object
+        :param mutator: Function mutating value of attribute. Return value if ignored
+        """
         return self._append_with_patcher(
             self._create_mutator_patcher(target, mutator, copy),
         )

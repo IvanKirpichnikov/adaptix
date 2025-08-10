@@ -12,7 +12,7 @@ Generic classes are supported out of the box.
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/generic_classes_simple.py
 
 If a generic class is not parametrized, Python specification requires to assume ``Any`` for each position.
-Adaptix acts slightly differently,
+|adaptix| acts slightly differently,
 it derives implicit parameters based on ``TypeVar`` properties.
 
 .. list-table::
@@ -425,7 +425,7 @@ The first provider override parameters of next providers.
 Private fields dumping
 -----------------------------------
 
-By default, adaptix skips private fields (any field starting with underscore) at dumping.
+By default, |adaptix| skips private fields (any field starting with underscore) at dumping.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/private_fields_skipping_pydantic.py
 

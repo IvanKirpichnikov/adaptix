@@ -19,7 +19,7 @@ If you try to get type hints at runtime, you will fail:
 
 At runtime, these imports are not executed, so the builtin analysis function can not resolve forward refs.
 
-Adaptix can overcome this via :func:`.type_tools.exec_type_checking`.
+|Adaptix| can overcome this via :func:`.type_tools.exec_type_checking`.
 It extracts code fragments defined under ``if TYPE_CHECKING`` and ``if typing.TYPE_CHECKING`` constructs
 and then executes them in the context of module.
 As a result, the module namespace is filled with missing names, and *any* introspection function can acquire types.

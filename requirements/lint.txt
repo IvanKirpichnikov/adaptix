@@ -202,6 +202,7 @@ sphinx==8.2.3
     #   sphinx-paramlinks
     #   sphinx-reredirects
     #   sphinxcontrib-apidoc
+    #   sphinxcontrib-globalsubs
     #   sphinxext-opengraph
 sphinx-basic-ng==1.0.0b2
     # via furo
@@ -221,6 +222,8 @@ sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==2.0.0
     # via sphinx
+sphinxcontrib-globalsubs==0.1.2
+    # via -r requirements/raw/doc.txt
 sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
 sphinxcontrib-jsmath==1.0.1

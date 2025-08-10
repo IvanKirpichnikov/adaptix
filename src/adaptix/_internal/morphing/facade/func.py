@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Container, Iterable, Mapping, Sequence
 from dataclasses import fields
 from typing import Any, Optional, TypeVar, overload
 
@@ -75,24 +75,27 @@ _json_schema_retort = Retort(
 )
 
 DumpedJSONSchema = Mapping[str, Any]
+
 DIALECT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 
 
-def generate_json_schemas(
+def generate_json_schemas_namespace(
     retort: AdornedRetort,
     tps: Iterable[TypeHint],
-    *,
     direction: Direction,
+    *,
     resolver: JSONSchemaResolver = _global_resolver,
     local_ref_prefix: str = "#/$defs/",
     with_dialect_uri: bool = True,
+    occupied_refs: Container[str] = (),
 ) -> tuple[DumpedJSONSchema, Iterable[DumpedJSONSchema]]:
     ctx = JSONSchemaContext(direction=direction)
     defs, schemas = resolver.resolve(
-        (),
         [retort.make_json_schema(tp, ctx) for tp in tps],
         local_ref_prefix=local_ref_prefix,
+        occupied_refs=occupied_refs,
     )
+
     dumped_defs = _json_schema_retort.dump(defs, dict[str, ResolvedJSONSchema])
     dumped_schemas = _json_schema_retort.dump(schemas, Iterable[ResolvedJSONSchema])
     if with_dialect_uri:
@@ -104,19 +107,21 @@ def generate_json_schemas(
 def generate_json_schema(
     retort: AdornedRetort,
     tp: TypeHint,
-    *,
     direction: Direction,
+    *,
     resolver: JSONSchemaResolver = _global_resolver,
     local_ref_prefix: str = "#/$defs/",
     with_dialect_uri: bool = True,
+    occupied_refs: Container[str] = (),
 ) -> DumpedJSONSchema:
-    defs, [schema] = generate_json_schemas(
+    defs, [schema] = generate_json_schemas_namespace(
         retort,
         [tp],
         direction=direction,
         resolver=resolver,
         local_ref_prefix=local_ref_prefix,
         with_dialect_uri=with_dialect_uri,
+        occupied_refs=occupied_refs,
     )
     return {**schema, "$defs": defs}
 

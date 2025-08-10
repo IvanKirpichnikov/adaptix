@@ -9,7 +9,7 @@ Introduction
 Pydantic is one of the most popular libraries for data serialization and deserialization.
 However, the principles it’s built on often prevent ease of use.
 
-In this article, we’ll explore how using Adaptix instead of Pydantic can help manage common tasks more efficiently.
+In this article, we’ll explore how using |adaptix| instead of Pydantic can help manage common tasks more efficiently.
 
 .. note::
 
@@ -35,13 +35,13 @@ Your possible options:
 * Completely duplicate the dataclass structure, including all nested models,
   into an equivalent Pydantic model with the necessary config.
 * Perform manual serialization.
-* Start using Adaptix.
+* Start using |adaptix|.
 
 And what you get after switching:
 
 * Nothing invades your domain layer, the serialization logic lives entirely in the presentation layer.
 * Decreased code coupling.
-* You can use adaptix to convert models passing between layers.
+* You can use |adaptix| to convert models passing between layers.
 
 Why can't I just use Pydantic as the domain model? Well, let’s talk about that.
 
@@ -130,7 +130,7 @@ Models of ``attrs`` can’t transform themselves into JSON or load themselves fr
 External tools (such as ``adaptix`` or ``cattrs``) handle this functionality.
 
 Within the model, you can declare validators to enforce business invariants,
-while Adaptix can perform additional checks when loading data from an untrusted source.
+while |adaptix| can perform additional checks when loading data from an untrusted source.
 
 You can also use the ``__post_init__`` method in dataclasses for necessary validation.
 
@@ -258,7 +258,7 @@ such as if a field in the target model has a default value.
 
 .. hint::
 
-  You can use Adaptix’s class conversion with Pydantic models,
+  You can use adaptix’s class conversion with Pydantic models,
   eliminating all the problems listed above (except for the second point).
   See :ref:`conversion tutorial <Conversion-tutorial>` and :ref:`supported-model-kinds` for details.
 
@@ -287,8 +287,8 @@ As benchmarks show, this is far from true.
 
 To be cautious, Pydantic’s speed is approximately equal to libraries written in Python and using code generation.
 
-Speaking more boldly, in some cases, Adaptix outperforms Pydantic by a factor of two
-without losing in any benchmark, and PyPy usage can significantly speed up Adaptix.
+Speaking more boldly, in some cases, |adaptix| outperforms Pydantic by a factor of two
+without losing in any benchmark, and PyPy usage can significantly speed up |adaptix|.
 
 For more detail, see :ref:`benchmarks`.
 
@@ -302,11 +302,11 @@ The Philosophy
 ---------------------------------
 
 
-Adaptix does not offer a new special model that requires IDE and type checker support.
+|Adaptix| does not offer a new special model that requires IDE and type checker support.
 It works with any model you like
 (``@dataclass``, ``attrs``, and even Pydantic, see full list at :ref:`supported-model-kinds`).
 
-Adaptix does not affect the model definition.
+|Adaptix| does not affect the model definition.
 You create a special object that implements the loading and dumping of models.
 This object is called a `Retort` (the name of a chemical device used to distill substances).
 
@@ -323,7 +323,7 @@ following similar principles of outer representation.
 
 See :ref:`loading and dumping tutorial <loading-and-dumping-tutorial>` for details.
 
-But that's not all. Adaptix can generate object mappers.
+But that's not all. |Adaptix| can generate object mappers.
 Such converters are vital for layered applications
 but they are very boring to write and error-prone to maintain.
 For the same or similar models, you can produce a converter using one line of code.
@@ -335,16 +335,16 @@ See :ref:`conversion tutorial <conversion-tutorial>` for details.
 Unmentioned advantages
 ---------------------------------
 
-All the issues mentioned above highlight problems that don’t arise when using Adaptix.
+All the issues mentioned above highlight problems that don’t arise when using |adaptix|.
 However, there are aspects that cannot be counted as issues with Pydantic,
-but they could highlight Adaptix in comparison.
+but they could highlight |adaptix| in comparison.
 
-Firstly, Adaptix has a predicate system that allows granular customization of behavior.
+Firstly, |adaptix| has a predicate system that allows granular customization of behavior.
 You can adjust behavior for groups of classes or for a type only if it is within a specific class.
 You can also configure logic separately for dictionary keys and values, even if they share the same type.
 See :ref:`predicate-system` for details.
 
-Secondly, Adaptix is designed to provide the maximum number of opportunities to follow the DRY (Don't Repeat Yourself) principle.
+Secondly, |adaptix| is designed to provide the maximum number of opportunities to follow the DRY (Don't Repeat Yourself) principle.
 
 * You can override behavior for entire groups of fields and types using the predicate system mentioned earlier.
 * You can inherit rule groups, reducing code duplication.
@@ -356,12 +356,12 @@ For more information on these capabilities, see :ref:`retort_extension_and_combi
 Migrating from Pydantic
 ---------------------------------
 
-Adaptix provides several tools for a gradual migration from Pydantic.
+|Adaptix| provides several tools for a gradual migration from Pydantic.
 
-First, Adaptix supports Pydantic models.
+First, |adaptix| supports Pydantic models.
 You can load and dump Pydantic models just as you would with ``@dataclass``, ``NamedTuple``, ``TypedDict``, and others.
 This method ignores alias settings within the model itself, with all transformation logic defined in the retort.
-Adaptix parses the input data and passes it to the model’s constructor.
+|Adaptix| parses the input data and passes it to the model’s constructor.
 See :ref:`supported-model-kinds` for details.
 
 .. literalinclude:: /examples/why_not_pydantic/migration_pydantic_model.py
@@ -386,7 +386,7 @@ it comes with notable drawbacks that can complicate software development, partic
 Its tight coupling of validation, serialization, and domain modeling often violates the Single Responsibility Principle,
 leading to issues such as unnecessary complexity, inefficiency, and loss of flexibility.
 
-Adaptix, by contrast, offers a more modular and developer-friendly approach.
+|Adaptix|, by contrast, offers a more modular and developer-friendly approach.
 By decoupling serialization logic from domain models, it allows for cleaner code, easier maintenance,
 and more efficient operations. Whether it’s class mapping, custom validation, or handling diverse data formats,
-Adaptix delivers robust solutions that avoid the pitfalls commonly encountered with Pydantic.
+|adaptix| delivers robust solutions that avoid the pitfalls commonly encountered with Pydantic.

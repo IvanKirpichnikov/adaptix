@@ -1,6 +1,12 @@
 from ._internal.common import Dumper, Loader, TypeHint
 from ._internal.definitions import DebugTrail, Direction
-from ._internal.morphing.facade.func import dump, generate_json_schema, generate_json_schemas, load, load_json_schema
+from ._internal.morphing.facade.func import (
+    dump,
+    generate_json_schema,
+    generate_json_schemas_namespace,
+    load,
+    load_json_schema,
+)
 from ._internal.morphing.facade.provider import (
     as_is_dumper,
     as_is_loader,
@@ -102,7 +108,7 @@ __all__ = (
     "flag_by_exact_value",
     "flag_by_member_names",
     "generate_json_schema",
-    "generate_json_schemas",
+    "generate_json_schemas_namespace",
     "json_schema",
     "load",
     "load_json_schema",

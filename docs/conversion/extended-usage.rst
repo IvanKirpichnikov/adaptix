@@ -99,7 +99,7 @@ You can use them without arguments to apply new policies to all fields.
 What is a recipe really?
 ==============================
 
-The recipe is the main concept of adaptix configuration.
+The recipe is the main concept of |adaptix| configuration.
 It consists of objects defining (or redefining) some piece of behavior.
 Each of these objects is called a `provider`.
 
@@ -107,8 +107,8 @@ Recipe system implements `chain-of-responsibility <https://en.wikipedia.org/wiki
 design pattern.
 
 Let's explore the scenario of creating links for the destination field.
-Initially, adaptix filters providers skipping that can't make linking.
-Subsequently, adaptix scans the remaining recipe and applies the predicates of each provider.
+Initially, |adaptix| filters providers skipping that can't make linking.
+Subsequently, |adaptix| scans the remaining recipe and applies the predicates of each provider.
 The first match will be used, causing initial providers to potentially overlap with subsequent ones.
 
 

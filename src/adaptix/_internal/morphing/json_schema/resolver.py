@@ -13,10 +13,10 @@ class JSONSchemaResolver(ABC):
     @abstractmethod
     def resolve(
         self,
-        occupied_refs: Container[str],
         root_schemas: Sequence[JSONSchema],
         *,
         local_ref_prefix: str,
+        occupied_refs: Container[str],
     ) -> tuple[Mapping[str, ResolvedJSONSchema], Sequence[ResolvedJSONSchema]]:
         ...
 
@@ -45,10 +45,10 @@ class BuiltinJSONSchemaResolver(JSONSchemaResolver):
 
     def resolve(
         self,
-        occupied_refs: Container[str],
         root_schemas: Sequence[JSONSchema],
         *,
         local_ref_prefix: str,
+        occupied_refs: Container[str],
     ) -> tuple[Mapping[str, ResolvedJSONSchema], Sequence[ResolvedJSONSchema]]:
         ref_to_sources = self._collect_ref_to_sources(root_schemas)
         source_determinator = self._get_source_determinator(occupied_refs, ref_to_sources)

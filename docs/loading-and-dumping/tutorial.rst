@@ -4,7 +4,7 @@
 Tutorial
 ***********
 
-Adaptix analyzes your type hints and generates corresponding transformers based on the retrieved information.
+|Adaptix| analyzes your type hints and generates corresponding transformers based on the retrieved information.
 You can flexibly tune the conversion process following DRY principle.
 
 Installation
