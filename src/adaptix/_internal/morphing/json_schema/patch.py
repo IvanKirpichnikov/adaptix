@@ -45,20 +45,27 @@ class JSONSchemaPatch:
         mutator: Callable[[Any], Any],
         copy_function: Callable[[Any], Any],
     ):
-        def patcher(json_schema: JSONSchema) -> JSONSchema:
-            value_copy = copy_function(getattr(json_schema, target))
+        def patcher(old_json_schema: JSONSchema) -> JSONSchema:
+            value_copy = copy_function(getattr(old_json_schema, target))
             mutator(value_copy)
-            return replace(json_schema, **{target: value_copy})
+            return replace(old_json_schema, **{target: value_copy})
 
         return patcher
 
+    def replace(self: S, target: str, replacer: Callable[[Any], Any]) -> S:
+        def patcher(old_json_schema: JSONSchema) -> JSONSchema:
+            new_value = replacer(getattr(old_json_schema, target))
+            return replace(old_json_schema, **{target: new_value})
+
+        return self._append_with_patcher(patcher)
+
     def merge_with(self: S, json_schema: JSONSchema, chain: Chain = Chain.FIRST) -> S:
-        def patcher(input_json_schema: JSONSchema) -> JSONSchema:
+        def patcher(old_json_schema: JSONSchema) -> JSONSchema:
             if chain == Chain.FIRST:
                 first = json_schema
-                second = input_json_schema
+                second = old_json_schema
             else:
-                first = input_json_schema
+                first = old_json_schema
                 second = json_schema
 
             return replace(
