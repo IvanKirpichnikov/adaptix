@@ -1,6 +1,5 @@
-import collections.abc
 from abc import ABC
-from collections.abc import ByteString  # noqa: PYI057
+from collections import deque
 from collections.abc import (
     Collection,
     Iterable,
@@ -157,7 +156,7 @@ class FilledRetort(OperatingRetort, ABC):
         bound(VarTupleLSC(), IterableProvider(dump_as=tuple)),
         bound(set, IterableProvider(dump_as=list, json_schema_unique_items=True)),
         bound(frozenset, IterableProvider(dump_as=tuple, json_schema_unique_items=True)),
-        bound(collections.deque, IterableProvider(dump_as=list)),
+        bound(deque, IterableProvider(dump_as=list)),
         ConstantLengthTupleProvider(),
 
         LiteralProvider(),
