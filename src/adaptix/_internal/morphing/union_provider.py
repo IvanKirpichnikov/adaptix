@@ -14,16 +14,20 @@ from ..provider.location import GenericParamLoc
 from ..special_cases_optimization import as_is_stub
 from ..type_tools import BaseNormType, is_subclass_soft, strip_tags
 from ..type_tools.normalize_type import NoneType
+from ..utils import Omitted
 from .concrete_provider import none_loader
+from .json_schema.definitions import JSONSchema
+from .json_schema.request_cls import JSONSchemaRequest
+from .json_schema.schema_model import JSONSchemaType
 from .load_error import LoadError, TypeLoadError, UnionLoadError
-from .provider_template import DumperProvider, LoaderProvider
+from .provider_template import DumperProvider, JSONSchemaProvider, LoaderProvider
 from .request_cls import DebugTrailRequest, DumperRequest, LoaderRequest
 from .sentinel_provider import check_is_sentinel
 from .utils import try_normalize_type
 
 
 @for_predicate(Union)
-class UnionProvider(LoaderProvider, DumperProvider):
+class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
     def _get_loc_stacks_to_request(
         self,
         mediator: Mediator,
@@ -280,3 +284,36 @@ class UnionProvider(LoaderProvider, DumperProvider):
             return dumper_class_dispatcher.dispatch(type(data))(data)
 
         return union_dumper
+
+    def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+        norm = try_normalize_type(request.last_loc.type)
+        loc_stacks = self._get_loc_stacks_to_request(
+            mediator=mediator,
+            request=request,
+            norm=norm,
+            target="json schema",
+        )
+        json_schemas = mediator.mandatory_provide_by_iterable(
+            [
+                request.with_loc_stack(loc_stack) for loc_stack in loc_stacks
+            ],
+            lambda: "Cannot create json schema for union. Dumpers for some union cases cannot be created",
+        )
+        return self._join_json_schema(json_schemas)
+
+    def _join_json_schema(self, json_schemas: Sequence[JSONSchema]) -> JSONSchema:
+        types: list[JSONSchemaType] = []
+
+        for schema in json_schemas:
+            current_type = schema.type
+            if isinstance(current_type, JSONSchemaType):
+                types.append(current_type)
+            elif isinstance(current_type, Omitted):
+                continue
+            else:
+                types.extend(current_type)
+
+        any_of_schemas = [JSONSchema(type=type_) for type_ in types]
+
+        return JSONSchema(any_of=any_of_schemas)
+
