@@ -11,14 +11,7 @@ JSONNumeric = Union[int, float]
 JSONObject = Mapping[str, T]
 
 # Recursive normalized types are not supported now.
-JSONValue = Union[
-    JSONNumeric,
-    str,
-    bool,
-    None,
-    Sequence[Any],
-    JSONObject[Any],
-]
+JSONValue = Any
 
 
 class JSONSchemaType(Enum):

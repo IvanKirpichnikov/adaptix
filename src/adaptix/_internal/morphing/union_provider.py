@@ -46,7 +46,7 @@ class UnionProvider(LoaderProvider, DumperProvider):
         ]
         if not filtered_loc_stacks:
             raise CannotProvide(
-                f"Cannot create {target} for union consisting only of sentinel",
+                f"Cannot create {target} for union consisting only of sentinels",
                 is_terminal=True,
                 is_demonstrative=True,
             )
