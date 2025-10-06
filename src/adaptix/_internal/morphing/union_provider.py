@@ -286,6 +286,7 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
         return union_dumper
 
     def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
+        # TODO: Sync behavior with latest changes and handle corner cases # noqa: TD003
         norm = try_normalize_type(request.last_loc.type)
         loc_stacks = self._get_loc_stacks_to_request(
             mediator=mediator,
