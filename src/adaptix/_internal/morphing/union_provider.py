@@ -299,21 +299,4 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create json schema for union. Dumpers for some union cases cannot be created",
         )
-        return self._join_json_schema(json_schemas)
-
-    def _join_json_schema(self, json_schemas: Sequence[JSONSchema]) -> JSONSchema:
-        types: list[JSONSchemaType] = []
-
-        for schema in json_schemas:
-            current_type = schema.type
-            if isinstance(current_type, JSONSchemaType):
-                types.append(current_type)
-            elif isinstance(current_type, Omitted):
-                continue
-            else:
-                types.extend(current_type)
-
-        any_of_schemas = [JSONSchema(type=type_) for type_ in types]
-
-        return JSONSchema(any_of=any_of_schemas)
-
+        return JSONSchema(any_of=json_schemas)
