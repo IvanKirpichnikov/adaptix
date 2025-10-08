@@ -27,4 +27,4 @@ class RefSourceRequest(LocatedRequest[LocalRefSource], WithJSONSchemaContext):
 
 @dataclass(frozen=True)
 class InlineJSONSchemaRequest(LocatedRequest[bool], WithJSONSchemaContext):
-    pass
+    json_schema: JSONSchema

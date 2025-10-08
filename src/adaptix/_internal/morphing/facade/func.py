@@ -1,9 +1,10 @@
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Container, Iterable, Mapping, Sequence
 from dataclasses import fields
 from typing import Any, Optional, TypeVar, overload
 
 from ...common import TypeHint
 from ...definitions import Direction
+from ...morphing.model.crown_definitions import ExtraForbid
 from ...name_style import NameStyle
 from ...provider.loc_stack_filtering import P
 from ..json_schema.definitions import JSONSchema, RemoteRef, ResolvedJSONSchema
@@ -69,32 +70,37 @@ _json_schema_retort = Retort(
                 fld.name: f"${fld.name}"
                 for fld in fields(_JSONSchemaCore)
             },
+            extra_in=ExtraForbid(),
+            extra_out="extra_keywords",
         ),
         loader(P[JSONSchema].ref, _ref_loader),
     ],
 )
 
 DumpedJSONSchema = Mapping[str, Any]
+
 DIALECT_2020_12 = "https://json-schema.org/draft/2020-12/schema"
 
 
-def generate_json_schemas(
-    retort: AdornedRetort,
-    tps: Iterable[TypeHint],
-    *,
+def generate_json_schemas_namespace(
+    query: Iterable[tuple[AdornedRetort, TypeHint]],
     direction: Direction,
+    *,
     resolver: JSONSchemaResolver = _global_resolver,
     local_ref_prefix: str = "#/$defs/",
     with_dialect_uri: bool = True,
-) -> tuple[DumpedJSONSchema, Iterable[DumpedJSONSchema]]:
+    occupied_refs: Container[str] = (),
+) -> tuple[DumpedJSONSchema, Sequence[DumpedJSONSchema]]:
     ctx = JSONSchemaContext(direction=direction)
     defs, schemas = resolver.resolve(
-        (),
-        [retort.make_json_schema(tp, ctx) for tp in tps],
+        [retort.make_json_schema(tp, ctx) for retort, tp in query],
         local_ref_prefix=local_ref_prefix,
+        occupied_refs=occupied_refs,
     )
+
     dumped_defs = _json_schema_retort.dump(defs, dict[str, ResolvedJSONSchema])
-    dumped_schemas = _json_schema_retort.dump(schemas, Iterable[ResolvedJSONSchema])
+    dumped_schemas = _json_schema_retort.dump(schemas, Sequence[ResolvedJSONSchema])
+
     if with_dialect_uri:
         for dumped_schema in dumped_schemas:
             dumped_schema["$schema"] = DIALECT_2020_12
@@ -104,22 +110,41 @@ def generate_json_schemas(
 def generate_json_schema(
     retort: AdornedRetort,
     tp: TypeHint,
-    *,
     direction: Direction,
+    *,
     resolver: JSONSchemaResolver = _global_resolver,
     local_ref_prefix: str = "#/$defs/",
     with_dialect_uri: bool = True,
+    occupied_refs: Container[str] = (),
 ) -> DumpedJSONSchema:
-    defs, [schema] = generate_json_schemas(
-        retort,
-        [tp],
+    defs, schemas = generate_json_schemas_namespace(
+        [(retort, tp)],
         direction=direction,
         resolver=resolver,
         local_ref_prefix=local_ref_prefix,
         with_dialect_uri=with_dialect_uri,
+        occupied_refs=occupied_refs,
     )
-    return {**schema, "$defs": defs}
+    return {**schemas[0], "$defs": defs}
 
 
-def load_json_schema(data: JSONObject[Any]) -> JSONSchema:
-    return _json_schema_retort.load(data, JSONSchema)
+_lax_json_schema_retort = _json_schema_retort.extend(
+    recipe=[name_mapping(extra_in="extra_keywords")],
+)
+
+
+def load_json_schema(data: JSONObject[Any], *, error_on_extra: bool = True) -> JSONSchema:
+    """Creates a :class:`.JSONSchema` instance from a raw dictionary.
+    Field names and their possible values follow the JSON Schema specification.
+
+    The :class:`.JSONSchema` class fields comply with PEP8 and use enums.
+    This function makes it possible to define schemas in their original notation.
+
+    :param data: Dict after JSON parsing
+    :param error_on_extra: When set to True, the function raises an error if unexpected fields are encountered.
+        Otherwise, all unknown fields are stored in the ``extra_keywords`` field.
+    :return: JSONSchema instance
+    """
+    if error_on_extra:
+        return _json_schema_retort.load(data, JSONSchema)
+    return _lax_json_schema_retort.load(data, JSONSchema)

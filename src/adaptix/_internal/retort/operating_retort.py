@@ -98,13 +98,15 @@ class CoercerRequestErrorRepresentor(BaseRequestErrorRepresentor[CoercerRequest]
 class JSONSchemaMiddlewareProvider(LocatedRequestMethodsProvider):
     @method_handler
     def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
-        loc_stack = request.loc_stack
-        ctx = request.ctx
         json_schema = mediator.provide_from_next()
-        inline = mediator.mandatory_provide(InlineJSONSchemaRequest(loc_stack=loc_stack, ctx=ctx))
+        inline = mediator.mandatory_provide(
+            InlineJSONSchemaRequest(loc_stack=request.loc_stack, json_schema=json_schema, ctx=request.ctx),
+        )
         if inline:
             return json_schema
-        ref_source = mediator.mandatory_provide(RefSourceRequest(loc_stack=loc_stack, json_schema=json_schema, ctx=ctx))
+        ref_source = mediator.mandatory_provide(
+            RefSourceRequest(loc_stack=request.loc_stack, json_schema=json_schema, ctx=request.ctx),
+        )
         return JSONSchema(ref=ref_source)
 
 

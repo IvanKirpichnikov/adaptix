@@ -49,6 +49,10 @@ class LocStackChecker(ABC):
     @final
     def __and__(self, other: Any) -> "LocStackChecker":
         if isinstance(other, LocStackChecker):
+            if isinstance(self, AnyLocStackChecker):
+                return other
+            if isinstance(other, AnyLocStackChecker):
+                return self
             return AndLocStackChecker([self, other])
         return NotImplemented
 

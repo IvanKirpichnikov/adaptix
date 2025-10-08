@@ -1,6 +1,7 @@
 import importlib.util
 import sys
 from datetime import date
+from textwrap import dedent
 
 import git
 
@@ -46,6 +47,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinxcontrib.apidoc',
+    'sphinxcontrib.globalsubs',
     'sphinx_paramlinks',
     'myst_parser',
     'sphinxext.opengraph',
@@ -80,9 +82,15 @@ html_theme_options = {
     "dark_logo": "adaptix-with-title-dark.png",
     "light_css_variables": {
         "font-stack--monospace": 'Hack, SFMono-Regular, Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace',
+        "color-brand-primary": "#1c1c1c",
+        "color-sidebar-link-text": "#1c1c1c",
+        "color-sidebar-link-text--top-level": "#1c1c1c",
     },
     "dark_css_variables": {
         "font-stack--monospace": 'Hack, SFMono-Regular, Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace',
+        "color-brand-primary": "#ffffffcc",
+        "color-sidebar-link-text": "#ffffffcc",
+        "color-sidebar-link-text--top-level": "#ffffffcc",
     },
 }
 
@@ -105,7 +113,7 @@ apidoc_separate_modules = True
 # apidoc_toc_file = False
 apidoc_extra_args = ['--maxdepth', '1']
 
-python_maximum_signature_line_length = 90
+python_maximum_signature_line_length = 10
 
 paramlinks_hyperlink_param = 'name'
 
@@ -155,4 +163,22 @@ redirects = {
             'adaptix.struct_trail',
         ]
     },
+}
+
+
+global_substitutions = {
+    'adaptix': dedent(
+        """
+            .. raw:: html
+
+              <span style="font-family: monospace; font-size: 115%">adaptix</span>
+        """
+    ),
+    'Adaptix': dedent(
+        """
+            .. raw:: html
+
+              <span style="font-family: monospace; font-size: 115%">adaptix</span>
+        """
+    ),
 }

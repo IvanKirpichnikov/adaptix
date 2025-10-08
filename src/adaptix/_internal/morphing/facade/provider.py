@@ -39,9 +39,9 @@ from ..enum_provider import (
 )
 from ..json_schema.definitions import JSONSchema
 from ..json_schema.providers import (
+    ConstantInlineJSONSchemaProvider,
     ConstantJSONSchemaRefProvider,
     EraseJSONSchema,
-    InlineJSONSchemaProvider,
     JSONSchemaOverride,
     JSONSchemaOverrideProvider,
     KeepJSONSchema,
@@ -165,7 +165,7 @@ def json_schema(
         )
     if not isinstance(inline, Omitted):
         providers.append(
-            InlineJSONSchemaProvider(inline=inline),
+            ConstantInlineJSONSchemaProvider(inline=inline),
         )
     if not isinstance(ref, Omitted):
         providers.append(

@@ -8,7 +8,7 @@ myst-parser==4.0.1
 sphinxext-opengraph==0.10.0
 sphinx-better-subsection==0.2
 sphinx-reredirects==0.1.6
-
+sphinxcontrib-globalsubs==0.1.2
 sphinxcontrib-apidoc==0.6.0
 furo==2024.8.6
 

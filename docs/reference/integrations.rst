@@ -2,14 +2,14 @@
 Integrations
 *******************
 
-This article describes how adaptix works with other packages and systems.
+This article describes how |adaptix| works with other packages and systems.
 
 .. _supported-model-kinds:
 
 Supported model kinds
 =======================
 
-Models are classes that have a predefined set of fields. Adaptix processes models in the same, consistent way.
+Models are classes that have a predefined set of fields. |Adaptix| processes models in the same, consistent way.
 
 Models that are supported out of the box:
 
@@ -27,14 +27,14 @@ Arbitrary types also are supported to be loaded by introspection of ``__init__``
 but it can not be dumped.
 
 You do not need to do anything to enable support for models from a third-party library.
-Everything just works. But you can install adaptix with certain `extras <https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-extras>`__
+Everything just works. But you can install |adaptix| with certain `extras <https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-extras>`__
 to ensure version compatibility.
 
 Due to the way Python works with annotations, there is a `bug <https://github.com/python/cpython/issues/97727>`__,
 when field annotation of ``TypedDict`` is stringified or ``from __future__ import annotations`` is placed
 in file ``Required`` and ``NotRequired`` specifiers is ignored
 when ``required_keys`` and ``optional_keys`` is calculated.
-Adaptix takes this into account and processes it properly.
+|adaptix| takes this into account and processes it properly.
 
 
 Known peculiarities and limitations
@@ -125,8 +125,8 @@ them with native msgspec mechanism defined in Retort as shown in example.
 SQLAlchemy JSON
 =======================
 
-You can use adaptix to store structured JSON data inside a relational database.
-SQLAlchemy will automatically map JSON to your model using adaptix.
+You can use |adaptix| to store structured JSON data inside a relational database.
+SQLAlchemy will automatically map JSON to your model using |adaptix|.
 
 Let's see how you can define database schema.
 

@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 
 from adaptix import P, Retort, validator
-from adaptix.load_error import AggregateLoadError, LoadError, ValidationLoadError
+from adaptix.load_error import (
+    AggregateLoadError,
+    LoadError,
+    ValidationLoadError,
+)
 
 
 @dataclass
