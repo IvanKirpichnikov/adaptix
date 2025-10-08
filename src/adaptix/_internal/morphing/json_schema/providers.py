@@ -3,20 +3,26 @@ from typing import Union
 from ...provider.essential import CannotProvide, Mediator
 from ...provider.located_request import LocatedRequestMethodsProvider
 from ...provider.methods_provider import method_handler
-from ...utils import SingletonMeta
+from ...utils import Omitted, SingletonMeta
 from ..provider_template import JSONSchemaProvider
 from .definitions import JSONSchema, LocalRefSource
 from .patch import JSONSchemaPatch
 from .request_cls import InlineJSONSchemaRequest, JSONSchemaRequest, RefSourceRequest
 
 
-class InlineJSONSchemaProvider(LocatedRequestMethodsProvider):
+class ConstantInlineJSONSchemaProvider(LocatedRequestMethodsProvider):
     def __init__(self, *, inline: bool):
         self._inline = inline
 
     @method_handler
     def provide_inline_json_schema(self, mediator: Mediator, request: InlineJSONSchemaRequest) -> bool:
         return self._inline
+
+
+class BuiltinInlineJSONSchemaProvider(LocatedRequestMethodsProvider):
+    @method_handler
+    def provide_inline_json_schema(self, mediator: Mediator, request: InlineJSONSchemaRequest) -> bool:
+        return request.json_schema.properties == Omitted() and request.json_schema.prefix_items == Omitted()
 
 
 class JSONSchemaRefProvider(LocatedRequestMethodsProvider):

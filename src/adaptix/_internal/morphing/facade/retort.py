@@ -65,12 +65,11 @@ from ..generic_provider import (
 )
 from ..iterable_provider import IterableProvider
 from ..json_schema.definitions import JSONSchema
-from ..json_schema.providers import InlineJSONSchemaProvider, JSONSchemaRefProvider
+from ..json_schema.providers import BuiltinInlineJSONSchemaProvider, JSONSchemaRefProvider
 from ..json_schema.request_cls import JSONSchemaContext, JSONSchemaRequest
 from ..model.crown_definitions import ExtraSkip
 from ..model.dumper_provider import ModelDumperProvider
 from ..model.loader_provider import ModelLoaderProvider
-from ..model.request_filtering import AnyModelLSC
 from ..name_layout.component import BuiltinExtraMoveAndPoliciesMaker, BuiltinSievesMaker, BuiltinStructureMaker
 from ..name_layout.name_mapping import SkipPrivateFieldsNameMappingProvider
 from ..name_layout.provider import BuiltinNameLayoutProvider
@@ -205,8 +204,7 @@ class FilledRetort(OperatingRetort, ABC):
         ModelLoaderProvider(),
         ModelDumperProvider(),
 
-        bound(AnyModelLSC(), InlineJSONSchemaProvider(inline=False)),
-        InlineJSONSchemaProvider(inline=True),
+        BuiltinInlineJSONSchemaProvider(),
         JSONSchemaRefProvider(),
 
         BUILTIN_SHAPE_PROVIDER,
