@@ -51,7 +51,7 @@ class BaseEnumMappingGenerator(ABC):
 
 
 class ByNameEnumMappingGenerator(BaseEnumMappingGenerator):
-    __slots__ = ("_name_style", "_map")
+    __slots__ = ("_map", "_name_style")
 
     def __init__(
         self,
@@ -112,7 +112,7 @@ class BaseFlagProvider(LoaderProvider, DumperProvider, ABC):
 
 
 class EnumNameProvider(BaseEnumProvider):
-    __slots__ = ("_mapping_generator")
+    __slots__ = ("_mapping_generator",)
 
     """This provider represents enum members to the outside world by their name"""
     def __init__(self, mapping_generator: BaseEnumMappingGenerator):
@@ -319,10 +319,10 @@ def _extract_non_compound_cases_from_flag(enum: type[FlagT]) -> Sequence[FlagT]:
 
 class FlagByListProvider(BaseFlagProvider):
     __slots__ = (
-        "_mapping_generator",
-        "_allow_single_value",
-        "_allow_duplicates",
         "_allow_compound",
+        "_allow_duplicates",
+        "_allow_single_value",
+        "_mapping_generator",
     )
 
     def __init__(

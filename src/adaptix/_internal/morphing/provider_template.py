@@ -51,7 +51,7 @@ class MorphingProvider(
 
 
 class ProxyProvider(Provider, ABC):
-    __slots__ = ("_for_loader", "_for_dumper")
+    __slots__ = ("_for_dumper", "_for_loader")
 
     def __init__(self, *, for_loader: bool = True, for_dumper: bool = True):
         self._for_loader = for_loader

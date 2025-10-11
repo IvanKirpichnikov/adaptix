@@ -90,9 +90,9 @@ class SubclassCoercerProvider(NormTypeCoercerProvider):
 
 class MatchingCoercerProvider(CoercerProvider):
     __slots__ = (
-        "_src_lsc",
         "_dst_lsc",
         "_one_arg_coercer",
+        "_src_lsc",
     )
 
     def __init__(self, src_lsc: LocStackChecker, dst_lsc: LocStackChecker, coercer: OneArgCoercer):

@@ -226,7 +226,7 @@ AR = TypeVar("AR", bound="AdornedRetort")
 class AdornedRetort(OperatingRetort):
     """A retort implementing high-level user interface"""
 
-    __slots__ = ("_strict_coercion", "_debug_trail", "_loader_cache", "_dumper_cache")
+    __slots__ = ("_debug_trail", "_dumper_cache", "_loader_cache", "_strict_coercion")
 
     def __init__(
         self,

@@ -91,8 +91,8 @@ BUILTIN_SHAPE_PROVIDER = ConcatProvider(
 
 class PropertyExtender(MethodsProvider):
     __slots__ = (
-        "_output_fields",
         "_infer_types_for",
+        "_output_fields",
     )
 
     def __init__(
@@ -149,8 +149,8 @@ ShapeT = TypeVar("ShapeT", bound=Union[InputShape, OutputShape])
 
 class ShapeGenericResolver(Generic[ShapeT]):
     __slots__ = (
-        "_mediator",
         "_initial_request",
+        "_mediator",
     )
 
     def __init__(self, mediator: Mediator, initial_request: LocatedRequest[ShapeT]):
@@ -202,11 +202,11 @@ T = TypeVar("T")
 
 class SimilarShapeProvider(MethodsProvider):
     __slots__ = (
-        "_target",
-        "_prototype",
-        "_loc_stack_checker",
         "_for_input",
         "_for_output",
+        "_loc_stack_checker",
+        "_prototype",
+        "_target",
     )
 
     def __init__(self, target: TypeHint, prototype: TypeHint, *, for_input: bool = True, for_output: bool = True):

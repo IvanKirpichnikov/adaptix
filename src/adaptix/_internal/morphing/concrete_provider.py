@@ -417,12 +417,12 @@ T = TypeVar("T")
 
 class ScalarProvider(MorphingProvider, Generic[T]):
     __slots__ = (
-        "_target",
-        "_loc_stack_checker",
-        "_strict_coercion_loader",
-        "_lax_coercion_loader",
         "_dumper",
         "_json_schema",
+        "_lax_coercion_loader",
+        "_loc_stack_checker",
+        "_strict_coercion_loader",
+        "_target",
     )
 
     def __init__(

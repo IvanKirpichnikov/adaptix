@@ -57,16 +57,16 @@ from .crown_definitions import (
 
 class GenState:
     __slots__ = (
-        "namespace",
-        "debug_trail",
-        "field_id_to_path",
-        "path_to_suffix",
         "_last_path_idx",
         "_path",
-        "trail_element_to_name_idx",
+        "debug_trail",
         "error_handler_name",
         "error_handlers",
+        "field_id_to_path",
         "field_to_idx",
+        "namespace",
+        "path_to_suffix",
+        "trail_element_to_name_idx",
     )
 
     def __init__(self, namespace: CascadeNamespace, debug_trail: DebugTrail, error_handler_name: str):
@@ -151,7 +151,7 @@ class VarExpr(Expression):
 
 
 class AssignmentStatement(Statement):
-    __slots__ = ("var", "value")
+    __slots__ = ("value", "var")
 
     def __init__(self, var: VarExpr, value: Expression):
         self.var = var
@@ -168,7 +168,7 @@ class AssignmentStatement(Statement):
 
 
 class ErrorHandling(Statement):
-    __slots__ = ("_state", "_field")
+    __slots__ = ("_field", "_state")
 
     def __init__(self, state: GenState, field: Optional[OutputField]):
         self._state = state
@@ -197,7 +197,7 @@ class ErrorHandling(Statement):
 
 
 class FieldErrorCatching(Statement):
-    __slots__ = ("_state", "_field", "_stmt")
+    __slots__ = ("_field", "_state", "_stmt")
 
     def __init__(self, state: GenState, field: OutputField, stmt: Statement):
         self._state = state
@@ -235,12 +235,12 @@ class DictFragment(NamedTuple):
 
 class BuiltinModelDumperGen(ModelDumperGen):
     __slots__ = (
-        "_shape",
-        "_name_layout",
         "_debug_trail",
         "_fields_dumpers",
         "_id_to_field",
         "_model_identity",
+        "_name_layout",
+        "_shape",
     )
 
     def __init__(
@@ -876,10 +876,10 @@ class BuiltinModelDumperGen(ModelDumperGen):
 
 class ModelOutputJSONSchemaGen:
     __slots__ = (
-        "_shape",
-        "_field_json_schema_getter",
         "_field_default_dumper",
+        "_field_json_schema_getter",
         "_placeholder_dumper",
+        "_shape",
     )
 
     def __init__(

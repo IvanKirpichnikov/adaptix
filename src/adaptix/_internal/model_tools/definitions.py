@@ -61,7 +61,7 @@ class Accessor(Hashable, ABC):
 
 
 class DescriptorAccessor(Accessor, ABC):
-    __slots__ = ("_attr_name", "_access_error")
+    __slots__ = ("_access_error", "_attr_name")
 
     def __init__(self, attr_name: str, access_error: Optional[Catchable]):
         self._attr_name = attr_name
@@ -96,7 +96,7 @@ class DescriptorAccessor(Accessor, ABC):
 
 
 class ItemAccessor(Accessor):
-    __slots__ = ("key", "_access_error", "_path_element")
+    __slots__ = ("_access_error", "_path_element", "key")
 
     def __init__(self, key: Union[int, str], access_error: Optional[Catchable], path_element: TrailElement):
         self.key = key

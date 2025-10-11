@@ -104,7 +104,7 @@ class _BasicNormType(BaseNormType, ABC):
 
 
 class _NormType(_BasicNormType):
-    __slots__ = ("_source", "_origin")
+    __slots__ = ("_origin", "_source")
 
     def __init__(self, origin: TypeHint, args: VarTuple[Any], *, source: TypeHint):
         self._origin = origin
@@ -261,7 +261,7 @@ class _BaseNormTypeVarLike(BaseNormType):
 
 
 class NormTV(_BaseNormTypeVarLike):
-    __slots__ = ("_limit", "_variance", "_default")
+    __slots__ = ("_default", "_limit", "_variance")
 
     def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[BaseNormType]):
         super().__init__(var, source=source)
@@ -302,7 +302,7 @@ class NormTVTuple(_BaseNormTypeVarLike):
 
 
 class NormParamSpec(_BaseNormTypeVarLike):
-    __slots__ = ("_limit", "_default")
+    __slots__ = ("_default", "_limit")
 
     def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[tuple[BaseNormType, ...]]):
         super().__init__(var, source=source)
@@ -513,7 +513,7 @@ TN = TypeVar("TN", bound="TypeNormalizer")
 
 
 class TypeNormalizer:
-    __slots__ = ("implicit_params_getter", "_namespace")
+    __slots__ = ("_namespace", "implicit_params_getter")
 
     def __init__(self, implicit_params_getter: ImplicitParamsGetter):
         self.implicit_params_getter = implicit_params_getter

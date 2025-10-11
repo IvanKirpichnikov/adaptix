@@ -24,9 +24,9 @@ N = TypeVar("N")
 
 class TreeRenderer(Generic[N]):
     __slots__ = (
+        "_children_getter",
         "_config",
         "_node_renderer",
-        "_children_getter",
     )
 
     def __init__(

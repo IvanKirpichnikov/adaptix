@@ -23,10 +23,10 @@ T = TypeVar("T")
 
 class BuiltinNameLayoutProvider(MethodsProvider):
     __slots__ = (
-        "_structure_maker",
-        "_sieves_maker",
-        "_extra_policies_maker",
         "_extra_move_maker",
+        "_extra_policies_maker",
+        "_sieves_maker",
+        "_structure_maker",
     )
 
     def __init__(

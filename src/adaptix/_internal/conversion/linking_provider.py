@@ -43,9 +43,9 @@ class DefaultLinkingProvider(LinkingProvider):
 
 class MatchingLinkingProvider(LinkingProvider):
     __slots__ = (
-        "_src_lsc",
         "_dst_lsc",
         "_one_arg_coercer",
+        "_src_lsc",
     )
 
     def __init__(self, src_lsc: LocStackChecker, dst_lsc: LocStackChecker, coercer: Optional[OneArgCoercer]):
@@ -71,8 +71,8 @@ class MatchingLinkingProvider(LinkingProvider):
 
 class ConstantLinkingProvider(LinkingProvider):
     __slots__ = (
-        "_dst_lsc",
         "_default",
+        "_dst_lsc",
     )
 
     def __init__(self, dst_lsc: LocStackChecker, default: Union[DefaultValue, DefaultFactory]):
@@ -90,8 +90,8 @@ T = TypeVar("T")
 
 class FunctionLinkingProvider(LinkingProvider):
     __slots__ = (
-        "_func",
         "_dst_lsc",
+        "_func",
         "_input_shape",
     )
 

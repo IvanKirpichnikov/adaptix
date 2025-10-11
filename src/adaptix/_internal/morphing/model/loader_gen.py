@@ -46,7 +46,7 @@ from .crown_definitions import (
 
 
 class Namer:
-    __slots__ = ("debug_trail", "path_to_suffix", "_path")
+    __slots__ = ("_path", "debug_trail", "path_to_suffix")
 
     def __init__(
         self,
@@ -104,13 +104,13 @@ class Namer:
 
 class GenState(Namer):
     __slots__ = (
-        "builder",
-        "namespace",
-        "_name_to_field",
-        "field_id_to_path",
-        "_last_path_idx",
-        "_parent_path",
         "_crown_stack",
+        "_last_path_idx",
+        "_name_to_field",
+        "_parent_path",
+        "builder",
+        "field_id_to_path",
+        "namespace",
         "type_checked_type_paths",
     )
 
@@ -191,16 +191,16 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
     """
 
     __slots__ = (
-        "_shape",
-        "_name_layout",
         "_debug_trail",
-        "_strict_coercion",
-        "_id_to_field",
         "_field_id_to_param",
         "_field_loaders",
-        "_skipped_fields",
+        "_id_to_field",
         "_model_identity",
+        "_name_layout",
         "_props",
+        "_shape",
+        "_skipped_fields",
+        "_strict_coercion",
     )
 
     def __init__(
@@ -821,9 +821,9 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
 
 class ModelInputJSONSchemaGen:
     __slots__ = (
-        "_shape",
         "_field_name_to_json_schema",
         "_field_name_to_json_schema_of_default",
+        "_shape",
     )
 
     def __init__(

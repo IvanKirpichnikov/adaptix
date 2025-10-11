@@ -33,7 +33,7 @@ class BaseRetort(Cloneable, metaclass=RetortMeta):
     recipe: ClassVar[Iterable[Provider]] = []
     _full_class_recipe: ClassVar[VarTuple[Provider]]
 
-    __slots__ = ("_instance_recipe", "_full_recipe")
+    __slots__ = ("_full_recipe", "_instance_recipe")
 
     def __init_subclass__(cls, **kwargs):
         # noinspection PyProtectedMember

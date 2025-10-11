@@ -7,7 +7,7 @@ from .resolver import LocalRefSourceGroup, RefMangler
 
 
 class IndexRefMangler(RefMangler):
-    __slots__ = ("_start", "_separator")
+    __slots__ = ("_separator", "_start")
 
     def __init__(self, start: int = 1, separator: str = "-"):
         self._start = start
