@@ -34,6 +34,8 @@ BroachingPlan = Union[
 
 
 class GenState:
+    __slots__ = ("_name_sanitizer", "_namespace", "_prefix_counter")
+
     def __init__(self, namespace: CascadeNamespace, name_sanitizer: NameSanitizer):
         self._namespace = namespace
         self._name_sanitizer = name_sanitizer
@@ -58,12 +60,16 @@ class GenState:
 
 
 class BroachingCodeGenerator(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def produce_code(self, signature: Signature, closure_name: str) -> tuple[str, Mapping[str, object]]:
         ...
 
 
 class BuiltinBroachingCodeGenerator(BroachingCodeGenerator):
+    __slots__ = ("_name_sanitizer", "_plan")
+
     def __init__(self, plan: BroachingPlan, name_sanitizer: NameSanitizer):
         self._plan = plan
         self._name_sanitizer = name_sanitizer

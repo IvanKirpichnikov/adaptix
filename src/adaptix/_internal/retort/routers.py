@@ -76,6 +76,8 @@ class LocatedRequestRouter(RequestRouter[LocatedRequest]):
 
 
 class ExactOriginCombiner:
+    __slots__ = ("_combo",)
+
     def __init__(self) -> None:
         self._combo: OriginToHandler = {}
 

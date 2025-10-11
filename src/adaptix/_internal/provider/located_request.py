@@ -42,6 +42,8 @@ class LocatedRequestChecker(RequestChecker[LocatedRequest]):
 
 
 class LocatedRequestMethodsProvider(MethodsProvider):
+    __slots__ = ()
+
     _loc_stack_checker: LocStackChecker = AnyLocStackChecker()
 
     @classmethod
@@ -67,6 +69,8 @@ def for_predicate(pred: Pred):
 
 
 class LocStackBoundingProvider(Provider):
+    __slots__ = ("_loc_stack_checker", "_provider")
+
     def __init__(self, loc_stack_checker: LocStackChecker, provider: Provider):
         self._loc_stack_checker = loc_stack_checker
         self._provider = provider

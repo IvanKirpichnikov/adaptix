@@ -23,6 +23,8 @@ T = TypeVar("T")
 
 
 class IterableProvider(MorphingProvider):
+    __slots__ = ("_dump_as", "_json_schema_unique_items")
+
     def __init__(self, *, dump_as: Callable[[Iterable[T]], Iterable[T]], json_schema_unique_items: bool = False):
         self._dump_as = dump_as
         self._json_schema_unique_items = json_schema_unique_items

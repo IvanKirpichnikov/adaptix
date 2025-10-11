@@ -41,6 +41,8 @@ T = TypeVar("T")
 
 
 class NativePydanticProvider(LoaderProvider, DumperProvider):
+    __slots__ = ("_config", "_validate_python_params", "_to_python_params")
+
     def __init__(
         self,
         config: Optional["ConfigDict"],

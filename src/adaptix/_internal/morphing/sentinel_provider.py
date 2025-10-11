@@ -16,6 +16,8 @@ class IsSentinelRequest(LocatedRequest[bool]):
 
 
 class SentinelProvider(MorphingProvider):
+    __slots__ = ()
+
     def _raise_error(self, target: str) -> NoReturn:
         raise CannotProvide(
             f"Sentinels are not meant to be represented externally, so they do not have {target}."

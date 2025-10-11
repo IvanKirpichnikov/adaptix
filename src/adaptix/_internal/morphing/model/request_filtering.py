@@ -4,6 +4,8 @@ from ...provider.shape_provider import InputShapeRequest, OutputShapeRequest
 
 
 class AnyModelLSC(LocStackChecker):
+    __slots__ = ()
+
     def check_loc_stack(self, mediator: DirectMediator, loc_stack: LocStack) -> bool:
         try:
             mediator.provide(InputShapeRequest(loc_stack=loc_stack))

@@ -23,6 +23,8 @@ from .request_cls import (
 
 
 class DefaultLinkingProvider(LinkingProvider):
+    __slots__ = ()
+
     def _provide_linking(self, mediator: Mediator, request: LinkingRequest) -> LinkingResult:
         target_field_id = request.destination.last.cast(FieldLoc).field_id
 
@@ -40,6 +42,12 @@ class DefaultLinkingProvider(LinkingProvider):
 
 
 class MatchingLinkingProvider(LinkingProvider):
+    __slots__ = (
+        "_src_lsc",
+        "_dst_lsc",
+        "_one_arg_coercer",
+    )
+
     def __init__(self, src_lsc: LocStackChecker, dst_lsc: LocStackChecker, coercer: Optional[OneArgCoercer]):
         self._src_lsc = src_lsc
         self._dst_lsc = dst_lsc
@@ -62,6 +70,11 @@ class MatchingLinkingProvider(LinkingProvider):
 
 
 class ConstantLinkingProvider(LinkingProvider):
+    __slots__ = (
+        "_dst_lsc",
+        "_default",
+    )
+
     def __init__(self, dst_lsc: LocStackChecker, default: Union[DefaultValue, DefaultFactory]):
         self._dst_lsc = dst_lsc
         self._default = default
@@ -76,6 +89,12 @@ T = TypeVar("T")
 
 
 class FunctionLinkingProvider(LinkingProvider):
+    __slots__ = (
+        "_func",
+        "_dst_lsc",
+        "_input_shape",
+    )
+
     def __init__(self, func: Callable, dst_lsc: LocStackChecker):
         self._func = func
         self._dst_lsc = dst_lsc

@@ -45,6 +45,8 @@ def _infer_request_cls(func) -> type[Request]:
 
 
 class MethodsProvider(Provider):
+    __slots__ = ()
+
     _mp_cls_request_to_method_name: ClassVar[Mapping[type[Request], str]] = {}
 
     def __init_subclass__(cls, **kwargs):

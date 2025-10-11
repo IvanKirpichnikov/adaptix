@@ -42,6 +42,8 @@ Default = Union[NoDefault, DefaultValue[Any], DefaultFactory[Any], DefaultFactor
 
 
 class Accessor(Hashable, ABC):
+    __slots__ = ()
+
     @property
     @abstractmethod
     def getter(self) -> Callable[[Any], Any]:
@@ -59,6 +61,8 @@ class Accessor(Hashable, ABC):
 
 
 class DescriptorAccessor(Accessor, ABC):
+    __slots__ = ("_attr_name", "_access_error")
+
     def __init__(self, attr_name: str, access_error: Optional[Catchable]):
         self._attr_name = attr_name
         self._access_error = access_error
@@ -92,6 +96,8 @@ class DescriptorAccessor(Accessor, ABC):
 
 
 class ItemAccessor(Accessor):
+    __slots__ = ("key", "_access_error", "_path_element")
+
     def __init__(self, key: Union[int, str], access_error: Optional[Catchable], path_element: TrailElement):
         self.key = key
         self._access_error = access_error

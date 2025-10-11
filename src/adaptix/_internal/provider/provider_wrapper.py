@@ -9,6 +9,8 @@ T = TypeVar("T")
 
 
 class ConcatProvider(Provider):
+    __slots__ = ("_providers",)
+
     def __init__(self, *providers: Provider):
         self._providers = providers
 
@@ -34,6 +36,8 @@ ResponseT = TypeVar("ResponseT")
 
 
 class ChainingProvider(Provider):
+    __slots__ = ("_chain", "_provider")
+
     def __init__(self, chain: Chain, provider: Provider):
         self._chain = chain
         self._provider = provider

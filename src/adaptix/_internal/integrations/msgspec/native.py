@@ -29,6 +29,8 @@ class ToBuiltinsParams(TypedDict, total=False):
 
 
 class NativeMsgspecProvider(LoaderProvider, DumperProvider):
+    __slots__ = ("_convert_params", "_to_builtins_params")
+
     def __init__(
         self,
         convert_params: ConvertParams,

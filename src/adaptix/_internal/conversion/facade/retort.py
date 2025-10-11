@@ -33,6 +33,8 @@ from .provider import forbid_unlinked_optional
 
 
 class FilledConversionRetort(OperatingRetort):
+    __slots__ = ()
+
     recipe = [
         BUILTIN_SHAPE_PROVIDER,
 
@@ -63,6 +65,8 @@ CallableT = TypeVar("CallableT", bound=Callable)
 
 
 class AdornedConversionRetort(OperatingRetort):
+    __slots__ = ("_simple_converter_cache",)
+
     def _calculate_derived(self) -> None:
         super()._calculate_derived()
         self._simple_converter_cache: dict[tuple[TypeHint, TypeHint, Optional[str]], Converter] = {}
@@ -203,4 +207,4 @@ class AdornedConversionRetort(OperatingRetort):
 
 
 class ConversionRetort(FilledConversionRetort, AdornedConversionRetort):
-    pass
+    __slots__ = ()

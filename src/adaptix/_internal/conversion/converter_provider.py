@@ -19,6 +19,8 @@ from .provider_template import ConverterProvider
 
 
 class BuiltinConverterProvider(ConverterProvider):
+    __slots__ = ("_name_sanitizer",)
+
     def __init__(self, *, name_sanitizer: NameSanitizer = BuiltinNameSanitizer()):
         self._name_sanitizer = name_sanitizer
 

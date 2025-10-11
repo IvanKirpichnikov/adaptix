@@ -12,6 +12,8 @@ ResponseT = TypeVar("ResponseT")
 
 
 class RequestBus(ABC, Generic[RequestT, ResponseT]):
+    __slots__ = ()
+
     @abstractmethod
     def send(self, request: RequestT) -> ResponseT:
         pass

@@ -13,6 +13,8 @@ C = TypeVar("C", bound="Cloneable")
 
 
 class Cloneable(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def _calculate_derived(self) -> None:
         return
@@ -28,6 +30,8 @@ class Cloneable(ABC):
 
 
 class ForbiddingDescriptor:
+    __slots__ = ("_name",)
+
     def __init__(self):
         self._name = None
 
@@ -99,6 +103,8 @@ else:
 
 
 class Omitted(metaclass=SingletonMeta):
+    __slots__ = ()
+
     def __bool__(self):
         raise TypeError("Omitted() cannot be used in boolean context")
 
@@ -110,6 +116,8 @@ ComparableSeqT = TypeVar("ComparableSeqT", bound="ComparableSequence")
 
 
 class ComparableSequence(Protocol[T]):
+    __slots__ = ()
+
     def __lt__(self, __other: T, /) -> bool:
         ...
 

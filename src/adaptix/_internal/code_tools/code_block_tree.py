@@ -7,6 +7,8 @@ from textwrap import dedent
 
 
 class TextSliceWriter(AbstractContextManager[None]):
+    __slots__ = ()
+
     @abstractmethod
     def write(self, text: str, /) -> None:
         ...
@@ -34,6 +36,8 @@ class LinesWriter(TextSliceWriter):
 
 
 class OneLineWriter(LinesWriter):
+    __slots__ = ()
+
     def make_string(self) -> str:
         return "".join(self._slices)
 
@@ -53,16 +57,20 @@ def at_multi_line(writer: TextSliceWriter):
 
 
 class Statement(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def write_lines(self, writer: TextSliceWriter) -> None:
         ...
 
 
 class Expression(Statement, ABC):
-    pass
+    __slots__ = ()
 
 
 class ConcatStatements(Statement):
+    __slots__ = ("_elements",)
+
     def __init__(self, elements: Iterable[Statement]):
         self._elements = elements
 
@@ -76,6 +84,8 @@ def statements(*elements: Statement) -> ConcatStatements:
 
 
 class RawStatement(Statement):
+    __slots__ = ("_text",)
+
     def __init__(self, text: str):
         self._text = text
 
@@ -84,10 +94,12 @@ class RawStatement(Statement):
 
 
 class RawExpr(RawStatement, Expression):
-    pass
+    __slots__ = ()
 
 
 class _TemplatedStatement(Statement):
+    __slots__ = ("_name_to_stmt", "_template")
+
     def __init__(self, template: str, **stmts: Statement):
         self._template = template
         self._name_to_stmt = stmts
@@ -114,22 +126,30 @@ class _TemplatedStatement(Statement):
 
 
 class CodeBlock(_TemplatedStatement):
+    __slots__ = ()
+
     EMPTY_LINE: Statement = RawStatement("")
     PASS: Statement = RawStatement("pass")
 
 
 class CodeExpr(_TemplatedStatement, Expression):
+    __slots__ = ()
+
     def __init__(self, template: str, **exprs: Expression):
         super().__init__(template, **exprs)
 
 
 class DictItem(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def write_fragment(self, writer: TextSliceWriter) -> None:
         ...
 
 
 class MappingUnpack(DictItem):
+    __slots__ = ("_expr",)
+
     def __init__(self, expr: Expression):
         self._expr = expr
 
@@ -141,6 +161,8 @@ class MappingUnpack(DictItem):
 
 
 class DictKeyValue(DictItem):
+    __slots__ = ("_key", "_value")
+
     def __init__(self, key: Expression, value: Expression):
         self._key = key
         self._value = value
@@ -155,6 +177,8 @@ class DictKeyValue(DictItem):
 
 
 class DictLiteral(Expression):
+    __slots__ = ("_items",)
+
     def __init__(self, items: Sequence[DictItem]):
         self._items = items
 
@@ -172,6 +196,8 @@ class DictLiteral(Expression):
 
 
 class ListLiteral(Expression):
+    __slots__ = ("_items",)
+
     def __init__(self, items: Sequence[Expression]):
         self._items = items
 
@@ -187,6 +213,8 @@ class ListLiteral(Expression):
 
 
 class StringLiteral(Expression):
+    __slots__ = ("_text",)
+
     def __init__(self, text: str):
         self._text = text
 

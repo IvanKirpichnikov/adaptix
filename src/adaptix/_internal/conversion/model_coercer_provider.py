@@ -42,6 +42,8 @@ from .provider_template import CoercerProvider
 
 
 class ModelCoercerProvider(CoercerProvider):
+    __slots__ = ("_name_sanitizer",)
+
     def __init__(self, *, name_sanitizer: NameSanitizer = BuiltinNameSanitizer()):
         self._name_sanitizer = name_sanitizer
 

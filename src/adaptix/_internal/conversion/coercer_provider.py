@@ -17,6 +17,8 @@ from .request_cls import CoercerRequest
 
 
 class NormTypeCoercerProvider(CoercerProvider, ABC):
+    __slots__ = ()
+
     @final
     def _provide_coercer(self, mediator: Mediator, request: CoercerRequest) -> Coercer:
         norm_src = try_normalize_type(request.src.last.type)
@@ -35,6 +37,8 @@ class NormTypeCoercerProvider(CoercerProvider, ABC):
 
 
 class SameTypeCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,
@@ -48,6 +52,8 @@ class SameTypeCoercerProvider(NormTypeCoercerProvider):
 
 
 class DstAnyCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,
@@ -61,6 +67,8 @@ class DstAnyCoercerProvider(NormTypeCoercerProvider):
 
 
 class SubclassCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,
@@ -81,6 +89,12 @@ class SubclassCoercerProvider(NormTypeCoercerProvider):
 
 
 class MatchingCoercerProvider(CoercerProvider):
+    __slots__ = (
+        "_src_lsc",
+        "_dst_lsc",
+        "_one_arg_coercer",
+    )
+
     def __init__(self, src_lsc: LocStackChecker, dst_lsc: LocStackChecker, coercer: OneArgCoercer):
         self._src_lsc = src_lsc
         self._dst_lsc = dst_lsc
@@ -99,6 +113,8 @@ class MatchingCoercerProvider(CoercerProvider):
 
 
 class UnionSubcaseCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,
@@ -120,6 +136,8 @@ class UnionSubcaseCoercerProvider(NormTypeCoercerProvider):
 
 
 class OptionalCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,
@@ -157,6 +175,8 @@ class OptionalCoercerProvider(NormTypeCoercerProvider):
 
 
 class TypeHintTagsUnwrappingProvider(CoercerProvider):
+    __slots__ = ()
+
     def _unwrap_type(self, tp: TypeHint) -> TypeHint:
         try:
             norm = normalize_type(tp)
@@ -181,6 +201,8 @@ class TypeHintTagsUnwrappingProvider(CoercerProvider):
 
 
 class ForwardRefEvaluatingProvider(CoercerProvider):
+    __slots__ = ()
+
     def _replace_forward_ref(self, tp: TypeHint) -> TypeHint:
         if not isinstance(tp, ForwardRef):
             return tp
@@ -207,6 +229,8 @@ class ForwardRefEvaluatingProvider(CoercerProvider):
 
 
 class IterableCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     CONCRETE_ORIGINS = {set, list, tuple, deque}
     ABC_TO_IMPL = {
         collections.abc.Iterable: tuple,
@@ -259,6 +283,8 @@ class IterableCoercerProvider(NormTypeCoercerProvider):
 
 
 class DictCoercerProvider(NormTypeCoercerProvider):
+    __slots__ = ()
+
     def _provide_coercer_norm_types(
         self,
         mediator: Mediator,

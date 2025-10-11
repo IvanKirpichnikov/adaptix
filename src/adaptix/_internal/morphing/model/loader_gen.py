@@ -46,6 +46,8 @@ from .crown_definitions import (
 
 
 class Namer:
+    __slots__ = ("debug_trail", "path_to_suffix", "_path")
+
     def __init__(
         self,
         debug_trail: DebugTrail,
@@ -101,6 +103,17 @@ class Namer:
 
 
 class GenState(Namer):
+    __slots__ = (
+        "builder",
+        "namespace",
+        "_name_to_field",
+        "field_id_to_path",
+        "_last_path_idx",
+        "_parent_path",
+        "_crown_stack",
+        "type_checked_type_paths",
+    )
+
     path_to_suffix: dict[CrownPath, str]
 
     def __init__(
@@ -176,6 +189,19 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
     """BuiltinModelLoaderGen generates code that extracts raw values from input data,
     calls loaders and stores results to variables.
     """
+
+    __slots__ = (
+        "_shape",
+        "_name_layout",
+        "_debug_trail",
+        "_strict_coercion",
+        "_id_to_field",
+        "_field_id_to_param",
+        "_field_loaders",
+        "_skipped_fields",
+        "_model_identity",
+        "_props",
+    )
 
     def __init__(
         self,
@@ -794,6 +820,12 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
 
 
 class ModelInputJSONSchemaGen:
+    __slots__ = (
+        "_shape",
+        "_field_name_to_json_schema",
+        "_field_name_to_json_schema_of_default",
+    )
+
     def __init__(
         self,
         shape: InputShape,

@@ -95,6 +95,8 @@ if HAS_BYTE_STRING:
 class FilledRetort(OperatingRetort, ABC):
     """A retort contains builtin providers"""
 
+    __slots__ = ()
+
     recipe = [
         NoneProvider(),
 
@@ -223,6 +225,8 @@ AR = TypeVar("AR", bound="AdornedRetort")
 
 class AdornedRetort(OperatingRetort):
     """A retort implementing high-level user interface"""
+
+    __slots__ = ("_strict_coercion", "_debug_trail", "_loader_cache", "_dumper_cache")
 
     def __init__(
         self,
@@ -360,4 +364,4 @@ class AdornedRetort(OperatingRetort):
 
 
 class Retort(FilledRetort, AdornedRetort):
-    pass
+    __slots__ = ()

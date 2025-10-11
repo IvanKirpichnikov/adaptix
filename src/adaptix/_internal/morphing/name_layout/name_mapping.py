@@ -47,6 +47,8 @@ def resolve_map_result(generated_key: Key, map_result: MapResult) -> Optional[Ke
 
 
 class NameMappingProvider(MethodsProvider, ABC):
+    __slots__ = ()
+
     @abstractmethod
     @method_handler
     def provide_name_mapping(self, mediator: Mediator, request: NameMappingRequest) -> Optional[KeyPath]:
@@ -54,6 +56,8 @@ class NameMappingProvider(MethodsProvider, ABC):
 
 
 class DictNameMappingProvider(NameMappingProvider):
+    __slots__ = ("_name_map",)
+
     def __init__(self, name_map: Mapping[str, MapResult]):
         self._name_map = name_map
         self._validate()
@@ -75,6 +79,8 @@ class DictNameMappingProvider(NameMappingProvider):
 
 
 class ConstNameMappingProvider(NameMappingProvider):
+    __slots__ = ("_result",)
+
     def __init__(self, result: MapResult):
         self._result = result
 
@@ -83,6 +89,8 @@ class ConstNameMappingProvider(NameMappingProvider):
 
 
 class FuncNameMappingProvider(NameMappingProvider):
+    __slots__ = ("_func",)
+
     def __init__(self, func: Callable[[BaseShape, BaseField], MapResult]):
         self._func = func
 
@@ -92,6 +100,8 @@ class FuncNameMappingProvider(NameMappingProvider):
 
 
 class SkipPrivateFieldsNameMappingProvider(NameMappingProvider):
+    __slots__ = ()
+
     def provide_name_mapping(self, mediator: Mediator, request: NameMappingRequest) -> Optional[KeyPath]:
         if not isinstance(request.field, OutputField):
             raise CannotProvide

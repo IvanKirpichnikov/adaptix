@@ -7,6 +7,8 @@ from .resolver import LocalRefSourceGroup, RefMangler
 
 
 class IndexRefMangler(RefMangler):
+    __slots__ = ("_start", "_separator")
+
     def __init__(self, start: int = 1, separator: str = "-"):
         self._start = start
         self._separator = separator
@@ -34,6 +36,8 @@ class IndexRefMangler(RefMangler):
 
 
 class QualnameRefMangler(RefMangler):
+    __slots__ = ()
+
     def mangle_refs(
         self,
         occupied_refs: Container[str],
@@ -56,6 +60,8 @@ class QualnameRefMangler(RefMangler):
 
 
 class CompoundRefMangler(RefMangler):
+    __slots__ = ("_base", "_wrapper")
+
     def __init__(self, base: RefMangler, wrapper: RefMangler):
         self._base = base
         self._wrapper = wrapper

@@ -8,6 +8,8 @@ from .request_cls import CoercerRequest, ConverterRequest, LinkingRequest, Linki
 
 
 class ConverterProvider(MethodsProvider, ABC):
+    __slots__ = ()
+
     @final
     @method_handler
     def _outer_provide_converter(self, mediator: Mediator, request: ConverterRequest):
@@ -19,6 +21,8 @@ class ConverterProvider(MethodsProvider, ABC):
 
 
 class CoercerProvider(MethodsProvider, ABC):
+    __slots__ = ()
+
     @method_handler
     @abstractmethod
     def _provide_coercer(self, mediator: Mediator, request: CoercerRequest) -> Coercer:
@@ -26,6 +30,8 @@ class CoercerProvider(MethodsProvider, ABC):
 
 
 class LinkingProvider(MethodsProvider, ABC):
+    __slots__ = ()
+
     @method_handler
     @abstractmethod
     def _provide_linking(self, mediator: Mediator, request: LinkingRequest) -> LinkingResult:

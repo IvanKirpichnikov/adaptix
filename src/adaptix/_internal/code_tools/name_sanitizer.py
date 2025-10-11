@@ -4,12 +4,16 @@ from abc import ABC, abstractmethod
 
 
 class NameSanitizer(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def sanitize(self, name: str) -> str:
         ...
 
 
 class BuiltinNameSanitizer(NameSanitizer):
+    __slots__ = ()
+
     _BAD_CHARS = re.compile(r"\W")
     _TRANSLATE_MAP = str.maketrans({".": "_", "[": "_"})
 

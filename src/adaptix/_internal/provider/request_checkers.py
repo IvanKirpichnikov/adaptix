@@ -2,6 +2,8 @@ from adaptix._internal.provider.essential import DirectMediator, Request, Reques
 
 
 class AlwaysTrueRequestChecker(RequestChecker):
+    __slots__ = ()
+
     def check_request(self, mediator: DirectMediator, request: Request, /) -> bool:
         return True
 

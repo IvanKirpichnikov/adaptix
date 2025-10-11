@@ -10,6 +10,8 @@ from .code_builder import CodeBuilder
 class ClosureCompiler(ABC):
     """Abstract class compiling closures"""
 
+    __slots__ = ()
+
     @abstractmethod
     def compile(
         self,
@@ -45,6 +47,8 @@ _counter = ConcurrentCounter()
 
 
 class BasicClosureCompiler(ClosureCompiler):
+    __slots__ = ()
+
     def _make_source_builder(self, builder: CodeBuilder) -> CodeBuilder:
         main_builder = CodeBuilder()
 

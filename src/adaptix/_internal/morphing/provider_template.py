@@ -15,6 +15,8 @@ from .request_cls import DumperRequest, LoaderRequest
 
 
 class LoaderProvider(LocatedRequestMethodsProvider, ABC):
+    __slots__ = ()
+
     @method_handler
     @abstractmethod
     def provide_loader(self, mediator: Mediator[Loader], request: LoaderRequest) -> Loader:
@@ -22,6 +24,8 @@ class LoaderProvider(LocatedRequestMethodsProvider, ABC):
 
 
 class DumperProvider(LocatedRequestMethodsProvider, ABC):
+    __slots__ = ()
+
     @method_handler
     @abstractmethod
     def provide_dumper(self, mediator: Mediator[Dumper], request: DumperRequest) -> Dumper:
@@ -29,6 +33,8 @@ class DumperProvider(LocatedRequestMethodsProvider, ABC):
 
 
 class JSONSchemaProvider(LocatedRequestMethodsProvider, ABC):
+    __slots__ = ()
+
     @method_handler
     @abstractmethod
     def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
@@ -41,10 +47,12 @@ class MorphingProvider(
     JSONSchemaProvider,
     ABC,
 ):
-    pass
+    __slots__ = ()
 
 
 class ProxyProvider(Provider, ABC):
+    __slots__ = ("_for_loader", "_for_dumper")
+
     def __init__(self, *, for_loader: bool = True, for_dumper: bool = True):
         self._for_loader = for_loader
         self._for_dumper = for_dumper
@@ -85,6 +93,8 @@ class ProxyProvider(Provider, ABC):
 
 
 class ABCProxy(ProxyProvider):
+    __slots__ = ("_abstract", "_impl")
+
     def __init__(self, abstract: TypeHint, impl: TypeHint, *, for_loader: bool = True, for_dumper: bool = True):
         self._abstract = normalize_type(abstract).origin
         self._impl = impl
@@ -101,6 +111,8 @@ class ABCProxy(ProxyProvider):
 
 
 class ToVarTupleProxy(ABCProxy):
+    __slots__ = ()
+
     def __init__(self, abstract: TypeHint, *, for_loader: bool = True, for_dumper: bool = True):
         super().__init__(abstract, tuple, for_loader=for_loader, for_dumper=for_dumper)
 
@@ -109,5 +121,7 @@ class ToVarTupleProxy(ABCProxy):
 
 
 class DelegatingProvider(ProxyProvider, ABC):
+    __slots__ = ()
+
     def _get_request_checker(self) -> RequestChecker:
         return AlwaysTrueRequestChecker()

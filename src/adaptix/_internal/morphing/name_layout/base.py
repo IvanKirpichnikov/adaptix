@@ -32,6 +32,8 @@ PathsTo = Mapping[KeyPath, T]
 
 
 class ExtraMoveMaker(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def make_inp_extra_move(
         self,
@@ -50,6 +52,8 @@ class ExtraMoveMaker(ABC):
 
 
 class StructureMaker(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def make_inp_structure(
         self,
@@ -86,6 +90,8 @@ class StructureMaker(ABC):
 
 
 class SievesMaker(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def make_sieves(
         self,
@@ -97,6 +103,8 @@ class SievesMaker(ABC):
 
 
 class ExtraPoliciesMaker(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def make_extra_policies(
         self,

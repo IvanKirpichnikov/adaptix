@@ -18,6 +18,8 @@ ResponseT = TypeVar("ResponseT")
 
 
 class ErrorRepresentor(ABC, Generic[RequestT]):
+    __slots__ = ()
+
     @abstractmethod
     def get_provider_not_found_description(self, request: RequestT) -> str:
         ...
@@ -29,6 +31,8 @@ class ErrorRepresentor(ABC, Generic[RequestT]):
 
 class RequestRouter(ABC, Generic[RequestT]):
     """An offset of each element must belong to [0; max_offset)"""
+
+    __slots__ = ()
 
     @abstractmethod
     def find_handler(
@@ -113,6 +117,8 @@ class BasicRequestBus(RequestBus[RequestT, ResponseT], Generic[RequestT, Respons
 
 
 class RecursionResolver(ABC, Generic[RequestT, ResponseT]):
+    __slots__ = ()
+
     @abstractmethod
     def track_request(self, request: RequestT) -> Optional[ResponseT]:
         ...
@@ -123,7 +129,7 @@ class RecursionResolver(ABC, Generic[RequestT, ResponseT]):
 
 
 class RecursiveRequestBus(BasicRequestBus[RequestT, ResponseT], Generic[RequestT, ResponseT]):
-    __slots__ = (*BasicRequestBus.__slots__, "_recursion_resolver")
+    __slots__ = ("_recursion_resolver",)
 
     def __init__(
         self,

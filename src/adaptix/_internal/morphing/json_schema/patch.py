@@ -12,6 +12,8 @@ Patcher = Callable[[JSONSchema], JSONSchema]
 
 
 class JSONSchemaPatch:
+    __slots__ = ("_patchers",)
+
     def __init__(self) -> None:
         self._patchers: list[Patcher] = []
 

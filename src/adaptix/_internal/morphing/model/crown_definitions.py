@@ -18,13 +18,19 @@ CrownPath = VarTuple[CrownPathElem]  # subset of struct_path.Trail
 class ExtraSkip(metaclass=SingletonMeta):
     """Ignore any extra data"""
 
+    __slots__ = ()
+
 
 class ExtraForbid(metaclass=SingletonMeta):
     """Raise error if extra data would be met"""
 
+    __slots__ = ()
+
 
 class ExtraCollect(metaclass=SingletonMeta):
     """Collect extra data and pass it to object"""
+
+    __slots__ = ()
 
 
 # --------  Base classes for crown -------- #
@@ -144,7 +150,7 @@ OutCrown = Union[BranchOutCrown, LeafOutCrown]
 
 
 class ExtraKwargs(metaclass=SingletonMeta):
-    pass
+    __slots__ = ()
 
 
 @dataclass(frozen=True)

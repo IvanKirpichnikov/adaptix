@@ -38,6 +38,8 @@ CallableT = TypeVar("CallableT", bound=Callable)
 
 
 class LocatedRequestCallableRecursionResolver(RecursionResolver[LocatedRequest, CallableT], Generic[CallableT]):
+    __slots__ = ("_tp_to_stub",)
+
     def __init__(self) -> None:
         self._tp_to_stub: dict[TypeHint, FuncWrapper] = {}
 
@@ -63,6 +65,8 @@ LocatedRequestT = TypeVar("LocatedRequestT", bound=LocatedRequest)
 
 
 class BaseRequestErrorRepresentor(ErrorRepresentor[RequestT], Generic[RequestT]):
+    __slots__ = ("_not_found_desc",)
+
     def __init__(self, not_found_desc: str):
         self._not_found_desc = not_found_desc
 
@@ -74,12 +78,16 @@ class BaseRequestErrorRepresentor(ErrorRepresentor[RequestT], Generic[RequestT])
 
 
 class LocatedRequestErrorRepresentor(BaseRequestErrorRepresentor[LocatedRequestT], Generic[LocatedRequestT]):
+    __slots__ = ()
+
     def get_request_context_notes(self, request: LocatedRequestT) -> Iterable[str]:
         loc_stack_desc = format_loc_stack(request.loc_stack, always_wrap_with_brackets=True)
         yield f"Location: {loc_stack_desc}"
 
 
 class LinkingRequestErrorRepresentor(ErrorRepresentor[LinkingRequest]):
+    __slots__ = ()
+
     def get_request_context_notes(self, request: RequestT) -> Iterable[str]:
         return ()
 
@@ -89,6 +97,8 @@ class LinkingRequestErrorRepresentor(ErrorRepresentor[LinkingRequest]):
 
 
 class CoercerRequestErrorRepresentor(BaseRequestErrorRepresentor[CoercerRequest]):
+    __slots__ = ()
+
     def get_request_context_notes(self, request: CoercerRequest) -> Iterable[str]:
         src_desc = format_loc_stack(request.src)
         dst_desc = format_loc_stack(request.dst)
@@ -96,6 +106,8 @@ class CoercerRequestErrorRepresentor(BaseRequestErrorRepresentor[CoercerRequest]
 
 
 class JSONSchemaMiddlewareProvider(LocatedRequestMethodsProvider):
+    __slots__ = ()
+
     @method_handler
     def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
         json_schema = mediator.provide_from_next()
@@ -112,6 +124,8 @@ class JSONSchemaMiddlewareProvider(LocatedRequestMethodsProvider):
 
 class OperatingRetort(SearchingRetort):
     """A retort that can operate as Retort but have no predefined providers and no high-level user interface"""
+
+    __slots__ = ()
 
     def _get_recipe_head(self) -> Sequence[Provider]:
         return (

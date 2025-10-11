@@ -56,6 +56,19 @@ from .crown_definitions import (
 
 
 class GenState:
+    __slots__ = (
+        "namespace",
+        "debug_trail",
+        "field_id_to_path",
+        "path_to_suffix",
+        "_last_path_idx",
+        "_path",
+        "trail_element_to_name_idx",
+        "error_handler_name",
+        "error_handlers",
+        "field_to_idx",
+    )
+
     def __init__(self, namespace: CascadeNamespace, debug_trail: DebugTrail, error_handler_name: str):
         self.namespace = namespace
         self.debug_trail = debug_trail
@@ -128,6 +141,8 @@ class GenState:
 
 
 class VarExpr(Expression):
+    __slots__ = ("name",)
+
     def __init__(self, name: str):
         self.name = name
 
@@ -136,6 +151,8 @@ class VarExpr(Expression):
 
 
 class AssignmentStatement(Statement):
+    __slots__ = ("var", "value")
+
     def __init__(self, var: VarExpr, value: Expression):
         self.var = var
         self.value = value
@@ -151,6 +168,8 @@ class AssignmentStatement(Statement):
 
 
 class ErrorHandling(Statement):
+    __slots__ = ("_state", "_field")
+
     def __init__(self, state: GenState, field: Optional[OutputField]):
         self._state = state
         self._field = field
@@ -178,6 +197,8 @@ class ErrorHandling(Statement):
 
 
 class FieldErrorCatching(Statement):
+    __slots__ = ("_state", "_field", "_stmt")
+
     def __init__(self, state: GenState, field: OutputField, stmt: Statement):
         self._state = state
         self._field = field
@@ -213,6 +234,15 @@ class DictFragment(NamedTuple):
 
 
 class BuiltinModelDumperGen(ModelDumperGen):
+    __slots__ = (
+        "_shape",
+        "_name_layout",
+        "_debug_trail",
+        "_fields_dumpers",
+        "_id_to_field",
+        "_model_identity",
+    )
+
     def __init__(
         self,
         shape: OutputShape,
@@ -845,6 +875,13 @@ class BuiltinModelDumperGen(ModelDumperGen):
 
 
 class ModelOutputJSONSchemaGen:
+    __slots__ = (
+        "_shape",
+        "_field_json_schema_getter",
+        "_field_default_dumper",
+        "_placeholder_dumper",
+    )
+
     def __init__(
         self,
         shape: OutputShape,

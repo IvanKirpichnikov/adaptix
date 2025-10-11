@@ -32,6 +32,11 @@ from .crown_definitions import InputNameLayout, InputNameLayoutRequest
 
 
 class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
+    __slots__ = (
+        "_name_sanitizer",
+        "_props",
+    )
+
     def __init__(
         self,
         *,
@@ -304,6 +309,8 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
 
 
 class InlinedShapeModelLoaderProvider(ModelLoaderProvider):
+    __slots__ = ("_shape",)
+
     def __init__(
         self,
         *,

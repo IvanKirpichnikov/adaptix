@@ -11,6 +11,8 @@ from .request_cls import InlineJSONSchemaRequest, JSONSchemaRequest, RefSourceRe
 
 
 class ConstantInlineJSONSchemaProvider(LocatedRequestMethodsProvider):
+    __slots__ = ("_inline",)
+
     def __init__(self, *, inline: bool):
         self._inline = inline
 
@@ -20,12 +22,16 @@ class ConstantInlineJSONSchemaProvider(LocatedRequestMethodsProvider):
 
 
 class BuiltinInlineJSONSchemaProvider(LocatedRequestMethodsProvider):
+    __slots__ = ()
+
     @method_handler
     def provide_inline_json_schema(self, mediator: Mediator, request: InlineJSONSchemaRequest) -> bool:
         return request.json_schema.properties == Omitted() and request.json_schema.prefix_items == Omitted()
 
 
 class JSONSchemaRefProvider(LocatedRequestMethodsProvider):
+    __slots__ = ()
+
     @method_handler
     def provide_ref_source(self, mediator: Mediator, request: RefSourceRequest) -> LocalRefSource:
         return LocalRefSource(
@@ -36,6 +42,8 @@ class JSONSchemaRefProvider(LocatedRequestMethodsProvider):
 
 
 class ConstantJSONSchemaRefProvider(LocatedRequestMethodsProvider):
+    __slots__ = ("_ref",)
+
     def __init__(self, ref: str):
         self._ref = ref
 
@@ -49,17 +57,19 @@ class ConstantJSONSchemaRefProvider(LocatedRequestMethodsProvider):
 
 
 class KeepJSONSchema(metaclass=SingletonMeta):
-    pass
+    __slots__ = ()
 
 
 class EraseJSONSchema(metaclass=SingletonMeta):
-    pass
+    __slots__ = ()
 
 
 JSONSchemaOverride = Union[JSONSchema, KeepJSONSchema, EraseJSONSchema, JSONSchemaPatch]
 
 
 class JSONSchemaOverrideProvider(JSONSchemaProvider):
+    __slots__ = ("_override",)
+
     def __init__(self, override: JSONSchemaOverride):
         self._override = override
 

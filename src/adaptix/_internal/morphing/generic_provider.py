@@ -23,6 +23,8 @@ ResponseT = TypeVar("ResponseT")
 
 
 class NewTypeUnwrappingProvider(DelegatingProvider):
+    __slots__ = ()
+
     def _get_proxy_target(self, tp: TypeHint) -> TypeHint:
         if not is_new_type(tp):
             raise CannotProvide
@@ -34,6 +36,8 @@ class NewTypeUnwrappingProvider(DelegatingProvider):
 
 
 class TypeAliasUnwrappingProvider(DelegatingProvider):
+    __slots__ = ()
+
     def _get_proxy_target(self, tp: TypeHint) -> TypeHint:
         norm = try_normalize_type(tp)
         if not isinstance(norm, NormTypeAlias):
@@ -46,6 +50,8 @@ class TypeAliasUnwrappingProvider(DelegatingProvider):
 
 
 class ForwardRefEvaluatingProvider(DelegatingProvider):
+    __slots__ = ()
+
     def _get_proxy_target(self, tp: TypeHint) -> TypeHint:
         if not isinstance(tp, ForwardRef):
             raise CannotProvide
@@ -60,6 +66,8 @@ class ForwardRefEvaluatingProvider(DelegatingProvider):
 
 
 class TypeHintTagsUnwrappingProvider(LoaderProvider, DumperProvider):
+    __slots__ = ()
+
     def _unwrap_type_hint(self, tp: TypeHint) -> TypeHint:
         norm = try_normalize_type(tp)
         unwrapped = strip_tags(norm)
@@ -372,6 +380,8 @@ def path_like_dumper(data):
 
 @for_predicate(PathLike[str])
 class PathLikeProvider(LoaderProvider, DumperProvider):
+    __slots__ = ()
+
     _impl = Path
 
     def provide_loader(self, mediator: Mediator, request: LoaderRequest) -> Loader:

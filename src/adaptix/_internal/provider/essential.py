@@ -128,6 +128,8 @@ class DirectMediator(ABC):
     Mediator is a proxy to providers of retort.
     """
 
+    __slots__ = ()
+
     @abstractmethod
     def provide(self, request: Request[T]) -> T:
         """Get response of sent request.
@@ -232,6 +234,8 @@ class Mediator(DirectMediator, ABC, Generic[ResponseT]):
     Mediator is a proxy to providers of retort.
     """
 
+    __slots__ = ()
+
     @abstractmethod
     def provide_from_next(self) -> ResponseT:
         """Forward current request to providers
@@ -253,6 +257,8 @@ RequestHandler = Callable[[Mediator[ResponseT], RequestT], ResponseT]
 
 
 class RequestChecker(ABC, Generic[RequestT]):
+    __slots__ = ()
+
     @abstractmethod
     def check_request(self, mediator: DirectMediator, request: RequestT, /) -> bool:
         ...
@@ -263,6 +269,8 @@ RequestHandlerRegisterRecord = tuple[type[Request], RequestChecker, RequestHandl
 
 class Provider(ABC):
     """An object that can process Request instances"""
+
+    __slots__ = ()
 
     @abstractmethod
     def get_request_handlers(self) -> Sequence[RequestHandlerRegisterRecord]:

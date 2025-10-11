@@ -104,11 +104,15 @@ def apply_lsc(
 
 
 class NameMappingRetort(OperatingRetort):
+    __slots__ = ()
+
     def provide_name_mapping(self, request: NameMappingRequest) -> Optional[KeyPath]:
         return self._provide_from_recipe(request)
 
 
 class BuiltinStructureMaker(StructureMaker):
+    __slots__ = ()
+
     def _generate_key(self, schema: StructureSchema, shape: BaseShape, field: BaseField) -> Key:
         if schema.as_list:
             return shape.fields.index(field)
@@ -349,6 +353,8 @@ class SievesOverlay(Overlay[SievesSchema]):
 
 
 class BuiltinSievesMaker(SievesMaker):
+    __slots__ = ()
+
     def _create_sieve(self, field: OutputField) -> Sieve:
         if isinstance(field.default, DefaultValue):
             default_value = field.default.value
@@ -404,6 +410,8 @@ class ExtraMoveAndPoliciesOverlay(Overlay[ExtraMoveAndPoliciesSchema]):
 
 
 class BuiltinExtraMoveAndPoliciesMaker(ExtraMoveMaker, ExtraPoliciesMaker):
+    __slots__ = ()
+
     def _create_extra_targets(self, extra: Union[str, Sequence[str]]) -> ExtraTargets:
         if isinstance(extra, str):
             return ExtraTargets((extra,))

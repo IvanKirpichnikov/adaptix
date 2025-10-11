@@ -7,12 +7,16 @@ from ..utils import get_notes
 
 
 class ErrorRenderer(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def render(self, error: CannotProvide) -> str:
         ...
 
 
 class BuiltinErrorRenderer(ErrorRenderer):
+    __slots__ = ("_tree_renderer",)
+
     def __init__(self, tree_renderer_config: TreeRendererConfig):
         self._tree_renderer = TreeRenderer(
             config=tree_renderer_config,

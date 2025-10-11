@@ -2,6 +2,8 @@ from adaptix._internal.provider.loc_stack_filtering import DirectMediator, LocSt
 
 
 class FromCtxParam(LocStackChecker):
+    __slots__ = ("_field_id",)
+
     def __init__(self, field_id: str):
         if not field_id.isidentifier():
             raise ValueError("param_name must be a valid python identifier to exactly match parameter")

@@ -37,6 +37,11 @@ PathedLeaves = Sequence[PathWithLeaf[LeafCr]]
 
 
 class BaseCrownBuilder(ABC, Generic[LeafCr, DictCr, ListCr]):
+    __slots__ = (
+        "_paths_to_leaves",
+        "_paths_to_order",
+    )
+
     def __init__(self, paths_to_leaves: PathsTo[LeafCr]):
         self._paths_to_leaves = paths_to_leaves
         self._paths_to_order = {path: i for i, path in enumerate(paths_to_leaves)}
@@ -109,6 +114,8 @@ class BaseCrownBuilder(ABC, Generic[LeafCr, DictCr, ListCr]):
 
 
 class InpCrownBuilder(BaseCrownBuilder[LeafInpCrown, InpDictCrown, InpListCrown]):
+    __slots__ = ("extra_policies",)
+
     def __init__(self, extra_policies: PathsTo[DictExtraPolicy], paths_to_leaves: PathsTo[LeafInpCrown]):
         self.extra_policies = extra_policies
         super().__init__(paths_to_leaves)
@@ -127,6 +134,8 @@ class InpCrownBuilder(BaseCrownBuilder[LeafInpCrown, InpDictCrown, InpListCrown]
 
 
 class OutCrownBuilder(BaseCrownBuilder[LeafOutCrown, OutDictCrown, OutListCrown]):
+    __slots__ = ("path_to_sieves",)
+
     def __init__(self, path_to_sieves: PathsTo[Sieve], paths_to_leaves: PathsTo[LeafOutCrown]):
         self.path_to_sieves = path_to_sieves
         super().__init__(paths_to_leaves)

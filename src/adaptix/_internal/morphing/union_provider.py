@@ -28,6 +28,8 @@ from .utils import try_normalize_type
 
 @for_predicate(Union)
 class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
+    __slots__ = ()
+
     def _get_loc_stacks_to_request(
         self,
         mediator: Mediator,

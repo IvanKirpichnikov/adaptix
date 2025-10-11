@@ -109,6 +109,8 @@ def provide_schema(overlay: type[Overlay[Sc]], mediator: Mediator, loc_stack: Lo
 
 
 class OverlayProvider(MethodsProvider):
+    __slots__ = ("_chain", "_overlays")
+
     def __init__(self, overlays: Iterable[Overlay], chain: Optional[Chain]):
         self._chain = chain
         self._overlays = ClassMap(*overlays)

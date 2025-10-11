@@ -23,6 +23,8 @@ class MembersStorage(Generic[K, M]):
 
 
 class GenericResolver(Generic[K, M]):
+    __slots__ = ("_raw_members_getter",)
+
     def __init__(self, members_getter: Callable[[TypeHint], MembersStorage[K, M]]):
         self._raw_members_getter = members_getter
 

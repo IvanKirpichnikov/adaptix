@@ -11,6 +11,8 @@ from .schema_tools import approx_hash_json_schema, replace_json_schema_ref, trav
 
 
 class JSONSchemaResolver(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def resolve(
         self,
@@ -23,17 +25,23 @@ class JSONSchemaResolver(ABC):
 
 
 class LocalRefSourceGroup:
+    __slots__ = ("sources",)
+
     def __init__(self, sources: Sequence[LocalRefSource[JSONSchema]]):
         self.sources = sources
 
 
 class RefGenerator(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def generate_ref(self, json_schema: JSONSchema, loc_stack: LocStack) -> str:
         ...
 
 
 class RefMangler(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def mangle_refs(
         self,
@@ -59,7 +67,7 @@ class _ContainerWithExtra(Container[T]):
 
 
 class CustomJSONSchemaHasher:
-    __slots__ = ("_extra", "_json_schema")
+    __slots__ = ("_json_schema",)
 
     def __init__(self, json_schema: JSONSchema):
         self._json_schema = json_schema
@@ -72,6 +80,8 @@ class CustomJSONSchemaHasher:
 
 
 class BuiltinJSONSchemaResolver(JSONSchemaResolver):
+    __slots__ = ("_ref_generator", "_ref_mangler")
+
     def __init__(self, ref_generator: RefGenerator, ref_mangler: RefMangler):
         self._ref_generator = ref_generator
         self._ref_mangler = ref_mangler

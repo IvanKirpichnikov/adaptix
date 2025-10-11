@@ -6,6 +6,8 @@ from .utils import NAME_TO_BUILTIN
 
 
 class CascadeNamespace(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def add_constant(self, name: str, value: object) -> None:
         ...

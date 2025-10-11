@@ -10,6 +10,8 @@ from .constants import BUILTIN_ORIGIN_TO_TYPEVARS
 
 
 class ImplicitParamsGetter:
+    __slots__ = ()
+
     def _process_limit_element(self, type_var: TypeVar, tp: TypeHint) -> TypeHint:
         if isinstance(tp, ForwardRef):
             return eval_forward_ref(vars(sys.modules[type_var.__module__]), tp)

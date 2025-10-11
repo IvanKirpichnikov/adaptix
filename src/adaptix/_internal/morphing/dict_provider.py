@@ -22,6 +22,8 @@ CollectionsMapping = collections.abc.Mapping
 
 @for_predicate(dict)
 class DictProvider(LoaderProvider, DumperProvider):
+    __slots__ = ()
+
     def _extract_key_value(self, request: LocatedRequest) -> tuple[BaseNormType, BaseNormType]:
         norm = try_normalize_type(request.last_loc.type)
         return norm.args
@@ -248,6 +250,8 @@ class DictProvider(LoaderProvider, DumperProvider):
 
 @for_predicate(defaultdict)
 class DefaultDictProvider(LoaderProvider, DumperProvider):
+    __slots__ = ("default_factory",)
+
     _DICT_PROVIDER = DictProvider()
 
     def __init__(self, default_factory: Optional[Callable] = None):

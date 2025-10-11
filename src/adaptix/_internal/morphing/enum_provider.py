@@ -32,6 +32,8 @@ CollectionsMapping = collections.abc.Mapping
 
 
 class BaseEnumMappingGenerator(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def _generate_mapping(self, cases: Iterable[EnumT]) -> Mapping[EnumT, str]:
         ...
@@ -49,6 +51,8 @@ class BaseEnumMappingGenerator(ABC):
 
 
 class ByNameEnumMappingGenerator(BaseEnumMappingGenerator):
+    __slots__ = ("_name_style", "_map")
+
     def __init__(
         self,
         name_style: Optional[NameStyle] = None,
@@ -75,6 +79,8 @@ class ByNameEnumMappingGenerator(BaseEnumMappingGenerator):
 
 
 class AnyEnumLSC(LastLocChecker):
+    __slots__ = ()
+
     def _check_location(self, mediator: DirectMediator, loc: TypeHintLoc) -> bool:
         try:
             norm = normalize_type(loc.type)
@@ -85,6 +91,8 @@ class AnyEnumLSC(LastLocChecker):
 
 
 class FlagEnumLSC(LastLocChecker):
+    __slots__ = ()
+
     def _check_location(self, mediator: DirectMediator, loc: TypeHintLoc) -> bool:
         try:
             norm = normalize_type(loc.type)
@@ -95,15 +103,17 @@ class FlagEnumLSC(LastLocChecker):
 
 @for_predicate(AnyEnumLSC())
 class BaseEnumProvider(LoaderProvider, DumperProvider, ABC):
-    pass
+    __slots__ = ()
 
 
 @for_predicate(FlagEnumLSC())
 class BaseFlagProvider(LoaderProvider, DumperProvider, ABC):
-    pass
+    __slots__ = ()
 
 
 class EnumNameProvider(BaseEnumProvider):
+    __slots__ = ("_mapping_generator")
+
     """This provider represents enum members to the outside world by their name"""
     def __init__(self, mapping_generator: BaseEnumMappingGenerator):
         self._mapping_generator = mapping_generator
@@ -146,6 +156,8 @@ class EnumNameProvider(BaseEnumProvider):
 
 
 class EnumValueProvider(BaseEnumProvider):
+    __slots__ = ("_value_type",)
+
     def __init__(self, value_type: TypeHint):
         self._value_type = value_type
 
@@ -192,6 +204,8 @@ class EnumExactValueProvider(BaseEnumProvider):
     """This provider represents enum members to the outside world
     by their value without any processing
     """
+
+    __slots__ = ()
 
     def provide_loader(self, mediator: Mediator, request: LoaderRequest) -> Loader:
         return mediator.cached_call(
@@ -252,6 +266,8 @@ class EnumExactValueProvider(BaseEnumProvider):
 
 
 class FlagByExactValueProvider(BaseFlagProvider):
+    __slots__ = ()
+
     def provide_loader(self, mediator: Mediator, request: LoaderRequest) -> Loader:
         return mediator.cached_call(
             self._make_loader,
@@ -302,6 +318,13 @@ def _extract_non_compound_cases_from_flag(enum: type[FlagT]) -> Sequence[FlagT]:
 
 
 class FlagByListProvider(BaseFlagProvider):
+    __slots__ = (
+        "_mapping_generator",
+        "_allow_single_value",
+        "_allow_duplicates",
+        "_allow_compound",
+    )
+
     def __init__(
         self,
         mapping_generator: BaseEnumMappingGenerator,

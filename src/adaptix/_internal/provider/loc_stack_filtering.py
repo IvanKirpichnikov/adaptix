@@ -31,11 +31,15 @@ AnyLocT_co = TypeVar("AnyLocT_co", bound=AnyLoc, covariant=True)
 
 
 class LocStack(ImmutableStack[AnyLocT_co]):
+    __slots__ = ()
+
     def replace_last_type(self: LocStackT, tp: TypeHint, /) -> LocStackT:
         return self.replace_last(replace(self.last, type=tp))
 
 
 class LocStackChecker(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def check_loc_stack(self, mediator: DirectMediator, loc_stack: LocStack) -> bool:
         ...
@@ -68,6 +72,8 @@ class LocStackChecker(ABC):
 
 
 class InvertLSC(LocStackChecker):
+    __slots__ = ("_lsc",)
+
     def __init__(self, lsc: LocStackChecker):
         self._lsc = lsc
 
@@ -76,6 +82,8 @@ class InvertLSC(LocStackChecker):
 
 
 class BinOperatorLSC(LocStackChecker, ABC):
+    __slots__ = ("_loc_stack_checkers",)
+
     def __init__(self, loc_stack_checkers: Iterable[LocStackChecker]):
         self._loc_stack_checkers = loc_stack_checkers
 
@@ -91,19 +99,27 @@ class BinOperatorLSC(LocStackChecker, ABC):
 
 
 class OrLocStackChecker(BinOperatorLSC):
+    __slots__ = ()
+
     _reduce = any  # type: ignore[assignment]
 
 
 class AndLocStackChecker(BinOperatorLSC):
+    __slots__ = ()
+
     _reduce = all  # type: ignore[assignment]
 
 
 class XorLocStackChecker(BinOperatorLSC):
+    __slots__ = ()
+
     def _reduce(self, elements: Iterable[bool], /) -> bool:
         return reduce(operator.xor, elements)
 
 
 class LastLocChecker(LocStackChecker, ABC):
+    __slots__ = ()
+
     _expected_location: ClassVar[type]
 
     def __init_subclass__(cls, **kwargs):
@@ -175,6 +191,8 @@ class ExactOriginLSC(LastLocChecker):
 
 
 class VarTupleLSC(LastLocChecker):
+    __slots__ = ()
+
     def _check_location(self, mediator: DirectMediator, loc: TypeHintLoc) -> bool:
         try:
             norm = normalize_type(loc.type)
@@ -206,6 +224,8 @@ class LocStackEndChecker(LocStackChecker):
 
 
 class AnyLocStackChecker(LocStackChecker):
+    __slots__ = ()
+
     def check_loc_stack(self, mediator: DirectMediator, loc_stack: LocStack) -> bool:
         return True
 
@@ -272,6 +292,8 @@ _ANY = AnyLocStackChecker()
 
 
 class LocStackPattern:
+    __slots__ = ("_stack",)
+
     def __init__(self, stack: VarTuple[LocStackChecker]):
         self._stack = stack
 

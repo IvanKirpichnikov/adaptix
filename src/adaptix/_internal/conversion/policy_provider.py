@@ -4,6 +4,8 @@ from .request_cls import UnlinkedOptionalPolicy, UnlinkedOptionalPolicyRequest
 
 
 class UnlinkedOptionalPolicyProvider(MethodsProvider):
+    __slots__ = ("_is_allowed",)
+
     def __init__(self, *, is_allowed: bool):
         self._is_allowed = is_allowed
 

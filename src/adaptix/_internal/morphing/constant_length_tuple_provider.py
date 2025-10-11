@@ -28,6 +28,8 @@ CollectionsMapping = collections.abc.Mapping
 
 @for_predicate(tuple)
 class ConstantLengthTupleProvider(LoaderProvider, DumperProvider):
+    __slots__ = ()
+
     def provide_loader(self, mediator: Mediator, request: LoaderRequest) -> Loader:
         norm = try_normalize_type(request.last_loc.type)
         if len(norm.args) > 1 and norm.args[1] == Ellipsis:

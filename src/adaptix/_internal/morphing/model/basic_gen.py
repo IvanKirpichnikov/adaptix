@@ -60,6 +60,8 @@ def fetch_code_gen_hook(mediator: Mediator, loc_stack: LocStack) -> CodeGenHook:
 class CodeGenAccumulator(MethodsProvider):
     """Accumulates all generated code. It may be useful for debugging"""
 
+    __slots__ = ("list",)
+
     def __init__(self) -> None:
         self.list: list[tuple[CodeGenHookRequest, CodeGenHookData]] = []
 
@@ -245,12 +247,16 @@ def has_collect_policy(crown: InpCrown) -> bool:
 
 
 class ModelLoaderGen(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def produce_code(self, closure_name: str) -> tuple[str, Mapping[str, object]]:
         ...
 
 
 class ModelDumperGen(ABC):
+    __slots__ = ()
+
     @abstractmethod
     def produce_code(self, closure_name: str) -> tuple[str, Mapping[str, object]]:
         ...

@@ -8,6 +8,8 @@ T = TypeVar("T")
 
 
 class ValueProvider(Provider, Generic[T]):
+    __slots__ = ("_request_cls", "_value")
+
     def __init__(self, request_cls: type[Request[T]], value: T):
         self._request_cls = request_cls
         self._value = value

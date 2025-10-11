@@ -43,6 +43,8 @@ class OutputShapeRequest(LocatedRequest[OutputShape]):
 
 
 class ShapeProvider(MethodsProvider):
+    __slots__ = ("_introspector",)
+
     def __init__(self, introspector: ShapeIntrospector):
         self._introspector = introspector
 
@@ -88,6 +90,11 @@ BUILTIN_SHAPE_PROVIDER = ConcatProvider(
 
 
 class PropertyExtender(MethodsProvider):
+    __slots__ = (
+        "_output_fields",
+        "_infer_types_for",
+    )
+
     def __init__(
         self,
         output_fields: Iterable[OutputField],
@@ -141,6 +148,11 @@ ShapeT = TypeVar("ShapeT", bound=Union[InputShape, OutputShape])
 
 
 class ShapeGenericResolver(Generic[ShapeT]):
+    __slots__ = (
+        "_mediator",
+        "_initial_request",
+    )
+
     def __init__(self, mediator: Mediator, initial_request: LocatedRequest[ShapeT]):
         self._mediator = mediator
         self._initial_request = initial_request
@@ -189,6 +201,14 @@ T = TypeVar("T")
 
 
 class SimilarShapeProvider(MethodsProvider):
+    __slots__ = (
+        "_target",
+        "_prototype",
+        "_loc_stack_checker",
+        "_for_input",
+        "_for_output",
+    )
+
     def __init__(self, target: TypeHint, prototype: TypeHint, *, for_input: bool = True, for_output: bool = True):
         self._target = target
         self._prototype = prototype

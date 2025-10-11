@@ -48,6 +48,8 @@ from .implicit_params import ImplicitParamsGetter
 
 
 class BaseNormType(Hashable, ABC):
+    __slots__ = ()
+
     @property
     @abstractmethod
     def origin(self) -> Any:
@@ -102,7 +104,7 @@ class _BasicNormType(BaseNormType, ABC):
 
 
 class _NormType(_BasicNormType):
-    __slots__ = (*_BasicNormType.__slots__, "_source")
+    __slots__ = ("_source", "_origin")
 
     def __init__(self, origin: TypeHint, args: VarTuple[Any], *, source: TypeHint):
         self._origin = origin
@@ -114,6 +116,8 @@ class _NormType(_BasicNormType):
 
 
 class _UnionNormType(_BasicNormType):
+    __slots__ = ()
+
     def __init__(self, args: VarTuple[Any], *, source: TypeHint):
         super().__init__(self._order_args(args), source=source)
 
@@ -141,6 +145,8 @@ LiteralArg = Union[str, int, bytes, Enum]
 
 
 class _LiteralNormType(_BasicNormType):
+    __slots__ = ()
+
     def __init__(self, args: VarTuple[Any], *, source: TypeHint):
         super().__init__(self._order_args(args), source=source)
 
@@ -168,11 +174,11 @@ class _LiteralNormType(_BasicNormType):
 
 
 class _AnnotatedNormType(_BasicNormType):
+    __slots__ = ("_hash",)
+
     @property
     def origin(self) -> Any:
         return Annotated
-
-    __slots__ = (*_BasicNormType.__slots__, "_hash")
 
     def __init__(self, args: VarTuple[Hashable], *, source: TypeHint):
         super().__init__(args, source=source)
@@ -255,7 +261,7 @@ class _BaseNormTypeVarLike(BaseNormType):
 
 
 class NormTV(_BaseNormTypeVarLike):
-    __slots__ = (*_BaseNormTypeVarLike.__slots__, "_limit", "_variance", "_default")
+    __slots__ = ("_limit", "_variance", "_default")
 
     def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[BaseNormType]):
         super().__init__(var, source=source)
@@ -284,7 +290,7 @@ class NormTV(_BaseNormTypeVarLike):
 
 
 class NormTVTuple(_BaseNormTypeVarLike):
-    __slots__ = (*_BaseNormTypeVarLike.__slots__, "_default")
+    __slots__ = ("_default",)
 
     def __init__(self, var: Any, *, source: TypeHint, default: Optional[tuple[BaseNormType, ...]]):
         super().__init__(var, source=source)
@@ -296,7 +302,7 @@ class NormTVTuple(_BaseNormTypeVarLike):
 
 
 class NormParamSpec(_BaseNormTypeVarLike):
-    __slots__ = (*_BaseNormTypeVarLike.__slots__, "_limit", "_default")
+    __slots__ = ("_limit", "_default")
 
     def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[tuple[BaseNormType, ...]]):
         super().__init__(var, source=source)
@@ -343,12 +349,16 @@ class NormParamSpecMarker(BaseNormType, ABC):
 
 
 class _NormParamSpecArgs(NormParamSpecMarker):
+    __slots__ = ()
+
     @property
     def origin(self) -> Any:
         return typing.ParamSpecArgs
 
 
 class _NormParamSpecKwargs(NormParamSpecMarker):
+    __slots__ = ()
+
     @property
     def origin(self) -> Any:
         return typing.ParamSpecKwargs
@@ -472,6 +482,8 @@ NormAspect = Callable[["TypeNormalizer", Any, Any, tuple], Optional[BaseNormType
 
 
 class AspectStorage(list[str]):
+    __slots__ = ()
+
     @overload
     def add(self, *, condition: object = True) -> Callable[[NormAspect], NormAspect]:
         ...
@@ -501,6 +513,8 @@ TN = TypeVar("TN", bound="TypeNormalizer")
 
 
 class TypeNormalizer:
+    __slots__ = ("implicit_params_getter", "_namespace")
+
     def __init__(self, implicit_params_getter: ImplicitParamsGetter):
         self.implicit_params_getter = implicit_params_getter
         self._namespace: Optional[dict[str, Any]] = None

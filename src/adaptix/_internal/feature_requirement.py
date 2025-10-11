@@ -18,7 +18,7 @@ def _false():
 
 
 class Requirement(ABC):
-    __slots__ = ("__bool__", "__dict__", "is_met")
+    __slots__ = ("__bool__", "is_met")
 
     def __init__(self):
         self.is_met = self._evaluate()
@@ -35,6 +35,8 @@ class Requirement(ABC):
 
 
 class PythonVersionRequirement(Requirement):
+    __slots__ = ("min_version",)
+
     def __init__(self, min_version: VarTuple[int]):
         self.min_version = min_version
         super().__init__()
@@ -48,6 +50,8 @@ class PythonVersionRequirement(Requirement):
 
 
 class MaxPythonVersionRequirement(Requirement):
+    __slots__ = ("max_version",)
+
     def __init__(self, max_version: VarTuple[int]):
         self.max_version = max_version
         super().__init__()
@@ -61,6 +65,8 @@ class MaxPythonVersionRequirement(Requirement):
 
 
 class DistributionRequirement(Requirement):
+    __slots__ = ("distribution_name",)
+
     def __init__(self, distribution_name: str):
         self.distribution_name = distribution_name
         super().__init__()
@@ -78,6 +84,8 @@ class DistributionRequirement(Requirement):
 
 
 class DistributionVersionRequirement(DistributionRequirement):
+    __slots__ = ("min_version",)
+
     # Pattern from PEP 440
     _VERSION_PATTERN = r"""
         v?
@@ -150,6 +158,8 @@ class DistributionVersionRequirement(DistributionRequirement):
 
 
 class PythonImplementationRequirement(Requirement):
+    __slots__ = ("implementation_name",)
+
     def __init__(self, implementation_name: str):
         self.implementation_name = implementation_name
         super().__init__()

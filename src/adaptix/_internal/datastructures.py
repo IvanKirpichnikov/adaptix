@@ -25,6 +25,8 @@ _VT_co = TypeVar("_VT_co", covariant=True)
 
 @runtime_checkable
 class SupportsKeysAndGetItem(Protocol[K, _VT_co]):
+    __slots__ = ()
+
     def keys(self) -> Iterable[K]:
         ...
 
@@ -33,6 +35,8 @@ class SupportsKeysAndGetItem(Protocol[K, _VT_co]):
 
 
 class UnrewritableDict(dict[K, V], Generic[K, V]):
+    __slots__ = ()
+
     def __setitem__(self, key, value):
         if key in self:
             old_value = self[key]

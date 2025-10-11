@@ -44,6 +44,13 @@ default_error_renderer = BuiltinErrorRenderer(TreeRendererConfig())
 class SearchingRetort(BaseRetort, Provider, ABC):
     """A retort that can operate as Retort but have no predefined providers and no high-level user interface"""
 
+    __slots__ = (
+        "_error_renderer",
+        "_request_cls_to_router",
+        "_request_cls_to_error_representor",
+        "_call_cache",
+    )
+
     def __init__(
         self,
         *,

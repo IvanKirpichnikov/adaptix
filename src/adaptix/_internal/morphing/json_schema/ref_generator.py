@@ -5,5 +5,7 @@ from .resolver import RefGenerator
 
 
 class BuiltinRefGenerator(RefGenerator):
+    __slots__ = ()
+
     def generate_ref(self, json_schema: JSONSchema, loc_stack: LocStack) -> str:
         return format_type(loc_stack.last.type, brackets=False, qualname=False)
