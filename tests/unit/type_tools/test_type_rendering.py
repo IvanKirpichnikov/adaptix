@@ -6,7 +6,7 @@ import pytest
 from tests_helpers.misc import cond_list
 
 from adaptix._internal.feature_requirement import HAS_PARAM_SPEC, HAS_TV_TUPLE, HAS_TYPE_UNION_OP
-from adaptix._internal.provider.loc_stack_tools import format_type
+from adaptix._internal.type_tools.type_rendering import TypeHintRenderer
 
 T = TypeVar("T")
 
@@ -78,6 +78,6 @@ if HAS_TV_TUPLE:
         ),
     ],
 )
-def test_format_type(tp, output, uri_output):
-    assert format_type(tp, brackets=False) == output
-    assert format_type(tp, brackets=False, uri_faced=True) == uri_output
+def test_render_type(tp, output, uri_output):
+    assert TypeHintRenderer(uri_faced=False).render_type(tp) == output
+    assert TypeHintRenderer(uri_faced=True).render_type(tp) == uri_output
