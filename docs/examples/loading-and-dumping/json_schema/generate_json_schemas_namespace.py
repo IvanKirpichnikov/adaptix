@@ -33,6 +33,7 @@ defs, schemas = generate_json_schemas_namespace(
 )
 assert defs == {
     "Category": {
+        "title": "Category",
         "type": "object",
         "required": ["id", "tags"],
         "properties": {
@@ -42,6 +43,7 @@ assert defs == {
         "additionalProperties": True,
     },
     "Tag": {
+        "title": "Tag",
         "type": "object",
         "required": ["id", "label"],
         "properties": {
@@ -51,6 +53,7 @@ assert defs == {
         "additionalProperties": True,
     },
     "Product": {
+        "title": "Product",
         "type": "object",
         "required": ["id", "tags"],
         "properties": {

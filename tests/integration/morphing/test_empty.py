@@ -27,6 +27,7 @@ def test_simple(accum):
                     "properties": {},
                     "required": [],
                     "type": "object",
+                    "title": "Empty",
                 },
             },
             "$ref": "#/$defs/Empty",

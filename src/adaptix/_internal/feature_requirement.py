@@ -178,6 +178,7 @@ HAS_UNPACK = HAS_PY_311
 HAS_PY_312 = PythonVersionRequirement((3, 12))
 MAX_PY_312 = MaxPythonVersionRequirement((3, 12))
 HAS_TV_SYNTAX = HAS_PY_312
+HAS_TYPE_ALIAS_SYNTAX = HAS_PY_312
 
 HAS_PY_313 = PythonVersionRequirement((3, 13))
 MAX_PY_313 = MaxPythonVersionRequirement((3, 13))

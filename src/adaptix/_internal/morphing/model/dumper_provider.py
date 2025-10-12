@@ -98,6 +98,7 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
         shape: OutputShape,
     ) -> ModelOutputJSONSchemaGen:
         return ModelOutputJSONSchemaGen(
+            loc_stack=request.loc_stack,
             shape=shape,
             field_default_dumper=partial(self._dump_field_default, mediator, request),
             field_json_schema_getter=partial(self._get_field_json_schema, mediator, request),

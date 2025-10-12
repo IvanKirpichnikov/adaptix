@@ -11,6 +11,8 @@ from ...common import Loader
 from ...compat import CompatExceptionGroup
 from ...definitions import DebugTrail
 from ...model_tools.definitions import DefaultFactory, DefaultValue, InputField, InputShape, Param, ParamKind
+from ...provider.loc_stack_filtering import LocStack
+from ...provider.loc_stack_tools import format_type
 from ...special_cases_optimization import as_is_stub
 from ...struct_trail import append_trail, extend_trail, render_trail_as_note
 from ...utils import Omitted
@@ -796,10 +798,12 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
 class ModelInputJSONSchemaGen:
     def __init__(
         self,
+        loc_stack: LocStack,
         shape: InputShape,
         field_name_to_json_schema: Mapping[str, JSONSchema],
         field_name_to_json_schema_of_default: Mapping[str, JSONValue],
     ):
+        self._loc_stack = loc_stack
         self._shape = shape
         self._field_name_to_json_schema = field_name_to_json_schema
         self._field_name_to_json_schema_of_default = field_name_to_json_schema_of_default
@@ -807,6 +811,7 @@ class ModelInputJSONSchemaGen:
     def _convert_dict_crown(self, crown: InpDictCrown) -> JSONSchema:
         return JSONSchema(
             type=JSONSchemaType.OBJECT,
+            title=format_type(self._loc_stack.last.type, brackets=False),
             required=[
                 key
                 for key, value in crown.map.items()

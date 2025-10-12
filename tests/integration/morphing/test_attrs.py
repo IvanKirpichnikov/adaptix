@@ -21,17 +21,18 @@ def test_coordinates(accum):
         json_schema={
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
-                "Coordinates": {
-                    "additionalProperties": JSONSchemaOptItem(input=True),
+                "test_coordinates._locals_.Coordinates": {
+                    "type": "object",
+                    "title": Coordinates.__qualname__,
                     "properties": {
                         "x": {"type": "integer"},
                         "y": {"type": "integer"},
                     },
                     "required": ["x", "y"],
-                    "type": "object",
+                    "additionalProperties": JSONSchemaOptItem(input=True),
                 },
             },
-            "$ref": "#/$defs/Coordinates",
+            "$ref": "#/$defs/test_coordinates._locals_.Coordinates",
         },
     )
 

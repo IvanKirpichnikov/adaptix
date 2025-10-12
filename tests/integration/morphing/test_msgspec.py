@@ -22,7 +22,7 @@ def test_basic(accum):
         json_schema={
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$defs": {
-                "MyModel": {
+                "test_basic._locals_.MyModel": {
                     "additionalProperties": JSONSchemaOptItem(input=True),
                     "properties": {
                         "f1": {"type": "integer"},
@@ -30,9 +30,10 @@ def test_basic(accum):
                     },
                     "required": ["f1", "f2"],
                     "type": "object",
+                    "title": MyModel.__qualname__,
                 },
             },
-            "$ref": "#/$defs/MyModel",
+            "$ref": "#/$defs/test_basic._locals_.MyModel",
         },
     )
 
@@ -46,7 +47,6 @@ def test_all_field_kinds(accum):
         b: T
         c: str = field(default="c", name="_c")
         d: ClassVar[float] = 2.11
-
 
     retort = Retort(recipe=[accum])
     assert retort.load({"a": 0, "b": 3}, MyModel[int]) == MyModel(a=0, b=3)
