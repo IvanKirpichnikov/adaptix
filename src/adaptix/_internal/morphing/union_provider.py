@@ -14,11 +14,9 @@ from ..provider.location import GenericParamLoc
 from ..special_cases_optimization import as_is_stub
 from ..type_tools import BaseNormType, is_subclass_soft, strip_tags
 from ..type_tools.normalize_type import NoneType
-from ..utils import Omitted
 from .concrete_provider import none_loader
 from .json_schema.definitions import JSONSchema
 from .json_schema.request_cls import JSONSchemaRequest
-from .json_schema.schema_model import JSONSchemaType
 from .load_error import LoadError, TypeLoadError, UnionLoadError
 from .provider_template import DumperProvider, JSONSchemaProvider, LoaderProvider
 from .request_cls import DebugTrailRequest, DumperRequest, LoaderRequest

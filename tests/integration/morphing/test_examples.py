@@ -36,6 +36,7 @@ def test_readme(accum):
                         output=["title", "price", "author"],
                     ),
                     "type": "object",
+                    "title": "Book",
                 },
             },
             "$ref": "#/$defs/Book",

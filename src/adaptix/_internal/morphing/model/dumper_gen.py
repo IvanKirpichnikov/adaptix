@@ -33,6 +33,8 @@ from ...model_tools.definitions import (
     OutputField,
     OutputShape,
 )
+from ...provider.loc_stack_filtering import LocStack
+from ...provider.loc_stack_tools import format_type
 from ...special_cases_optimization import as_is_stub, get_default_clause
 from ...struct_trail import TrailElement, append_trail, extend_trail, render_trail_as_note
 from ...utils import Omittable, Omitted
@@ -847,11 +849,13 @@ class BuiltinModelDumperGen(ModelDumperGen):
 class ModelOutputJSONSchemaGen:
     def __init__(
         self,
+        loc_stack: LocStack,
         shape: OutputShape,
         field_json_schema_getter: Callable[[OutputField], JSONSchema],
         field_default_dumper: Callable[[OutputField], Omittable[JSONValue]],
         placeholder_dumper: Callable[[Any], JSONValue],
     ):
+        self._loc_stack = loc_stack
         self._shape = shape
         self._field_json_schema_getter = field_json_schema_getter
         self._field_default_dumper = field_default_dumper
@@ -860,6 +864,7 @@ class ModelOutputJSONSchemaGen:
     def _convert_dict_crown(self, crown: OutDictCrown) -> JSONSchema:
         return JSONSchema(
             type=JSONSchemaType.OBJECT,
+            title=format_type(self._loc_stack.last.type, brackets=False),
             required=[
                 key
                 for key, value in crown.map.items()

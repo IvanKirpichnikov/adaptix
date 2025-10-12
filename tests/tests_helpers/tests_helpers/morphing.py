@@ -12,9 +12,9 @@ from adaptix._internal.morphing.json_schema.schema_model import JSONSchemaType
 from adaptix._internal.morphing.load_error import LoadError
 
 try:
-    import jsonschema
+    import jsonschema as jsonschema_py
 except ImportError:
-    jsonschema = None
+    jsonschema_py = None
 
 
 try:
@@ -24,16 +24,16 @@ except ImportError:
 
 
 def _validate_json_schema(json_schema: DumpedJSONSchema) -> DumpedJSONSchema:
-    if jsonschema is not None:
-        jsonschema.Draft202012Validator.check_schema(json_schema)
+    if jsonschema_py is not None:
+        jsonschema_py.Draft202012Validator.check_schema(json_schema)
     if jsonschema_rs is not None:
         jsonschema_rs.meta.validate(json_schema)
     return json_schema
 
 
 def _validate_by_json_schema(data, json_schema: DumpedJSONSchema) -> None:
-    if jsonschema is not None:
-        jsonschema.Draft202012Validator(json_schema).validate(data)
+    if jsonschema_py is not None:
+        jsonschema_py.Draft202012Validator(json_schema).validate(data)
     if jsonschema_rs is not None:
         jsonschema_rs.validate(json_schema, data)
 
@@ -186,9 +186,9 @@ def assert_load_error(
     )
     input_json_schema = generate_json_schema(retort, tp, direction=Direction.INPUT)
 
-    if jsonschema is not None:
+    if jsonschema_py is not None:
         _assert_json_schema_errors(
-            errors=jsonschema.Draft202012Validator(input_json_schema).iter_errors(data),
+            errors=jsonschema_py.Draft202012Validator(input_json_schema).iter_errors(data),
             templates=json_schema_errors,
             asserter_getter=lambda t: t.py_asserter,
             path_getter=lambda e: tuple(e.path),
