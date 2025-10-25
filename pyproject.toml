@@ -36,9 +36,9 @@ classifiers = [
 attrs = ['attrs >= 21.3.0']
 attrs-strict = ['attrs >= 21.3.0, <= 24.2.0']
 sqlalchemy = ['sqlalchemy >= 2.0.0']
-sqlalchemy-strict = ['sqlalchemy >= 2.0.0, <= 2.0.40']
-pydantic = ['pydantic >= 2.0.0']
-pydantic-strict = ['pydantic >= 2.0.0, <= 2.11.3']
+sqlalchemy-strict = ['sqlalchemy >= 2.0.0, <= 2.0.36']
+pydantic = ['pydantic >= 2.1.0']
+pydantic-strict = ['pydantic >= 2.1.0, <= 2.12.3']
 msgspec = ['msgspec >= 0.18.5']
 msgspec-strict = ['msgspec >= 0.18.5, <= 0.19.0']
 
@@ -116,8 +116,6 @@ ignore_decorators = ['@_aspect_storage.add', '@overload', '@abstractmethod']
 line-length = 120
 output-format = "concise"
 
-extend = "docs/examples/ruff.toml"
-
 [tool.ruff.lint.isort]
 combine-as-imports = true
 extra-standard-library = [
@@ -137,6 +135,7 @@ fixable = [
   'PT001',
   'RUF023',
   'RUF022',
+  'I001',
 ]
 ignore = [
   # Rules that should be turned on soon
@@ -181,6 +180,7 @@ ignore = [
   'C420',
   'PYI061',
   'PLW1641',
+  'FURB157',
 ]
 
 [tool.ruff.per-file-target-version]
