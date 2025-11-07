@@ -37,7 +37,9 @@ class User(Base):
 
     # [NOTE] Adaptix can integrate with SQLAlchemy to handle JSON columns.
     # It seamlessly transforms your models to and from dictionaries.
-    preferences: Mapped[UserMetadata] = mapped_column(AdaptixJSON(_db_retort, UserMetadata))
+    # There are some nuances with mutation tracking,
+    # see adaptix documentation for details.
+    meta: Mapped[UserMetadata] = mapped_column(AdaptixJSON(_db_retort, UserMetadata))
 
 
 class Post(Base):
@@ -46,4 +48,4 @@ class Post(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey(User.id))
 
-    content: str
+    content: Mapped[str]

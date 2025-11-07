@@ -46,7 +46,7 @@ def db_user_to_schema(user: User, posts_count: int) -> UserSchema:  # type: igno
 
 
 @router.get(
-    "/user/{user_id}",
+    "/users/{user_id}",
 )
 async def get_user_by_id(
     user_id: int,
@@ -72,13 +72,13 @@ async def get_user_by_id(
 
 retort = Retort(
     recipe=[
-        name_mapping(User, skip=["preferences"]),
+        name_mapping(User, skip=["meta"]),
     ],
 )
 
 
 @router.get(
-    "/admin/user",
+    "/admin/users",
 )
 async def get_paginated_users(
     *,

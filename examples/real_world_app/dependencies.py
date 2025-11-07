@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 from starlette.requests import Request
 
 from .user_gateway import UserCache, UserGateway
@@ -11,8 +11,12 @@ def make_engine(request: Request) -> AsyncEngine:
     return request.app.state.engine
 
 
-async def make_session(engine: Annotated[AsyncEngine, Depends(make_engine)]):
-    async with AsyncSession(engine) as session:
+def make_session_factory(engine: Annotated[AsyncEngine, Depends(make_engine)]):
+    return async_sessionmaker(engine, expire_on_commit=False)
+
+
+async def make_session(session_factory: Annotated[async_sessionmaker, Depends(make_session_factory)]):
+    async with session_factory() as session:
         yield session
 
 

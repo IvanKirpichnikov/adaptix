@@ -60,7 +60,7 @@ class UserGateway:
 
     async def get_paginated_users(self, *, start_id: int, limit: int) -> Sequence[User]:
         result = await self._session.scalars(
-            select(User).where(User.id > start_id).limit(limit),
+            select(User).where(User.id > start_id).limit(limit).order_by(User.id),
         )
         return result.all()
 
