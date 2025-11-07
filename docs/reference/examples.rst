@@ -16,3 +16,9 @@ The behavior of each example is illustrated via included tests.
    :parser: myst_parser.sphinx_
 
 :octicon:`mark-github` :adaptix-view-repo:`Source Code <examples/api_division>`
+
+
+.. include:: /../examples/real_world_app/README.md
+   :parser: myst_parser.sphinx_
+
+:octicon:`mark-github` :adaptix-view-repo:`Source Code <examples/real_world_app>`
