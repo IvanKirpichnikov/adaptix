@@ -1,8 +1,9 @@
 line-length = 79
 
-[lint]
-select = ["I001"]
-fixable = ["I001"]
+extend = '../../pyproject.toml'
 
-[lint.isort]
-combine-as-imports = true
+[lint]
+extend-ignore = [
+  'E501',
+  'PLC0415',
+]
