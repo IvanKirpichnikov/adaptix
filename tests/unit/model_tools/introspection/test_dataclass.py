@@ -131,7 +131,7 @@ def test_basic():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c", "d", "e", "i"}),
+                overridden_types=frozenset({"a", "b", "c", "d", "e", "i"}),
             ),
             output=OutputShape(
                 fields=(
@@ -176,7 +176,7 @@ def test_basic():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "d", "e", "f", "i"}),
+                overridden_types=frozenset({"a", "d", "e", "f", "i"}),
             ),
         )
     )
@@ -230,7 +230,7 @@ def test_inheritance():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"b"}),
+                overridden_types=frozenset({"b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -251,7 +251,7 @@ def test_inheritance():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"b"}),
+                overridden_types=frozenset({"b"}),
             ),
         )
     )
@@ -292,7 +292,7 @@ def test_forward_ref():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"fr_field"}),
+                overridden_types=frozenset({"fr_field"}),
             ),
             output=OutputShape(
                 fields=(
@@ -305,7 +305,7 @@ def test_forward_ref():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"fr_field"}),
+                overridden_types=frozenset({"fr_field"}),
             ),
         )
     )
@@ -347,7 +347,7 @@ def test_forward_ref():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"some_field"}),
+                overridden_types=frozenset({"some_field"}),
             ),
             output=OutputShape(
                 fields=(
@@ -368,7 +368,7 @@ def test_forward_ref():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"some_field"}),
+                overridden_types=frozenset({"some_field"}),
             ),
         )
     )
@@ -403,7 +403,7 @@ def test_annotated():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"annotated_field"}),
+                overridden_types=frozenset({"annotated_field"}),
             ),
             output=OutputShape(
                 fields=(
@@ -416,7 +416,7 @@ def test_annotated():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"annotated_field"}),
+                overridden_types=frozenset({"annotated_field"}),
             ),
         )
     )
@@ -481,7 +481,7 @@ def test_kw_only_at_annotations(case):
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -502,7 +502,7 @@ def test_kw_only_at_annotations(case):
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
     )
@@ -569,7 +569,7 @@ def test_kw_only_false_after_kw_only():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -598,7 +598,7 @@ def test_kw_only_false_after_kw_only():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
         )
     )
@@ -696,7 +696,7 @@ def test_kw_only_inheritance_params_reordering():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({"y", "t"}),
+                overridden_types=frozenset({"y", "t"}),
             ),
             output=OutputShape(
                 fields=(
@@ -741,7 +741,7 @@ def test_kw_only_inheritance_params_reordering():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"y", "t"}),
+                overridden_types=frozenset({"y", "t"}),
             ),
         )
     )

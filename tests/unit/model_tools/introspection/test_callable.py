@@ -73,7 +73,7 @@ def test_simple():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"a", "b", "c", "d", "e"}),
+            overridden_types=frozenset({"a", "b", "c", "d", "e"}),
             params=(
                 Param(
                     field_id="a",
@@ -136,7 +136,7 @@ def test_unpacking_empty():
                     is_required=False,
                 ),
             ),
-            overriden_types=frozenset({"b", "a"}),
+            overridden_types=frozenset({"b", "a"}),
             params=(
                 Param(
                     field_id="a",
@@ -201,7 +201,7 @@ def test_unpacking_simple():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"b", "a"}),
+            overridden_types=frozenset({"b", "a"}),
             params=(
                 Param(
                     field_id="a",

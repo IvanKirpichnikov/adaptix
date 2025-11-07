@@ -57,7 +57,7 @@ def shape(*fields: TestField):
             )
             for fld in fields
         ),
-        overriden_types=frozenset(fld.id for fld in fields),
+        overridden_types=frozenset(fld.id for fld in fields),
     )
 
 

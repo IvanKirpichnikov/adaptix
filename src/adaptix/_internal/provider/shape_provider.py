@@ -172,12 +172,12 @@ class ShapeGenericResolver(Generic[ShapeT]):
             return MembersStorage(
                 meta=None,
                 members={},
-                overriden=frozenset(),
+                overridden=frozenset(),
             )
         return MembersStorage(
             meta=shape,
             members={field.id: field.type for field in shape.fields},
-            overriden=shape.overriden_types,
+            overridden=shape.overridden_types,
         )
 
 

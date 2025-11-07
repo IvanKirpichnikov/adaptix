@@ -115,7 +115,7 @@ def test_basic():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c", "d", "f"}),
+                overridden_types=frozenset({"a", "b", "c", "d", "f"}),
             ),
             output=OutputShape(
                 fields=(
@@ -160,7 +160,7 @@ def test_basic():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c", "d", "f"}),
+                overridden_types=frozenset({"a", "b", "c", "d", "f"}),
             ),
         )
     )
@@ -227,7 +227,7 @@ def test_inheritance():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
             OutputShape(
                 fields=(
@@ -256,7 +256,7 @@ def test_inheritance():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
         )
     )
@@ -295,7 +295,7 @@ def test_forward_ref():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -308,7 +308,7 @@ def test_forward_ref():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -343,7 +343,7 @@ def test_annotated():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -356,7 +356,7 @@ def test_annotated():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -414,7 +414,7 @@ def test_features():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             OutputShape(
                 fields=(
@@ -435,7 +435,7 @@ def test_features():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
     )
@@ -473,7 +473,7 @@ def test_generic():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             OutputShape(
                 fields=(
@@ -486,7 +486,7 @@ def test_generic():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )

@@ -180,7 +180,7 @@ def _get_input_shape(
     return InputShape(
         constructor=tp,
         fields=tuple(fields),
-        overriden_types=frozenset(),
+        overridden_types=frozenset(),
         kwargs=None,
         params=tuple(params),
     )
@@ -221,7 +221,7 @@ def _get_output_shape(
         )
     return OutputShape(
         fields=tuple(output_fields),
-        overriden_types=frozenset(),
+        overridden_types=frozenset(),
     )
 
 

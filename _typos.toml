@@ -1,0 +1,9 @@
+[files]
+extend-exclude = [
+  "docs/_static/",
+]
+
+[default.extend-words]
+ot = "ot"
+ba = "ba"
+absense = "absense"

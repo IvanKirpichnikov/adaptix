@@ -63,7 +63,7 @@ def test_inconsistent_fields_order(first, second):
                     kind=second,
                 ),
             ),
-            overriden_types=frozenset({"a", "b"}),
+            overridden_types=frozenset({"a", "b"}),
         )
 
 
@@ -114,7 +114,7 @@ def _make_triple_input_shape(first: ParamKind, second: ParamKind, third: ParamKi
                 kind=third,
             ),
         ),
-        overriden_types=frozenset({"a", "b", "c"}),
+        overridden_types=frozenset({"a", "b", "c"}),
     )
 
 
@@ -183,7 +183,7 @@ def test_field_id_duplicates():
                     kind=ParamKind.POS_OR_KW,
                 ),
             ),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
         )
 
     with pytest.raises(ValueError, match=full_match("Field ids {'a'} are duplicated")):
@@ -206,7 +206,7 @@ def test_field_id_duplicates():
                     original=None,
                 ),
             ),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
         )
 
 
@@ -245,7 +245,7 @@ def test_param_name_duplicates():
                     kind=ParamKind.POS_OR_KW,
                 ),
             ),
-            overriden_types=frozenset({"a1", "a2"}),
+            overridden_types=frozenset({"a1", "a2"}),
         )
 
 
@@ -271,14 +271,14 @@ def test_optional_and_positional_only():
                     kind=ParamKind.POS_ONLY,
                 ),
             ),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
         )
 
 
-def test_non_existing_fields_overriden_types():
+def test_non_existing_fields_overridden_types():
     with pytest.raises(
         ValueError,
-        match=full_match("overriden_types contains non existing fields frozenset({'c'})"),
+        match=full_match("overridden_types contains non existing fields frozenset({'c'})"),
     ):
         InputShape(
             constructor=stub_constructor,
@@ -313,12 +313,12 @@ def test_non_existing_fields_overriden_types():
                     kind=ParamKind.POS_OR_KW,
                 ),
             ),
-            overriden_types=frozenset({"c"}),
+            overridden_types=frozenset({"c"}),
         )
 
     with pytest.raises(
         ValueError,
-        match=full_match("overriden_types contains non existing fields frozenset({'c'})"),
+        match=full_match("overridden_types contains non existing fields frozenset({'c'})"),
     ):
         OutputShape(
             fields=(
@@ -339,7 +339,7 @@ def test_non_existing_fields_overriden_types():
                     original=None,
                 ),
             ),
-            overriden_types=frozenset({"c"}),
+            overridden_types=frozenset({"c"}),
         )
 
 
@@ -373,7 +373,7 @@ def test_parameter_bound_to_non_existing_field():
                     kind=ParamKind.POS_OR_KW,
                 ),
             ),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
         )
 
 
@@ -396,5 +396,5 @@ def test_field_without_parameters():
                 ),
             ),
             params=(),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
         )
