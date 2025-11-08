@@ -54,7 +54,7 @@ Dealing with ``if TYPE_CHECKING``
 .. include:: /common/dealing-with-if-type-checking.rst
 
 
-.. _detecting-absense-of-a-field:
+.. _detecting-absence-of-a-field:
 
 
 Detecting absence of a field
