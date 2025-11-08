@@ -98,7 +98,7 @@ Features
 - Now you can easily distinguish between a missing field and a None value.
   The new :func:`.as_sentinel` function allows you to mark types as sentinels,
   ensuring they remain hidden from the outside world.
-  See :ref:`detecting-absense-of-a-field` for detail. `#214 <https://github.com/reagento/adaptix/issues/214>`__
+  See :ref:`detecting-absence-of-a-field` for detail. `#214 <https://github.com/reagento/adaptix/issues/214>`__
 - Add support for ``ZoneInfo``. `#375 <https://github.com/reagento/adaptix/issues/375>`__
 
 

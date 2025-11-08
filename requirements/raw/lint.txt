@@ -15,6 +15,7 @@ dlint==0.14.1
 
 astpath[xpath]==0.9.1
 
+typos==1.39.0
 # flake8-docstrings
 # pycodestyle
 # darglint

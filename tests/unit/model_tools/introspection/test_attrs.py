@@ -175,7 +175,7 @@ def test_new_style():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "_b", "d", "e", "f", "g", "h", "i", "j"}),
+                overridden_types=frozenset({"a", "_b", "d", "e", "f", "g", "h", "i", "j"}),
             ),
             output=OutputShape(
                 fields=(
@@ -260,7 +260,7 @@ def test_new_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "_b", "c", "d", "e", "f", "g", "h", "i", "j"}),
+                overridden_types=frozenset({"a", "_b", "c", "d", "e", "f", "g", "h", "i", "j"}),
             ),
         )
     )
@@ -311,7 +311,7 @@ def test_old_style():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -332,7 +332,7 @@ def test_old_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
     )
@@ -404,7 +404,7 @@ def test_custom_init():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "_c"}),
+                overridden_types=frozenset({"a", "b", "_c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -441,7 +441,7 @@ def test_custom_init():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "_c", "d"}),
+                overridden_types=frozenset({"a", "b", "_c", "d"}),
             ),
         )
     )
@@ -507,7 +507,7 @@ def test_custom_init_unknown_params():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -528,7 +528,7 @@ def test_custom_init_unknown_params():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "other"}),
+                overridden_types=frozenset({"a", "other"}),
             ),
         )
     )
@@ -575,7 +575,7 @@ def test_custom_init_kwargs():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -588,7 +588,7 @@ def test_custom_init_kwargs():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -617,7 +617,7 @@ def test_custom_init_kwargs():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -630,7 +630,7 @@ def test_custom_init_kwargs():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -666,7 +666,7 @@ def test_none_attr():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -679,7 +679,7 @@ def test_none_attr():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -718,7 +718,7 @@ def test_none_attr_custom_init():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -731,7 +731,7 @@ def test_none_attr_custom_init():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -766,7 +766,7 @@ def test_annotated():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -779,7 +779,7 @@ def test_annotated():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -858,7 +858,7 @@ def test_inheritance_new_style():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -887,7 +887,7 @@ def test_inheritance_new_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
         )
     )
@@ -956,7 +956,7 @@ def test_inheritance_old_style():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -985,7 +985,7 @@ def test_inheritance_old_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "c"}),
+                overridden_types=frozenset({"a", "c"}),
             ),
         )
     )
@@ -1035,7 +1035,7 @@ def test_alias_new_style():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"foo", "_foo"}),
+                overridden_types=frozenset({"foo", "_foo"}),
             ),
             output=OutputShape(
                 fields=(
@@ -1056,7 +1056,7 @@ def test_alias_new_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"foo", "_foo"}),
+                overridden_types=frozenset({"foo", "_foo"}),
             ),
         )
     )
@@ -1106,7 +1106,7 @@ def test_alias_old_style():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"foo", "_foo"}),
+                overridden_types=frozenset({"foo", "_foo"}),
             ),
             output=OutputShape(
                 fields=(
@@ -1127,7 +1127,7 @@ def test_alias_old_style():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"foo", "_foo"}),
+                overridden_types=frozenset({"foo", "_foo"}),
             ),
         )
     )

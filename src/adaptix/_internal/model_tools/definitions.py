@@ -194,7 +194,7 @@ class BaseShape:
     See doc :class InputShape: and :class OutputShape: for more details
     """
     fields: VarTuple[BaseField]
-    overriden_types: frozenset[str]
+    overridden_types: frozenset[str]
     fields_dict: Mapping[str, BaseField] = field(init=False, hash=False, repr=False, compare=False)
 
     def _validate(self):
@@ -206,9 +206,9 @@ class BaseShape:
             }
             raise ValueError(f"Field ids {duplicates} are duplicated")
 
-        wild_overriden_types = self.overriden_types - field_ids
-        if wild_overriden_types:
-            raise ValueError(f"overriden_types contains non existing fields {wild_overriden_types}")
+        wild_overridden_types = self.overridden_types - field_ids
+        if wild_overridden_types:
+            raise ValueError(f"overridden_types contains non existing fields {wild_overridden_types}")
 
     def __post_init__(self):
         super().__setattr__("fields_dict", {fld.id: fld for fld in self.fields})

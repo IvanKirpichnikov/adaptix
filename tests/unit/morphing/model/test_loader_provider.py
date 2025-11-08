@@ -86,7 +86,7 @@ def shape(*fields: TestField, kwargs: Optional[ParamKwargs] = None):
         ),
         constructor=gauge,
         kwargs=kwargs,
-        overriden_types=frozenset(fld.id for fld in fields),
+        overridden_types=frozenset(fld.id for fld in fields),
         params=tuple(
             Param(
                 field_id=fld.id,

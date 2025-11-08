@@ -200,7 +200,7 @@ def _hash_json_value(value: JSONValue) -> int:
 
 
 def _check_omitted(template: str) -> str:
-    return f"OMMITED_HASH if __value__ is OMMITED else ({template})"
+    return f"OMITTED_HASH if __value__ is OMITTED else ({template})"
 
 
 def _json_object_hasher(item_hasher_template: str) -> str:
@@ -287,8 +287,8 @@ def _generate_json_schema_hasher(
         """,
     )
     namespace: dict[str, Any] = {
-        "OMMITED": Omitted(),
-        "OMMITED_HASH": hash(Omitted()),
+        "OMITTED": Omitted(),
+        "OMITTED_HASH": hash(Omitted()),
         "_hash_json_value": _hash_json_value,
         "HashGetter": HashGetter,
         "Sequence": Sequence,

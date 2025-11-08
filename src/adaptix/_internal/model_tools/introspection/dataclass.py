@@ -95,7 +95,7 @@ def get_dataclass_shape(tp) -> FullShape:
                 for field_id in init_params
             ),
             kwargs=None,
-            overriden_types=frozenset(
+            overridden_types=frozenset(
                 field_id for field_id in init_params
                 if field_id in tp.__annotations__
             ),
@@ -112,7 +112,7 @@ def get_dataclass_shape(tp) -> FullShape:
                 )
                 for dc_field in dc_fields_public
             ),
-            overriden_types=frozenset(
+            overridden_types=frozenset(
                 dc_field.name for dc_field in dc_fields_public
                 if dc_field.name in tp.__annotations__
             ),

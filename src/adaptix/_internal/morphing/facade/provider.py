@@ -469,7 +469,7 @@ def flag_by_member_names(
         if no predicates are passed, the provider will be used for all Flags.
         See :ref:`predicate-system` for details.
     :param allow_single_value: Allows calling the loader with a single value.
-        If this is allowed, singlular values are treated as one element list.
+        If this is allowed, singular values are treated as one element list.
     :param allow_duplicates: Allows calling the loader with a list containing non-unique elements.
         Unless this is allowed, loader will raise :exc:`.DuplicatedValuesLoadError` in that case.
     :param allow_compound: Allows the loader to accept names of compound members

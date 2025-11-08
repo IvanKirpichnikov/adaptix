@@ -138,7 +138,7 @@ def test_declarative():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
                 params=(
                     Param(
                         field_id="id",
@@ -275,7 +275,7 @@ def test_declarative():
                         accessor=create_attr_accessor("parent", is_required=True),
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
         )
     )
@@ -436,7 +436,7 @@ def test_imperative():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
             output=OutputShape(
                 fields=(
@@ -505,7 +505,7 @@ def test_imperative():
                         accessor=create_attr_accessor("parent", is_required=True),
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
         )
     )
@@ -594,7 +594,7 @@ def test_declarative_annotated():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
                 params=(
                     Param(
                         field_id="id",
@@ -679,7 +679,7 @@ def test_declarative_annotated():
                         accessor=create_attr_accessor("parent", is_required=True),
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
         )
     )
