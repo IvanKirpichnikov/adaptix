@@ -21,6 +21,11 @@ from typing import (
     NewType,
     NoReturn,
     Optional,
+    ParamSpec,
+    ParamSpecArgs,
+    ParamSpecKwargs,
+    TypeAlias,
+    TypeGuard,
     TypeVar,
     Union,
     overload,
@@ -28,17 +33,12 @@ from typing import (
 
 from ..common import TypeHint, VarTuple
 from ..feature_requirement import (
-    HAS_PARAM_SPEC,
-    HAS_PY_310,
     HAS_PY_311,
     HAS_PY_313,
     HAS_SELF_TYPE,
     HAS_TV_DEFAULT,
     HAS_TV_SYNTAX,
     HAS_TV_TUPLE,
-    HAS_TYPE_ALIAS,
-    HAS_TYPE_GUARD,
-    HAS_TYPE_UNION_OP,
     HAS_TYPED_DICT_REQUIRED,
     HAS_UNPACK,
 )
@@ -402,8 +402,7 @@ class NormTypeAlias(BaseNormType):
 
 
 _SPECIAL_CONSTRUCTOR_TYPE = (
-    TypeVar,
-    *((typing.ParamSpecArgs, typing.ParamSpecKwargs, typing.ParamSpec) if HAS_PARAM_SPEC else ()),
+    TypeVar, ParamSpecArgs, ParamSpecKwargs, ParamSpec,
     *((typing.TypeVarTuple,) if HAS_TV_TUPLE else ()),
 )
 
@@ -568,10 +567,8 @@ class TypeNormalizer:
     MUST_SUBSCRIBED_ORIGINS = [
         ClassVar, Final, Literal,
         Union, Optional, InitVar,
-        Annotated,
+        Annotated, TypeGuard,
     ]
-    if HAS_TYPE_GUARD:
-        MUST_SUBSCRIBED_ORIGINS.append(typing.TypeGuard)
     if HAS_TYPED_DICT_REQUIRED:
         MUST_SUBSCRIBED_ORIGINS.extend([typing.Required, typing.NotRequired])
     if HAS_PY_313:
@@ -630,7 +627,7 @@ class TypeNormalizer:
             default = namespaced._norm_iter(origin.__default__) if HAS_TV_DEFAULT and origin.has_default() else None
             return NormTVTuple(var=origin, source=tp, default=default)
 
-    @_aspect_storage.add(condition=HAS_PARAM_SPEC)
+    @_aspect_storage.add
     def _norm_param_spec(self, tp, origin, args):
         if isinstance(tp, typing.ParamSpecArgs):
             return _NormParamSpecArgs(param_spec=self.normalize(origin), source=tp)
@@ -795,9 +792,7 @@ class TypeNormalizer:
             result.append(_create_norm_literal(lit_args))
         return result
 
-    _UNION_ORIGINS: list[Any] = [Union]
-    if HAS_TYPE_UNION_OP:
-        _UNION_ORIGINS.append(types.UnionType)
+    _UNION_ORIGINS: list[Any] = [Union, types.UnionType]
 
     @_aspect_storage.add
     def _norm_union(self, tp, origin, args):
@@ -826,11 +821,7 @@ class TypeNormalizer:
                     source=tp,
                 )
 
-    ALLOWED_ZERO_PARAMS_ORIGINS: set[Any] = {Any, NoReturn}
-    if HAS_TYPE_ALIAS:
-        ALLOWED_ZERO_PARAMS_ORIGINS.add(typing.TypeAlias)
-    if HAS_PY_310:
-        ALLOWED_ZERO_PARAMS_ORIGINS.add(dataclasses.KW_ONLY)
+    ALLOWED_ZERO_PARAMS_ORIGINS: set[Any] = {Any, NoReturn, TypeAlias, dataclasses.KW_ONLY}
     if HAS_PY_311:
         ALLOWED_ZERO_PARAMS_ORIGINS.add(typing.Never)
     if HAS_SELF_TYPE:

@@ -11,6 +11,7 @@ from typing import (
     Any,
     Callable,
     ClassVar,
+    Concatenate,
     DefaultDict,
     Dict,
     Final,
@@ -23,11 +24,16 @@ from typing import (
     NewType,
     NoReturn,
     Optional,
+    ParamSpec,
+    ParamSpecArgs,
+    ParamSpecKwargs,
     Pattern,
     Protocol,
     Set,
     Tuple,
     Type,
+    TypeAlias,
+    TypeGuard,
     TypeVar,
     Union,
 )
@@ -37,16 +43,11 @@ import pytest
 from tests_helpers import cond_list, full_match, requires
 
 from adaptix._internal.feature_requirement import (
-    HAS_PARAM_SPEC,
-    HAS_PY_310,
     HAS_PY_311,
     HAS_PY_312,
     HAS_PY_313,
     HAS_TV_DEFAULT,
     HAS_TV_TUPLE,
-    HAS_TYPE_ALIAS,
-    HAS_TYPE_GUARD,
-    HAS_TYPE_UNION_OP,
     HAS_TYPED_DICT_REQUIRED,
 )
 from adaptix._internal.type_tools import normalize_type
@@ -288,7 +289,7 @@ def test_type(make_union):
     [
         ClassVar,
         InitVar,
-        *cond_list(HAS_TYPE_GUARD, lambda: [typing.TypeGuard]),
+        TypeGuard,
         *cond_list(HAS_TYPED_DICT_REQUIRED, lambda: [typing.Required, typing.NotRequired]),
     ],
 )
@@ -301,7 +302,6 @@ def test_var_tag(tp):
     )
 
 
-@requires(HAS_PY_310)
 def test_kw_only():
     from dataclasses import KW_ONLY
 
@@ -479,11 +479,10 @@ def test_optional():
         Union, [nt_zero(int), nt_zero(None, source=type(None))],
     )
 
-    if HAS_TYPE_UNION_OP:
-        assert_normalize(
-            int | None,
-            Union, [nt_zero(int), nt_zero(None, source=type(None))],
-        )
+    assert_normalize(
+        int | None,
+        Union, [nt_zero(int), nt_zero(None, source=type(None))],
+    )
 
     assert_normalize(
         Optional[None],
@@ -555,89 +554,86 @@ def test_type_var(variance: dict, make_union):
         ),
     )
 
-    if HAS_PARAM_SPEC:
-        from typing import Concatenate, ParamSpec
+    p1 = ParamSpec("p1", **variance)  # type: ignore[misc]
 
-        p1 = ParamSpec("p1", **variance)  # type: ignore[misc]
+    assert_normalize(
+        Concatenate[int, p1],
+        Concatenate, [
+            nt_zero(int),
+            NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
+        ],
+    )
 
-        assert_normalize(
-            Concatenate[int, p1],
-            Concatenate, [
-                nt_zero(int),
-                NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
-            ],
-        )
+    assert_normalize(
+        Concatenate[int, str, p1],
+        Concatenate, [
+            nt_zero(int),
+            nt_zero(str),
+            NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
+        ],
+    )
 
-        assert_normalize(
-            Concatenate[int, str, p1],
-            Concatenate, [
-                nt_zero(int),
-                nt_zero(str),
-                NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
-            ],
-        )
+    assert_normalize(
+        Callable[Concatenate[int, p1], int],
+        c_abc.Callable, [
+            make_norm_type(
+                Concatenate,
+                (nt_zero(int), NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None)),
+                source=Concatenate[int, p1],
+            ),
+            nt_zero(int),
+        ],
+    )
 
-        assert_normalize(
-            Callable[Concatenate[int, p1], int],
-            c_abc.Callable, [
-                make_norm_type(
-                    Concatenate,
-                    (nt_zero(int), NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None)),
-                    source=Concatenate[int, p1],
+    assert_normalize(
+        Callable[Concatenate[int, str, p1], int],
+        c_abc.Callable, [
+            make_norm_type(
+                Concatenate,
+                (
+                    nt_zero(int),
+                    nt_zero(str),
+                    NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
                 ),
-                nt_zero(int),
-            ],
-        )
+                source=Concatenate[int, str, p1],
+            ),
+            nt_zero(int),
+        ],
+    )
 
-        assert_normalize(
-            Callable[Concatenate[int, str, p1], int],
-            c_abc.Callable, [
-                make_norm_type(
-                    Concatenate,
-                    (
-                        nt_zero(int),
-                        nt_zero(str),
-                        NormParamSpec(p1, limit=Bound(nt_zero(Any)), source=p1, default=None),
-                    ),
-                    source=Concatenate[int, str, p1],
+    p2 = ParamSpec("p2", bound=str)  # type: ignore[misc]
+    assert_norm_tv(
+        p2,
+        NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None),
+    )
+
+    assert_normalize(
+        Callable[Concatenate[int, p2], int],
+        c_abc.Callable, [
+            make_norm_type(
+                Concatenate,
+                (nt_zero(int), NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None)),
+                source=Concatenate[int, p2],
+            ),
+            nt_zero(int),
+        ],
+    )
+
+    assert_normalize(
+        Callable[Concatenate[int, str, p2], int],
+        c_abc.Callable, [
+            make_norm_type(
+                Concatenate,
+                (
+                    nt_zero(int),
+                    nt_zero(str),
+                    NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None),
                 ),
-                nt_zero(int),
-            ],
-        )
-
-        p2 = ParamSpec("p2", bound=str)  # type: ignore[misc]
-        assert_norm_tv(
-            p2,
-            NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None),
-        )
-
-        assert_normalize(
-            Callable[Concatenate[int, p2], int],
-            c_abc.Callable, [
-                make_norm_type(
-                    Concatenate,
-                    (nt_zero(int), NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None)),
-                    source=Concatenate[int, p2],
-                ),
-                nt_zero(int),
-            ],
-        )
-
-        assert_normalize(
-            Callable[Concatenate[int, str, p2], int],
-            c_abc.Callable, [
-                make_norm_type(
-                    Concatenate,
-                    (
-                        nt_zero(int),
-                        nt_zero(str),
-                        NormParamSpec(p2, limit=Bound(nt_zero(str)), source=p2, default=None),
-                    ),
-                    source=Concatenate[int, str, p2],
-                ),
-                nt_zero(int),
-            ],
-        )
+                source=Concatenate[int, str, p2],
+            ),
+            nt_zero(int),
+        ],
+    )
 
 
 # make it covariant to use at protocol
@@ -706,10 +702,7 @@ def any_ps(tv: Any):
     return NormParamSpec(tv, Bound(nt_zero(Any)), source=tv, default=None)
 
 
-@requires(HAS_PARAM_SPEC)
 def test_generic_and_protocol_with_param_spec():
-    from typing import Concatenate, ParamSpec
-
     p1 = ParamSpec("p1")
     p2 = ParamSpec("p2")
     p3 = ParamSpec("p3")
@@ -785,10 +778,9 @@ class MyAnotherForwardClass:
     pass
 
 
-if HAS_PARAM_SPEC:
-    P_FR1 = typing.ParamSpec("P_FR1", bound="int")  # type: ignore[misc]
-    P_FR2 = typing.ParamSpec("P_FR2", bound="MyForwardClass")  # type: ignore[misc]
-    P_FR3 = typing.ParamSpec("P_FR3", bound=List["MyForwardClass"])  # type: ignore[misc]
+P_FR1 = ParamSpec("P_FR1", bound="int")  # type: ignore[misc]
+P_FR2 = ParamSpec("P_FR2", bound="MyForwardClass")  # type: ignore[misc]
+P_FR3 = ParamSpec("P_FR3", bound=List["MyForwardClass"])  # type: ignore[misc]
 
 
 def test_forward_ref_at_type_var_limit():
@@ -842,46 +834,42 @@ def test_forward_ref_at_type_var_limit():
         ),
     )
 
-    if HAS_PARAM_SPEC:
-        assert_norm_tv(
+    assert_norm_tv(
+        P_FR1,
+        NormParamSpec(
             P_FR1,
-            NormParamSpec(
-                P_FR1,
-                limit=Bound(nt_zero(int, source=ForwardRef("int"))),
-                source=P_FR1,
-                default=None,
-            ),
-        )
-        assert_norm_tv(
+            limit=Bound(nt_zero(int, source=ForwardRef("int"))),
+            source=P_FR1,
+            default=None,
+        ),
+    )
+    assert_norm_tv(
+        P_FR2,
+        NormParamSpec(
             P_FR2,
-            NormParamSpec(
-                P_FR2,
-                limit=Bound(nt_zero(MyForwardClass, source=ForwardRef("MyForwardClass"))),
-                source=P_FR2,
-                default=None,
-            ),
-        )
-        assert_norm_tv(
+            limit=Bound(nt_zero(MyForwardClass, source=ForwardRef("MyForwardClass"))),
+            source=P_FR2,
+            default=None,
+        ),
+    )
+    assert_norm_tv(
+        P_FR3,
+        NormParamSpec(
             P_FR3,
-            NormParamSpec(
-                P_FR3,
-                limit=Bound(
-                    make_norm_type(
-                        list,
-                        (nt_zero(MyForwardClass, source=ForwardRef("MyForwardClass")),),
-                        source=List[ForwardRef("MyForwardClass")],
-                    ),
+            limit=Bound(
+                make_norm_type(
+                    list,
+                    (nt_zero(MyForwardClass, source=ForwardRef("MyForwardClass")),),
+                    source=List[ForwardRef("MyForwardClass")],
                 ),
-                source=P_FR3,
-                default=None,
             ),
-        )
+            source=P_FR3,
+            default=None,
+        ),
+    )
 
 
-@requires(HAS_PARAM_SPEC)
 def test_param_spec_args_and_kwargs():
-    from typing import ParamSpec, ParamSpecArgs, ParamSpecKwargs
-
     p1 = ParamSpec("p1")
 
     assert_strict_equal(
@@ -924,11 +912,10 @@ def test_user_class():
     )
 
 
-@requires(HAS_TYPE_ALIAS)
 def test_type_alias():
     assert_normalize(
-        typing.TypeAlias,
-        typing.TypeAlias, [],
+        TypeAlias,
+        TypeAlias, [],
     )
 
 

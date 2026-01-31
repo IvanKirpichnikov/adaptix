@@ -9,6 +9,7 @@ from collections import defaultdict
 from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
 from functools import partial
+from itertools import pairwise
 from pathlib import Path
 from textwrap import dedent
 from typing import Any, Callable, DefaultDict, Dict, Iterable, List, Mapping, Optional, Sequence, Set, TypeVar, Union
@@ -18,7 +19,6 @@ import plotly
 import plotly.graph_objects as go
 import pyperf
 
-from adaptix._internal.utils import pairs
 from benchmarks.pybench.director_api import BenchAccessor, BenchChecker, BenchmarkDirector, BenchStorageFactory
 
 T = TypeVar("T")
@@ -135,7 +135,7 @@ class ClusterAxisBounder(AxisBounder):
     def _split_into_clusters(self, measures: Iterable[BenchmarkMeasure]) -> Sequence[Sequence[BenchmarkMeasure]]:
         clusters: List[List[BenchmarkMeasure]] = []
         current_cluster: List[BenchmarkMeasure] = []
-        for prev, current in pairs(measures):
+        for prev, current in pairwise(measures):
             if current.pyperf.mean() / prev.pyperf.mean() >= self.boundary_rate:
                 clusters.append(current_cluster)
                 current_cluster = [current]

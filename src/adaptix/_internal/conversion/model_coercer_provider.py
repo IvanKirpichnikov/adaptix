@@ -28,7 +28,6 @@ from ..conversion.request_cls import (
     ModelLinking,
     UnlinkedOptionalPolicyRequest,
 )
-from ..feature_requirement import HAS_PY_310
 from ..model_tools.definitions import DefaultValue, InputField, InputShape, OutputShape, ParamKind, create_key_accessor
 from ..morphing.model.basic_gen import compile_closure_with_globals_capturing, fetch_code_gen_hook
 from ..provider.essential import AggregateCannotProvide, CannotProvide, Mediator, mandatory_apply_by_iterable
@@ -85,10 +84,7 @@ class ModelCoercerProvider(CoercerProvider):
         return dst_shape, src_shape
 
     def _types_are_not_models_parent_notes_gen(self, types: Iterable[TypeHint]) -> Sequence[str]:
-        if (
-            HAS_PY_310
-            and all(getattr(tp, "__module__", None) not in sys.stdlib_module_names for tp in types)
-        ):
+        if all(getattr(tp, "__module__", None) not in sys.stdlib_module_names for tp in types):
             return [
                 "Hint: Types are not recognized as models."
                 " Did your forget `@dataclass` decorator? Check documentation what model kinds are supported",

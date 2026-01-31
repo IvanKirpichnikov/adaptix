@@ -4,9 +4,7 @@ from typing import Annotated, ClassVar
 from unittest.mock import ANY
 
 import pytest
-from tests_helpers import requires
 
-from adaptix._internal.feature_requirement import HAS_PY_310
 from adaptix._internal.model_tools.definitions import (
     DefaultFactory,
     DefaultValue,
@@ -422,7 +420,6 @@ def test_annotated():
     )
 
 
-@requires(HAS_PY_310)
 @pytest.mark.parametrize("case", ["field", "annotation", "arg"])
 def test_kw_only_at_annotations(case):
     from dataclasses import KW_ONLY
@@ -508,7 +505,6 @@ def test_kw_only_at_annotations(case):
     )
 
 
-@requires(HAS_PY_310)
 def test_kw_only_false_after_kw_only():
     from dataclasses import KW_ONLY
 
@@ -604,7 +600,6 @@ def test_kw_only_false_after_kw_only():
     )
 
 
-@requires(HAS_PY_310)
 def test_kw_only_inheritance_params_reordering():
     from dataclasses import KW_ONLY
 
