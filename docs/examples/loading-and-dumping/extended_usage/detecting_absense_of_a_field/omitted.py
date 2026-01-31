@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from adaptix import Omittable, Omitted, Retort, name_mapping
 from adaptix.load_error import AggregateLoadError, TypeLoadError
@@ -9,7 +8,7 @@ from adaptix.load_error import AggregateLoadError, TypeLoadError
 class PatchBook:
     id: int
     title: Omittable[str] = Omitted()
-    sub_title: Omittable[Optional[str]] = Omitted()
+    sub_title: Omittable[str | None] = Omitted()
 
 
 retort = Retort(

@@ -1,6 +1,6 @@
 import collections.abc
 from collections.abc import Iterable, Sequence
-from typing import Any, Literal, Optional, Union
+from typing import Any, Literal, Union
 
 from ..common import Dumper, Loader, TypeHint
 from ..compat import CompatExceptionGroup
@@ -87,7 +87,7 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
             return mediator.cached_call(self._produce_loader_dt_all, norm.source, tuple(loaders))
         raise ValueError
 
-    def _parse_single_optional_loader(self, loaders: Sequence[Loader]) -> Optional[Loader]:
+    def _parse_single_optional_loader(self, loaders: Sequence[Loader]) -> Loader | None:
         try:
             [first, second] = loaders
         except ValueError:
@@ -233,9 +233,9 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
             return NoneType
         return strip_tags(norm).origin
 
-    def _parse_single_optional_dumper(self, norm: BaseNormType, dumpers: Iterable[Dumper]) -> Optional[Dumper]:
+    def _parse_single_optional_dumper(self, norm: BaseNormType, dumpers: Iterable[Dumper]) -> Dumper | None:
         try:
-            [(first_norm, first_dumper), (second_norm, second_dumper)] = zip(norm.args, dumpers)
+            [(first_norm, first_dumper), (second_norm, second_dumper)] = zip(norm.args, dumpers, strict=False)
         except ValueError:
             return None
         if first_norm.origin is None and first_dumper == as_is_stub:
@@ -246,8 +246,8 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
 
     def _extract_literal(self, args: Iterable[TypeHint], dumpers: Iterable[Dumper]):
         non_literals: list[tuple[BaseNormType, Dumper]] = []
-        literal: Optional[tuple[BaseNormType, Dumper]] = None
-        for arg, dumper in zip(args, dumpers):
+        literal: tuple[BaseNormType, Dumper] | None = None
+        for arg, dumper in zip(args, dumpers, strict=False):
             norm = try_normalize_type(arg)
             if norm.origin == Literal:
                 literal = (norm, dumper)

@@ -1,6 +1,6 @@
 from copy import deepcopy
 from decimal import Decimal
-from typing import Any, List, Optional, Union
+from typing import Any
 
 import phonenumbers
 from tests_helpers import raises_exc, with_trail
@@ -20,7 +20,7 @@ from .money import rubles
 from .retort import inner_receipt_retort, outer_receipt_retort
 
 
-def change(data, path: List[Union[str, int]], new_value: Any):
+def change(data, path: list[str | int], new_value: Any):
     new_data = deepcopy(data)
 
     target = new_data
@@ -105,7 +105,7 @@ def test_outer_loading_bad_phone():
             [
                 with_trail(
                     UnionLoadError(
-                        f"while loading {Optional[list[NotifyTarget]]}",
+                        f"while loading {list[NotifyTarget] | None}",
                         [
                             TypeLoadError(None, [{"type": "phone", "value": "+1-541-754-3010"}]),
                             AggregateLoadError(

@@ -91,7 +91,7 @@ def _get_type_for_relationship(relationship: "RelationshipProperty", type_hints:
         return Optional[relationship.entity.class_]
 
 
-def _get_default(column_default: "Optional[DefaultGenerator]"):
+def _get_default(column_default: "DefaultGenerator | None"):
     if isinstance(column_default, CallableColumnDefault):
         if _is_context_sensitive(column_default):
             return NoDefault()
@@ -101,7 +101,7 @@ def _get_default(column_default: "Optional[DefaultGenerator]"):
     return NoDefault()
 
 
-def _is_input_required_for_column(column: "ColumnElement", autoincrement_column: "Optional[Column[int]]"):
+def _is_input_required_for_column(column: "ColumnElement", autoincrement_column: "Column[int] | None"):
     return not (
         # columns constrained by FK are not required since they can be specified by instances
         column.default is not None

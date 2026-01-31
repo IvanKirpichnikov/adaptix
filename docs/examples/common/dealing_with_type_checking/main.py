@@ -1,4 +1,4 @@
-# ruff: noqa: UP006
+# ruff: noqa: UP006, UP035
 from typing import List, get_type_hints
 
 from adaptix.type_tools import exec_type_checking

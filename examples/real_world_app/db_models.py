@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -21,8 +20,8 @@ class SignupMeta:
 
 @dataclass
 class UserMetadata:
-    signup: Optional[SignupMeta]
-    imported_from: Optional[str]
+    signup: SignupMeta | None
+    imported_from: str | None
 
 
 _db_retort = Retort()

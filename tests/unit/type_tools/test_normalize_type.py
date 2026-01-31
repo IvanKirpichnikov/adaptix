@@ -1,3 +1,4 @@
+# ruff: noqa: UP006, UP035, UP045
 import collections
 import re
 import typing

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from collections.abc import Container, Mapping, Sequence
-from typing import Optional, TypeVar
+from typing import TypeVar
 
 from ...datastructures import OrderedUniqueGrouper
 from ...provider.loc_stack_filtering import LocStack
@@ -161,7 +161,7 @@ class BuiltinJSONSchemaResolver(JSONSchemaResolver):
         self,
         common_ref: str,
         sources_groups: Sequence[LocalRefSourceGroup],
-    ) -> tuple[Sequence[LocalRefSourceGroup], Optional[LocalRefSourceGroup]]:
+    ) -> tuple[Sequence[LocalRefSourceGroup], LocalRefSourceGroup | None]:
         pinned_groups = [
             source_group
             for source_group in sources_groups

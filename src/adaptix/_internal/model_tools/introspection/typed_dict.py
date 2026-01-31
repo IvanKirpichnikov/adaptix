@@ -64,7 +64,7 @@ def get_typed_dict_shape(tp) -> FullShape:
         norm_types = [normalize_type(tp) for _, tp in type_hints]
 
         required_keys = _fetch_required_keys(
-            [(field_name, field_tp) for (field_name, _), field_tp in zip(type_hints, norm_types)],
+            [(field_name, field_tp) for (field_name, _), field_tp in zip(type_hints, norm_types, strict=False)],
             tp.__required_keys__,
         )
         requirement_determinant = _make_requirement_determinant(required_keys)

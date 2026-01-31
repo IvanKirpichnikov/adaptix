@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Generic, Optional, TypeVar, Union
+from typing import Generic, TypeVar, Union
 
 from ...provider.loc_stack_filtering import LocStack
 from ...type_tools.fwd_ref import FwdRef
@@ -12,7 +12,7 @@ JSONSchemaT = TypeVar("JSONSchemaT")
 
 @dataclass(frozen=True)
 class LocalRefSource(Generic[JSONSchemaT]):
-    value: Optional[str]
+    value: str | None
     json_schema: JSONSchemaT = field(hash=False)
     loc_stack: LocStack = field(repr=False)
 

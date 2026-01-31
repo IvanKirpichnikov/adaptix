@@ -1,6 +1,6 @@
 from collections.abc import Container, Iterable, Mapping, Sequence
 from dataclasses import fields
-from typing import Any, Optional, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 from ...common import TypeHint
 from ...definitions import Direction
@@ -42,11 +42,11 @@ def dump(data: T, tp: type[T], /) -> Any:
 
 
 @overload
-def dump(data: Any, tp: Optional[TypeHint] = None, /) -> Any:
+def dump(data: Any, tp: TypeHint | None = None, /) -> Any:
     ...
 
 
-def dump(data: Any, tp: Optional[TypeHint] = None, /) -> Any:
+def dump(data: Any, tp: TypeHint | None = None, /) -> Any:
     return _default_retort.dump(data, tp)
 
 

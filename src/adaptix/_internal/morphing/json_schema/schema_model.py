@@ -102,11 +102,11 @@ class _JSONSchemaSubschemas(Generic[JSONSchemaT]):
 @dataclass
 class _JSONSchemaValidation(Generic[JSONSchemaT]):
     # common
-    type: Omittable[Union[JSONSchemaType, Sequence[JSONSchemaType]]] = Omitted()
+    type: Omittable[JSONSchemaType | Sequence[JSONSchemaType]] = Omitted()
     enum: Omittable[Sequence[JSONValue]] = Omitted()
     const: Omittable[JSONValue] = Omitted()
 
-    format: Omittable[Union[JSONSchemaBuiltinFormat, str]] = Omitted()
+    format: Omittable[JSONSchemaBuiltinFormat | str] = Omitted()
 
     # numeric
     multiple_of: Omittable[JSONNumeric] = Omitted()

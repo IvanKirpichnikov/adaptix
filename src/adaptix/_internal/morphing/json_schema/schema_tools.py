@@ -1,7 +1,7 @@
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import fields
 from textwrap import dedent, indent
-from typing import Any, Callable, Optional, TypeVar, Union
+from typing import Any, TypeVar, Union
 
 from adaptix import TypeHint
 
@@ -62,7 +62,7 @@ _json_schema_templates = {
 def _generate_json_schema_traverser(
     function_name: str,
     file_name: str,
-    templates: Mapping[TypeHint, Optional[str]],
+    templates: Mapping[TypeHint, str | None],
     cls: type[JSONSchemaT],
 ) -> Callable[[JSONSchemaT], Iterable[JSONSchemaT]]:
     result = []
@@ -134,7 +134,7 @@ ContextT = TypeVar("ContextT")
 def _generate_json_schema_replacer(
     function_name: str,
     file_name: str,
-    templates: Mapping[TypeHint, Optional[str]],
+    templates: Mapping[TypeHint, str | None],
     source_cls: type[JSONSchemaSourceT],
     target_cls: type[JSONSchemaTargetT],
     context: type[ContextT],
@@ -256,7 +256,7 @@ _approx_hash_templates = {
 def _generate_json_schema_hasher(
     function_name: str,
     file_name: str,
-    templates: Mapping[TypeHint, Optional[str]],
+    templates: Mapping[TypeHint, str | None],
     source_cls: type[JSONSchemaSourceT],
 ) -> Callable[[JSONSchemaSourceT], int]:
     result = []

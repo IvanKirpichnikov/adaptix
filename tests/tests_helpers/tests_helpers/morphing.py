@@ -163,7 +163,7 @@ def _assert_json_schema_errors(
 ) -> None:
     errors_list = list(errors)
     assert len(errors_list) == len(templates)
-    for error, template in zip(errors_list, templates):
+    for error, template in zip(errors_list, templates, strict=False):
         assert path_getter(error) == template.path
         asserter_getter(template)(error)
 

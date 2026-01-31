@@ -123,9 +123,6 @@ output-format = "concise"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-extra-standard-library = [
-    "tomllib",  # because requires-python = '>=3.9'
-]
 
 [tool.ruff.lint]
 
@@ -141,6 +138,8 @@ fixable = [
   'RUF023',
   'RUF022',
   'I001',
+  'B905',
+  'F401',
 ]
 ignore = [
   # Rules that should be turned on soon
@@ -149,12 +148,6 @@ ignore = [
   'B904',
   'FIX002',
   'RUF012',
-
-  # Turn on full drop support of 3.9
-  'UP045',
-  'UP007',
-  'B905',
-  'UP035',
 
   'PYI019',  # turn on after 3.11
 
@@ -206,6 +199,7 @@ ignore = [
   'N806',
   'FA102',
   'UP006', # turn on after 3.9
+  'UP007', # turn on after 3.9
   'UP035', # turn on after 3.9
   'UP044', # turn on after 3.9
   'UP045', # turn on after 3.9
@@ -229,7 +223,7 @@ ignore = [
 ]
 
 "examples/*" = [
-  'UP035', 'UP006', # turn on after 3.9
+  'UP035',
   'PLW1641', 'S101'
 ]
 

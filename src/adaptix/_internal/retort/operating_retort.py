@@ -1,5 +1,5 @@
-from collections.abc import Iterable, Sequence
-from typing import Any, Callable, Generic, Optional, TypeVar
+from collections.abc import Callable, Iterable, Sequence
+from typing import Any, Generic, TypeVar
 
 from ..common import TypeHint
 from ..conversion.request_cls import CoercerRequest, LinkingRequest
@@ -41,7 +41,7 @@ class LocatedRequestCallableRecursionResolver(RecursionResolver[LocatedRequest, 
     def __init__(self) -> None:
         self._tp_to_stub: dict[TypeHint, FuncWrapper] = {}
 
-    def track_request(self, request: LocatedRequest) -> Optional[Any]:
+    def track_request(self, request: LocatedRequest) -> Any | None:
         last_loc_type = request.last_loc.type
         if sum(loc.type == last_loc_type for loc in request.loc_stack) == 1:
             return None
@@ -142,7 +142,7 @@ class OperatingRetort(SearchingRetort):
 
         return BaseRequestErrorRepresentor(f"Cannot satisfy {request_cls}")
 
-    def _create_recursion_resolver(self, request_cls: type[RequestT]) -> Optional[RecursionResolver[RequestT, Any]]:
+    def _create_recursion_resolver(self, request_cls: type[RequestT]) -> RecursionResolver[RequestT, Any] | None:
         if issubclass(request_cls, (LoaderRequest, DumperRequest)):
             return LocatedRequestCallableRecursionResolver()  # type: ignore[return-value]
         return None

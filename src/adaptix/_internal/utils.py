@@ -1,10 +1,10 @@
 import sys
 import warnings
 from abc import ABC, abstractmethod
-from collections.abc import Collection, Generator, Iterable, Iterator, Mapping
+from collections.abc import Callable, Collection, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from copy import copy
-from typing import Any, Callable, Generic, Protocol, TypeVar, Union, final, overload
+from typing import Any, Generic, Protocol, TypeVar, final, overload
 
 from .feature_requirement import HAS_NATIVE_EXC_GROUP, HAS_PY_311
 
@@ -87,7 +87,7 @@ class Omitted(metaclass=SingletonMeta):
 
 T = TypeVar("T")
 
-Omittable = Union[T, Omitted]
+Omittable = T | Omitted
 
 
 ComparableSeqT = TypeVar("ComparableSeqT", bound="ComparableSequence")

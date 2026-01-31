@@ -1,3 +1,4 @@
+# ruff: noqa: UP007, UP045, UP006
 import collections
 import typing
 from typing import Annotated, Callable, Generic, List, Optional, ParamSpec, TypeVar, Union

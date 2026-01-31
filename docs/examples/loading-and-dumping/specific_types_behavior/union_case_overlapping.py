@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Union
 
 from adaptix import Retort
 
@@ -17,4 +16,4 @@ class Dog:
 
 
 retort = Retort()
-retort.load({"name": "Tardar Sauce", "breed": "mixed"}, Union[Cat, Dog])
+retort.load({"name": "Tardar Sauce", "breed": "mixed"}, Cat | Dog)

@@ -7,7 +7,7 @@ from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from io import BytesIO
-from typing import Generic, Optional, TypeVar, Union
+from typing import Generic, TypeVar, Union
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from ..common import Dumper, Loader
@@ -32,7 +32,7 @@ class IsoFormatProvider(MorphingProvider):
         datetime: JSONSchemaBuiltinFormat.DATE_TIME,
     }
 
-    def __init__(self, cls: type[Union[date, time]]):
+    def __init__(self, cls: type[date | time]):
         self._cls = cls
         self._loc_stack_checker = create_loc_stack_checker(cls)
 
@@ -105,7 +105,7 @@ class DatetimeFormatProvider(MorphingProvider):
 
 @for_predicate(datetime)
 class DatetimeTimestampProvider(MorphingProvider):
-    def __init__(self, tz: Optional[timezone]):
+    def __init__(self, tz: timezone | None):
         self._tz = tz
 
     def provide_loader(self, mediator: Mediator, request: LoaderRequest) -> Loader:

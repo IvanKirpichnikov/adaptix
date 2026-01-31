@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 from adaptix.conversion import allow_unlinked_optional, get_converter
 
@@ -16,7 +15,7 @@ class BookDTO:
     title: str
     price: int
     author: str
-    collection_id: Optional[int] = None
+    collection_id: int | None = None
     bookmarks_ids: list[str] = field(default_factory=list)
 
 

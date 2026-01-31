@@ -1,4 +1,4 @@
-# ruff: noqa: UP006
+# ruff: noqa: UP006, UP035
 from dataclasses import dataclass
 from typing import List
 

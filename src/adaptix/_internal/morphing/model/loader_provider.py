@@ -154,7 +154,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create JSON Schema for model. JSON Schemas for some fields cannot be created",
         )
-        return {field.id: json_schema for field, json_schema in zip(shape.fields, json_schemas)}
+        return {field.id: json_schema for field, json_schema in zip(shape.fields, json_schemas, strict=False)}
 
     def _fetch_field_json_schemas_of_default(
         self,
@@ -180,7 +180,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create JSON Schema for model. Dumpers for some field defaults cannot be created",
         )
-        return {field.id: dumper(default) for (field, default), dumper in zip(fields_and_defaults, dumpers)}
+        return {field.id: dumper(default) for (field, default), dumper in zip(fields_and_defaults, dumpers, strict=False)}
 
     def _fetch_model_identity(
         self,
@@ -260,7 +260,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create loader for model. Loaders for some fields cannot be created",
         )
-        return {field.id: loader for field, loader in zip(shape.fields, loaders)}
+        return {field.id: loader for field, loader in zip(shape.fields, loaders, strict=False)}
 
     def _validate_params(
         self,
