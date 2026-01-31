@@ -1,9 +1,9 @@
 import collections.abc
 import types
 import typing
-from typing import Any, Union
+from typing import Any, ParamSpec, Union
 
-from ..feature_requirement import HAS_PARAM_SPEC, HAS_PY_310, HAS_TYPE_ALIAS_SYNTAX, HAS_TYPE_UNION_OP, HAS_UNPACK
+from ..feature_requirement import HAS_TYPE_ALIAS_SYNTAX, HAS_UNPACK
 from .fundamentals import get_generic_args, strip_alias
 
 NoneType = type(None)
@@ -40,12 +40,10 @@ class TypeHintRenderer:
     def _get_repr_base(self, tp, origin) -> str:
         if HAS_TYPE_ALIAS_SYNTAX and isinstance(origin, typing.TypeAliasType):  # type: ignore[attr-defined]
             return tp.__name__
-        if not HAS_PY_310:
-            return self._get_repr_without_module(tp, origin).partition("[")[0]
         return tp.__qualname__
 
     def _render_callable(self, tp, origin, args) -> str:
-        if HAS_PARAM_SPEC and isinstance(args[0], typing.ParamSpec):
+        if isinstance(args[0], ParamSpec):
             return self._render_parametrized_generic(tp, origin, args)
         base = self._get_repr_base(tp, origin)
         if args[0] == Ellipsis:
@@ -70,11 +68,11 @@ class TypeHintRenderer:
             return "None"
         if origin == Union:
             return self._render_union(obj, origin, args)
-        if HAS_PARAM_SPEC and isinstance(obj, typing.ParamSpec):
+        if isinstance(obj, ParamSpec):
             return obj.__name__
         if HAS_UNPACK and origin == typing.Unpack:
             return self._render_unpack(obj, origin, args)
-        if HAS_TYPE_UNION_OP and origin == types.UnionType:
+        if origin == types.UnionType:
             return self._render_union_op(obj, origin, args)
         if args:
             if origin == collections.abc.Callable:
@@ -85,11 +83,7 @@ class TypeHintRenderer:
         return self._get_repr_without_module(obj, origin)
 
     def _get_repr_without_module(self, obj, origin) -> str:
-        module = (
-            "typing"
-            if not HAS_PY_310 and origin == typing.Annotated else
-            getattr(obj, "__module__", None)
-        )
+        module = getattr(obj, "__module__", None)
         try:
             obj_repr = repr(obj)
         except Exception as ex:

@@ -162,12 +162,6 @@ class PythonImplementationRequirement(Requirement):
         return f"{self.implementation_name} is required"
 
 
-HAS_PY_310 = PythonVersionRequirement((3, 10))
-HAS_TYPE_UNION_OP = HAS_PY_310
-HAS_TYPE_GUARD = HAS_PY_310
-HAS_TYPE_ALIAS = HAS_PY_310
-HAS_PARAM_SPEC = HAS_PY_310
-
 HAS_PY_311 = PythonVersionRequirement((3, 11))
 HAS_NATIVE_EXC_GROUP = HAS_PY_311
 HAS_TYPED_DICT_REQUIRED = HAS_PY_311

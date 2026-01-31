@@ -1,8 +1,8 @@
+from itertools import pairwise
 from typing import Callable
 
 from ..common import TypeHint
 from ..type_tools.type_rendering import TypeHintRenderer
-from ..utils import pairs
 from .loc_stack_filtering import LocStack
 from .location import AnyLoc, FieldLoc, InputFuncFieldLoc, TypeHintLoc
 
@@ -37,7 +37,7 @@ def format_loc_stack(loc_stack: LocStack[AnyLoc], *, always_wrap_with_brackets: 
 
 
 def find_owner_with_field(stack: LocStack) -> tuple[TypeHintLoc, FieldLoc]:
-    for next_loc, prev_loc in pairs(reversed(stack)):
+    for next_loc, prev_loc in pairwise(reversed(stack)):
         if next_loc.is_castable(FieldLoc):
             return prev_loc, next_loc
     raise ValueError

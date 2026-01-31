@@ -2,12 +2,13 @@ from abc import ABC, abstractmethod
 from collections.abc import Hashable, Mapping
 from dataclasses import dataclass, field
 from enum import Enum
+from itertools import pairwise
 from typing import Any, Callable, Generic, Optional, TypeVar, Union
 
 from ..common import Catchable, TypeHint, VarTuple
 from ..feature_requirement import DistributionRequirement, DistributionVersionRequirement
 from ..struct_trail import Attr, TrailElement
-from ..utils import SingletonMeta, pairs
+from ..utils import SingletonMeta
 
 S = TypeVar("S")
 T = TypeVar("T")
@@ -281,7 +282,7 @@ class InputShape(BaseShape, Generic[T]):
         if wild_fields:
             raise ValueError(f"Fields {wild_fields} do not bound to any parameter")
 
-        for past, current in pairs(self.params):
+        for past, current in pairwise(self.params):
             if past.kind.value > current.kind.value:
                 raise ValueError(
                     f"Inconsistent order of fields, {current.kind} must be after {past.kind}",

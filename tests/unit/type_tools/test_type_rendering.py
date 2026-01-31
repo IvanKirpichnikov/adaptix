@@ -1,11 +1,11 @@
 import collections
 import typing
-from typing import Annotated, Callable, Generic, List, Optional, TypeVar, Union
+from typing import Annotated, Callable, Generic, List, Optional, ParamSpec, TypeVar, Union
 
 import pytest
 from tests_helpers.misc import cond_list
 
-from adaptix._internal.feature_requirement import HAS_PARAM_SPEC, HAS_TV_TUPLE, HAS_TYPE_UNION_OP
+from adaptix._internal.feature_requirement import HAS_TV_TUPLE
 from adaptix._internal.type_tools.type_rendering import TypeHintRenderer
 
 T = TypeVar("T")
@@ -20,8 +20,7 @@ class OuterClass:
         pass
 
 
-if HAS_PARAM_SPEC:
-    P = typing.ParamSpec("P")
+P = ParamSpec("P")
 
 if HAS_TV_TUPLE:
     Tv = typing.TypeVarTuple("Tv")
@@ -53,23 +52,13 @@ if HAS_TV_TUPLE:
         (Union[str, int], "Union[str, int]", "Union_str_int"),
         (Union[str, None], "Optional[str]", "Optional_str"),
         (Union[None, str], "Optional[str]", "Optional_str"),
-        *cond_list(
-            HAS_TYPE_UNION_OP,
-            lambda: [
-                (str | int, "str | int", "str_or_int"),
-                (str | None, "str | None", "str_or_None"),
-                (None | str, "None | str", "None_or_str"),
-                (str | str, "str", "str"),
-            ],
-        ),
-        *cond_list(
-            HAS_PARAM_SPEC,
-            lambda: [
-                (P, "P", "P"),
-                (Callable[P, int], "Callable[P, int]", "Callable_P_int"),
-                (collections.abc.Callable[P, int], "Callable[P, int]", "Callable_P_int"),
-            ],
-        ),
+        (str | int, "str | int", "str_or_int"),
+        (str | None, "str | None", "str_or_None"),
+        (None | str, "None | str", "None_or_str"),
+        (str | str, "str", "str"),
+        (P, "P", "P"),
+        (Callable[P, int], "Callable[P, int]", "Callable_P_int"),
+        (collections.abc.Callable[P, int], "Callable[P, int]", "Callable_P_int"),
         *cond_list(
             HAS_TV_TUPLE,
             lambda: [

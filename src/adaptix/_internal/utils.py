@@ -1,4 +1,3 @@
-import itertools
 import sys
 import warnings
 from abc import ABC, abstractmethod
@@ -7,7 +6,7 @@ from contextlib import contextmanager
 from copy import copy
 from typing import Any, Callable, Generic, Protocol, TypeVar, Union, final, overload
 
-from .feature_requirement import HAS_NATIVE_EXC_GROUP, HAS_PY_310, HAS_PY_311
+from .feature_requirement import HAS_NATIVE_EXC_GROUP, HAS_PY_311
 
 C = TypeVar("C", bound="Cloneable")
 
@@ -81,27 +80,12 @@ class SingletonMeta(type):
         return cls._instance
 
 
-T = TypeVar("T")
-
-if HAS_PY_310:
-    pairs = itertools.pairwise
-else:
-    def pairs(iterable: Iterable[T]) -> Iterable[tuple[T, T]]:  # type: ignore[no-redef]
-        it = iter(iterable)
-        try:
-            prev = next(it)
-        except StopIteration:
-            return
-
-        for current in it:
-            yield prev, current
-            prev = current
-
-
 class Omitted(metaclass=SingletonMeta):
     def __bool__(self):
         raise TypeError("Omitted() cannot be used in boolean context")
 
+
+T = TypeVar("T")
 
 Omittable = Union[T, Omitted]
 
