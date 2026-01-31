@@ -2,6 +2,8 @@
 #    uv pip compile requirements/raw/bench.txt -o requirements/bench.txt --allow-unsafe --strip-extras --no-strip-markers
 -e ./benchmarks
     # via -r requirements/raw/bench.txt
+-e ./tests/tests_helpers
+    # via -r requirements/raw/bench.txt
 annotated-types==0.7.0
     # via pydantic
 attrs==25.3.0
@@ -14,9 +16,9 @@ iniconfig==2.1.0
     # via pytest
 marshmallow==3.20.1
     # via -r requirements/raw/bench.txt
-mashumaro==3.10
+mashumaro==3.17
     # via -r requirements/raw/bench.txt
-msgspec==0.19.0 ; implementation_name != 'pypy'
+msgspec==0.20.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/bench.txt
 packaging==25.0
     # via

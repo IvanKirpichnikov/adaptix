@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Union
 
 import pytest
 from dirty_equals import IsInstance
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix import DebugTrail, NameStyle, Provider, Retort, name_mapping
 from adaptix._internal.model_tools.definitions import (

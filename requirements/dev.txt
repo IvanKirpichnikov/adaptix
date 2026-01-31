@@ -3,7 +3,9 @@
 -e ./benchmarks
     # via -r requirements/raw/bench.txt
 -e ./tests/tests_helpers
-    # via -r requirements/raw/_test_base.txt
+    # via
+    #   -r requirements/raw/_test_base.txt
+    #   -r requirements/raw/bench.txt
 aiosqlite==0.21.0
     # via -r requirements/raw/test_extra_new.txt
 alabaster==1.0.0
@@ -80,6 +82,8 @@ gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
     # via -r requirements/raw/doc.txt
+greenlet==3.3.1 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'
+    # via sqlalchemy
 h11==0.16.0
     # via httpcore
 httpcore==1.0.9
@@ -102,9 +106,9 @@ jinja2==3.1.6
     #   myst-parser
     #   sphinx
     #   towncrier
-jsonschema==4.24.0
+jsonschema==4.26.0
     # via -r requirements/raw/test_extra_new.txt
-jsonschema-rs==0.30.0 ; implementation_name != 'pypy'
+jsonschema-rs==0.40.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/_test_base.txt
 jsonschema-specifications==2025.4.1
     # via jsonschema
@@ -120,7 +124,7 @@ markupsafe==3.0.2
     # via jinja2
 marshmallow==3.20.1
     # via -r requirements/raw/bench.txt
-mashumaro==3.10
+mashumaro==3.17
     # via -r requirements/raw/bench.txt
 mccabe==0.7.0
     # via flake8
@@ -128,7 +132,7 @@ mdit-py-plugins==0.4.2
     # via myst-parser
 mdurl==0.1.2
     # via markdown-it-py
-msgspec==0.19.0 ; implementation_name != 'pypy'
+msgspec==0.20.0 ; implementation_name != 'pypy'
     # via
     #   -r requirements/raw/bench.txt
     #   -r requirements/raw/test_extra_new.txt
@@ -278,7 +282,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 sphinxext-opengraph==0.10.0
     # via -r requirements/raw/doc.txt
-sqlalchemy==2.0.36
+sqlalchemy==2.0.46
     # via -r requirements/raw/test_extra_new.txt
 starlette==0.48.0
     # via fastapi

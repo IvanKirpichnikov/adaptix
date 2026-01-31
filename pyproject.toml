@@ -7,7 +7,7 @@ name = 'adaptix'
 version = '3.0.0b11'
 description = 'An extremely flexible and configurable data model conversion library'
 readme = 'README.md'
-requires-python = '>=3.9'
+requires-python = '>=3.10'
 license = 'Apache-2.0'
 license-files = ['LICENSE']
 dependencies = [
@@ -17,11 +17,11 @@ dependencies = [
 classifiers = [
     'Development Status :: 3 - Alpha',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
     'Programming Language :: Python :: Implementation :: CPython',
     'Programming Language :: Python :: Implementation :: PyPy',
     'Operating System :: OS Independent',
@@ -38,11 +38,11 @@ classifiers = [
 attrs = ['attrs >= 21.3.0']
 attrs-strict = ['attrs >= 21.3.0, <= 24.2.0']
 sqlalchemy = ['sqlalchemy >= 2.0.0']
-sqlalchemy-strict = ['sqlalchemy >= 2.0.0, <= 2.0.36']
+sqlalchemy-strict = ['sqlalchemy >= 2.0.0, <= 2.0.46']
 pydantic = ['pydantic >= 2.1.0']
 pydantic-strict = ['pydantic >= 2.1.0, <= 2.12.5']
 msgspec = ['msgspec >= 0.18.5']
-msgspec-strict = ['msgspec >= 0.18.5, <= 0.19.0']
+msgspec-strict = ['msgspec >= 0.18.5, <= 0.20.0']
 
 [project.urls]
 'Homepage' = 'https://github.com/reagento/adaptix'
@@ -149,6 +149,12 @@ ignore = [
   'B904',
   'FIX002',
   'RUF012',
+
+  # Turn on full drop support of 3.9
+  'UP045',
+  'UP007',
+  'B905',
+  'UP035',
 
   'PYI019',  # turn on after 3.11
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix.conversion import get_converter
 
