@@ -14,7 +14,7 @@ iniconfig==2.1.0
     # via pytest
 jsonschema==4.24.0
     # via -r requirements/raw/test_extra_none.txt
-jsonschema-rs==0.30.0 ; implementation_name != 'pypy'
+jsonschema-rs==0.40.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/_test_base.txt
 jsonschema-specifications==2025.4.1
     # via jsonschema

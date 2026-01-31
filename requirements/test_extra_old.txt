@@ -14,7 +14,7 @@ greenlet==3.2.2 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or 
     # via sqlalchemy
 iniconfig==2.1.0
     # via pytest
-jsonschema-rs==0.30.0 ; implementation_name != 'pypy'
+jsonschema-rs==0.40.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/_test_base.txt
 msgspec==0.18.5 ; implementation_name != 'pypy'
     # via -r requirements/raw/test_extra_old.txt

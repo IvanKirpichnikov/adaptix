@@ -1,17 +1,8 @@
+from .import_magic import load_namespace, load_namespace_keeping_module
 from .misc import (
-    ATTRS_WITH_ALIAS,
     ByTrailSelector,
     DebugCtx,
-    FailedRequirement,
     PlaceholderProvider,
-    cond_list,
-    full_match,
-    load_namespace,
-    load_namespace_keeping_module,
-    parametrize_bool,
-    pretty_typehint_test_id,
-    raises_exc,
-    requires,
     with_cause,
     with_notes,
     with_trail,
@@ -25,3 +16,5 @@ from .model_spec import (
     parametrize_model_spec,
     sqlalchemy_equals,
 )
+from .pytest_tools import cond_list, full_match, parametrize_bool, pretty_typehint_test_id, raises_exc
+from .requirements import ATTRS_WITH_ALIAS, FailedRequirement, requires

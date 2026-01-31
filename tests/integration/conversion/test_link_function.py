@@ -1,4 +1,4 @@
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix._internal.conversion.facade.func import get_converter
 from adaptix._internal.conversion.facade.provider import coercer

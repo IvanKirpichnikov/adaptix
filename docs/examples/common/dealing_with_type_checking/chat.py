@@ -1,4 +1,4 @@
-# ruff: noqa: UP035, UP006
+# ruff: noqa: UP006
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, List
 

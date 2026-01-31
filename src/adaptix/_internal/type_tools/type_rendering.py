@@ -66,14 +66,14 @@ class TypeHintRenderer:
 
         if obj is NoneType:
             return "None"
-        if origin == Union:
+        if type(obj) is types.UnionType:
+            return self._render_union_op(obj, origin, args)
+        if origin == Union:  # this branch is inactive at PY_314
             return self._render_union(obj, origin, args)
         if isinstance(obj, ParamSpec):
             return obj.__name__
         if HAS_UNPACK and origin == typing.Unpack:
             return self._render_unpack(obj, origin, args)
-        if origin == types.UnionType:
-            return self._render_union_op(obj, origin, args)
         if args:
             if origin == collections.abc.Callable:
                 return self._render_callable(obj, origin, args)

@@ -4,7 +4,7 @@ from typing import Callable, Literal, Optional, Union
 
 import pytest
 from tests_helpers import raises_exc
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix import DebugTrail, Omitted, Retort, dumper, loader
 from adaptix._internal.compat import CompatExceptionGroup

@@ -3,6 +3,8 @@ from datetime import datetime
 from typing import List, Optional
 
 from dataclass_factory import Factory, Schema
+from tests_helpers import requires
+from tests_helpers.requirements import BEFORE_PY_314
 
 from benchmarks.gh_issues.common import (
     AuthorAssociation,
@@ -121,6 +123,7 @@ def get_factory(debug_path: bool = False):
     return Factory(schemas=SCHEMAS, default_schema=DEFAULT_SCHEMA, debug_path=debug_path)
 
 
+@requires(BEFORE_PY_314)
 def test_loading():
     assert (
         get_factory().load(create_dumped_response(), GetRepoIssuesResponse)
@@ -129,6 +132,7 @@ def test_loading():
     )
 
 
+@requires(BEFORE_PY_314)
 def test_dumping():
     assert (
         get_factory().dump(create_response(GetRepoIssuesResponse, Issue, Reactions, PullRequest, Label, SimpleUser))

@@ -1,5 +1,5 @@
 from tests_helpers import cond_list
-from tests_helpers.misc import AndRequirement
+from tests_helpers.requirements import AndRequirement
 
 from adaptix._internal.feature_requirement import DistributionRequirement
 
