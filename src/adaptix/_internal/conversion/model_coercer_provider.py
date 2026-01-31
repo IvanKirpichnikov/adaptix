@@ -339,7 +339,7 @@ class ModelCoercerProvider(CoercerProvider):
 
         return {
             dst_field: sub_plan
-            for (dst_field, linking), sub_plan in zip(field_linkings, field_sub_plans, strict=False)
+            for (dst_field, linking), sub_plan in zip(field_linkings, field_sub_plans, strict=True)
         }
 
     def _make_broaching_plan(

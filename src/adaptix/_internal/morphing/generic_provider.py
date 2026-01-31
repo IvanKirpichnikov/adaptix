@@ -151,7 +151,7 @@ class LiteralProvider(LoaderProvider, DumperProvider):
             requests,
             lambda: "Cannot create dumper for literal. Dumpers for enums cannot be created",
         )
-        return dict(zip(enum_classes, dumpers, strict=False))
+        return dict(zip(enum_classes, dumpers, strict=True))
 
     def _fetch_bytes_dumper(
         self,

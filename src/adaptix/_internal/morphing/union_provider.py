@@ -235,7 +235,7 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
 
     def _parse_single_optional_dumper(self, norm: BaseNormType, dumpers: Iterable[Dumper]) -> Dumper | None:
         try:
-            [(first_norm, first_dumper), (second_norm, second_dumper)] = zip(norm.args, dumpers, strict=False)
+            [(first_norm, first_dumper), (second_norm, second_dumper)] = zip(norm.args, dumpers, strict=True)
         except ValueError:
             return None
         if first_norm.origin is None and first_dumper == as_is_stub:
@@ -247,7 +247,7 @@ class UnionProvider(LoaderProvider, DumperProvider, JSONSchemaProvider):
     def _extract_literal(self, args: Iterable[TypeHint], dumpers: Iterable[Dumper]):
         non_literals: list[tuple[BaseNormType, Dumper]] = []
         literal: tuple[BaseNormType, Dumper] | None = None
-        for arg, dumper in zip(args, dumpers, strict=False):
+        for arg, dumper in zip(args, dumpers, strict=True):
             norm = try_normalize_type(arg)
             if norm.origin == Literal:
                 literal = (norm, dumper)
