@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Collection, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from copy import copy
-from typing import Any, Generic, Protocol, TypeVar, final, overload
+from typing import Any, Generic, Protocol, TypeAlias, TypeVar, final, overload
 
 from .feature_requirement import HAS_NATIVE_EXC_GROUP, HAS_PY_311
 
@@ -87,7 +87,7 @@ class Omitted(metaclass=SingletonMeta):
 
 T = TypeVar("T")
 
-Omittable = T | Omitted
+Omittable: TypeAlias = T | Omitted
 
 
 ComparableSeqT = TypeVar("ComparableSeqT", bound="ComparableSequence")

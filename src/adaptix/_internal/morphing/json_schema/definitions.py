@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Generic, TypeVar, Union
+from typing import Generic, TypeAlias, TypeVar
 
 from ...provider.loc_stack_filtering import LocStack
 from ...type_tools.fwd_ref import FwdRef
@@ -22,13 +22,13 @@ class RemoteRef:
     value: str
 
 
-Boolable = Union[T, bool]
+Boolable: TypeAlias = T | bool
 
 
 @dataclass(repr=False)
 class JSONSchema(
     BaseJSONSchema[
-        Union[LocalRefSource[FwdRef["JSONSchema"]], RemoteRef],
+        LocalRefSource[FwdRef["JSONSchema"]] | RemoteRef,
         Boolable[FwdRef["JSONSchema"]],
     ],
 ):

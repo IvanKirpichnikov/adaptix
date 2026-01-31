@@ -46,7 +46,7 @@ class CannotProvide(Exception):
 
 
 @with_module("adaptix")
-class AggregateCannotProvide(CompatExceptionGroup[CannotProvide], CannotProvide):  # type: ignore[misc]
+class AggregateCannotProvide(CompatExceptionGroup[CannotProvide], CannotProvide):  # type: ignore[override]
     def __init__(
         self,
         message: str,

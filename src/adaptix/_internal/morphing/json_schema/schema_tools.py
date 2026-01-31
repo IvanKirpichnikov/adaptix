@@ -1,7 +1,7 @@
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import fields
 from textwrap import dedent, indent
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from adaptix import TypeHint
 
@@ -10,8 +10,8 @@ from .definitions import JSONSchema, LocalRefSource, RemoteRef, ResolvedJSONSche
 from .schema_model import JSONNumeric, JSONObject, JSONSchemaBuiltinFormat, JSONSchemaT, JSONSchemaType, JSONValue, RefT
 
 _non_generic_fields_types = [
-    Omittable[Union[JSONSchemaType, Sequence[JSONSchemaType]]],  # type: ignore[misc]
-    Omittable[Union[JSONSchemaBuiltinFormat, str]],  # type: ignore[misc]
+    Omittable[JSONSchemaType | Sequence[JSONSchemaType]],  # type: ignore[misc]
+    Omittable[JSONSchemaBuiltinFormat | str],  # type: ignore[misc]
     Omittable[JSONNumeric],  # type: ignore[misc]
     Omittable[int],  # type: ignore[misc]
     Omittable[str],  # type: ignore[misc]
@@ -214,10 +214,10 @@ def _sequence_hasher(item_hasher_template: str) -> str:
 
 
 _approx_hash_templates = {
-    Omittable[Union[JSONSchemaType, Sequence[JSONSchemaType]]]: (  # type: ignore[misc]
+    Omittable[JSONSchemaType | Sequence[JSONSchemaType]]: (  # type: ignore[misc]
         f"{_sequence_hasher('hash(__value__)')} if isinstance(__value__, Sequence) else hash(__value__)"
     ),
-    Omittable[Union[JSONSchemaBuiltinFormat, str]]: "hash(__value__)",  # type: ignore[misc]
+    Omittable[JSONSchemaBuiltinFormat | str]: "hash(__value__)",  # type: ignore[misc]
     Omittable[JSONNumeric]: "hash(__value__)",  # type: ignore[misc]
     Omittable[int]: "hash(__value__)",  # type: ignore[misc]
     Omittable[str]: "hash(__value__)",  # type: ignore[misc]

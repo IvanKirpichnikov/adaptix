@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from itertools import islice
-from typing import TypeVar, Union
+from typing import TypeVar
 
 from ..common import TypeHint
 from ..provider.essential import DirectMediator, Request, RequestChecker, RequestHandler
@@ -38,7 +38,7 @@ class SimpleRouter(RequestRouter[RequestT]):
 
 
 OriginToHandler = dict[TypeHint, RequestHandler]
-LRRoutingItem = Union[CheckerAndHandler, OriginToHandler]
+LRRoutingItem = CheckerAndHandler | OriginToHandler
 
 
 class LocatedRequestRouter(RequestRouter[LocatedRequest]):

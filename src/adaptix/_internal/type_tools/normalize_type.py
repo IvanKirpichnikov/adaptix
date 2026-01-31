@@ -136,7 +136,7 @@ def _type_and_value_iter(args):
     return [(type(arg), arg) for arg in args]
 
 
-LiteralArg = Union[str, int, bytes, Enum]
+LiteralArg = str | int | bytes | Enum
 
 
 class _LiteralNormType(_BasicNormType):
@@ -213,7 +213,7 @@ class Constraints:
     value: VarTuple[BaseNormType]
 
 
-TypeVarLimit = Union[Bound, Constraints]
+TypeVarLimit = Bound | Constraints
 
 
 class _BaseNormTypeVarLike(BaseNormType):

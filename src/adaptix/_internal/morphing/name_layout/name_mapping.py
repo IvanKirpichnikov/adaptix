@@ -3,7 +3,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
-from typing import Optional, Union
 
 from ...common import EllipsisType
 from ...model_tools.definitions import BaseField, BaseShape, OutputField, is_valid_field_id
@@ -13,19 +12,22 @@ from ...provider.located_request import LocatedRequest
 from ...provider.methods_provider import MethodsProvider, method_handler
 from .base import Key, KeyPath
 
-RawKey = Union[Key, EllipsisType]
+RawKey = Key | EllipsisType
 RawPath = Iterable[RawKey]
-MapResult = Union[RawKey, RawPath, None]
-NameMap = Union[
-    Mapping[str, MapResult],
-    Iterable[
-        Mapping[str, MapResult] | tuple[Pred, MapResult] | tuple[Pred, Callable[[BaseShape, BaseField], MapResult]] | Provider
-    ],
-]
+MapResult = RawKey | RawPath | None
+NameMap = (
+    Mapping[str, MapResult]
+    | Iterable[
+        Mapping[str, MapResult]
+        | tuple[Pred, MapResult]
+        | tuple[Pred, Callable[[BaseShape, BaseField], MapResult]]
+        | Provider
+    ]
+)
 
 
 @dataclass(frozen=True)
-class NameMappingRequest(LocatedRequest[Optional[KeyPath]]):
+class NameMappingRequest(LocatedRequest[KeyPath | None]):
     shape: BaseShape
     field: BaseField
     generated_key: Key

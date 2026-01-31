@@ -1,6 +1,6 @@
 from collections.abc import Callable, Container, Mapping
 from dataclasses import dataclass, field
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from ..common import TypeHint
 from ..model_tools.definitions import Accessor, Default
@@ -97,4 +97,4 @@ _CAST_SOURCES: dict[Any, Container[Any]] = {
     GenericParamLoc: {GenericParamLoc},
 }
 
-AnyLoc = Union[TypeHintLoc, FieldLoc, InputFieldLoc, InputFuncFieldLoc, OutputFieldLoc, GenericParamLoc]
+AnyLoc = TypeHintLoc | FieldLoc | InputFieldLoc | InputFuncFieldLoc | OutputFieldLoc | GenericParamLoc

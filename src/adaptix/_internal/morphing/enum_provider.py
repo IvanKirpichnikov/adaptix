@@ -5,7 +5,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from enum import Enum, EnumMeta, Flag
 from functools import reduce
 from operator import or_
-from typing import Any, TypeVar, Union, final
+from typing import Any, TypeVar, final
 
 from ..common import Dumper, Loader, TypeHint
 from ..morphing.provider_template import DumperProvider, LoaderProvider
@@ -340,7 +340,7 @@ class FlagByListProvider(BaseFlagProvider):
         zero_case = enum(0)
 
         # treat str and Iterable[str] as different types
-        expected_type = Union[str, Iterable[str]] if allow_single_value else Iterable[str]
+        expected_type = str | Iterable[str] if allow_single_value else Iterable[str]
 
         def flag_loader(data) -> Flag:
             data_type = type(data)

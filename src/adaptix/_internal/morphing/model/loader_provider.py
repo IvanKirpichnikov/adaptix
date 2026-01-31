@@ -180,7 +180,10 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create JSON Schema for model. Dumpers for some field defaults cannot be created",
         )
-        return {field.id: dumper(default) for (field, default), dumper in zip(fields_and_defaults, dumpers, strict=False)}
+        return {
+            field.id: dumper(default)
+            for (field, default), dumper in zip(fields_and_defaults, dumpers, strict=False)
+        }
 
     def _fetch_model_identity(
         self,

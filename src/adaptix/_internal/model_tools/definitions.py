@@ -3,7 +3,7 @@ from collections.abc import Callable, Hashable, Mapping
 from dataclasses import dataclass, field
 from enum import Enum
 from itertools import pairwise
-from typing import Any, Generic, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 from ..common import Catchable, TypeHint, VarTuple
 from ..feature_requirement import DistributionRequirement, DistributionVersionRequirement
@@ -39,7 +39,12 @@ class DefaultFactoryWithSelf(Generic[S, T]):
     factory: Callable[[S], T]
 
 
-Default = Union[NoDefault, DefaultValue[Any], DefaultFactory[Any], DefaultFactoryWithSelf[Any, Any]]
+Default = (
+    NoDefault
+    | DefaultValue[Any]
+    | DefaultFactory[Any]
+    | DefaultFactoryWithSelf[Any, Any]
+)
 
 
 class Accessor(Hashable, ABC):

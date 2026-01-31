@@ -1,4 +1,3 @@
-# ruff: noqa: UP006, UP035
 import collections
 from collections import namedtuple
 from typing import (

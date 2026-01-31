@@ -1,13 +1,13 @@
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Generic, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 from ...utils import Omittable, Omitted
 
 T = TypeVar("T")
 
-JSONNumeric = Union[int, float]
+JSONNumeric = int | float
 JSONObject = Mapping[str, T]
 
 # Recursive normalized types are not supported now.

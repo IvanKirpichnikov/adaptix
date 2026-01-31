@@ -138,8 +138,6 @@ fixable = [
   'RUF023',
   'RUF022',
   'I001',
-  'B905',
-  'F401',
 ]
 ignore = [
   # Rules that should be turned on soon
@@ -198,18 +196,21 @@ ignore = [
   'PLR2004',
   'N806',
   'FA102',
-  'UP006', # turn on after 3.9
-  'UP007', # turn on after 3.9
-  'UP035', # turn on after 3.9
-  'UP044', # turn on after 3.9
-  'UP045', # turn on after 3.9
-  'UP049',
+
   'E501',
   'PLC0105',
   'PLC0415',
   'PYI061',
   'PLW1641',
   'FURB157',
+
+  # Test must keep old type hints
+  'UP006',
+  'UP007',
+  'UP035',
+  'UP044',
+  'UP045',
+  'UP049',
 ]
 "tests/*/local_helpers.py" = ['S101', 'PLR2004', 'PLC0105', 'N806', 'FA102']
 "tests/*/data_*.py" = ['F821']

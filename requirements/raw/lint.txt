@@ -4,7 +4,7 @@
 
 prek==0.2.5
 
-mypy[faster-cache]==1.15.0
+mypy[faster-cache]==1.19.1
 
 vulture==2.10
 

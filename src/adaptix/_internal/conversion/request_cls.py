@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from inspect import Signature
-from typing import TypeVar, Union
+from typing import TypeVar
 
 from ..common import Coercer, VarTuple
 from ..model_tools.definitions import DefaultFactory, DefaultValue, InputField, ParamKind
@@ -18,8 +18,8 @@ class ConverterRequest(Request):
     stub_function: Callable | None
 
 
-ConversionSourceItem = Union[FieldLoc, OutputFieldLoc, GenericParamLoc]
-ConversionDestItem = Union[TypeHintLoc, InputFieldLoc, InputFuncFieldLoc, GenericParamLoc]
+ConversionSourceItem = FieldLoc | OutputFieldLoc | GenericParamLoc
+ConversionDestItem = TypeHintLoc | InputFieldLoc | InputFuncFieldLoc | GenericParamLoc
 
 
 @dataclass(frozen=True)

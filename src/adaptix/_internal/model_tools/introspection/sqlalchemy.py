@@ -1,6 +1,6 @@
 import inspect
 from collections.abc import Mapping
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Generic, TypeVar
 
 from ...common import TypeHint
 
@@ -78,7 +78,7 @@ def _get_type_for_column(column: "ColumnElement", type_hints: Mapping[str, TypeH
         return _unwrap_mapped_annotation(type_hints[column.name])
     except KeyError:
         if column.nullable:
-            return Optional[column.type.python_type]
+            return column.type.python_type | None
         return column.type.python_type
 
 
@@ -88,7 +88,7 @@ def _get_type_for_relationship(relationship: "RelationshipProperty", type_hints:
     except KeyError:
         if relationship.uselist:
             return list[relationship.entity.class_]  # type: ignore[name-defined]
-        return Optional[relationship.entity.class_]
+        return relationship.entity.class_ | None
 
 
 def _get_default(column_default: "DefaultGenerator | None"):

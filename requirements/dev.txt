@@ -112,6 +112,8 @@ jsonschema-rs==0.40.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/_test_base.txt
 jsonschema-specifications==2025.4.1
     # via jsonschema
+librt==0.7.8 ; platform_python_implementation != 'PyPy'
+    # via mypy
 lxml==5.4.0
     # via astpath
 mando==0.7.1
@@ -136,7 +138,7 @@ msgspec==0.20.0 ; implementation_name != 'pypy'
     # via
     #   -r requirements/raw/bench.txt
     #   -r requirements/raw/test_extra_new.txt
-mypy==1.15.0
+mypy==1.19.1
     # via -r requirements/raw/lint.txt
 mypy-extensions==1.1.0
     # via mypy
@@ -155,6 +157,8 @@ packaging==25.0
     #   sphinx
     #   tox
     #   tox-uv
+pathspec==1.0.4
+    # via mypy
 pbr==6.1.1
     # via sphinxcontrib-apidoc
 phonenumberslite==9.0.5

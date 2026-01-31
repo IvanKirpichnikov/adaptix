@@ -1,7 +1,7 @@
 from collections import defaultdict
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import TypeVar, Union
+from typing import TypeVar
 
 from ...common import VarTuple
 from ...model_tools.definitions import (
@@ -86,7 +86,7 @@ class StructureOverlay(Overlay[StructureSchema]):
         return new + old
 
 
-AnyField = Union[InputField, OutputField]
+AnyField = InputField | OutputField
 LeafCr = TypeVar("LeafCr", bound=LeafBaseCrown)
 FieldCr = TypeVar("FieldCr", bound=BaseFieldCrown)
 F = TypeVar("F", bound=BaseField)

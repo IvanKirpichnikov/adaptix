@@ -4,7 +4,7 @@ from collections.abc import Callable, Iterable, Mapping
 from datetime import timezone
 from enum import Enum, EnumMeta
 from types import MappingProxyType
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from ...common import Catchable, Dumper, Loader, TypeHint, VarTuple
 from ...model_tools.definitions import Default, DescriptorAccessor, NoDefault, OutputField
@@ -324,12 +324,9 @@ def name_mapping(
     )
 
 
-NameOrProp = Union[str, property]
-
-
 def with_property(
     pred: Pred,
-    prop: NameOrProp,
+    prop: str | property,
     tp: Omittable[TypeHint] = Omitted(),
     /, *,
     default: Default = NoDefault(),
@@ -368,7 +365,7 @@ def with_property(
     )
 
 
-def _ensure_attr_name(prop: NameOrProp) -> str:
+def _ensure_attr_name(prop: str | property) -> str:
     if isinstance(prop, str):
         return prop
 
@@ -379,7 +376,7 @@ def _ensure_attr_name(prop: NameOrProp) -> str:
     return fget.__name__
 
 
-EnumPred = Union[TypeHint, str, EnumMeta, LocStackPattern]
+EnumPred = TypeHint | str | EnumMeta | LocStackPattern
 
 
 def enum_by_name(
