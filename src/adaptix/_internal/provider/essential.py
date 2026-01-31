@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Callable, Generic, Optional, TypeVar, fin
 
 from ..common import VarTuple
 from ..compat import CompatExceptionGroup
-from ..feature_requirement import HAS_NATIVE_EXC_GROUP
+from ..feature_requirement import HAS_NATIVE_EXC_GROUP, IS_PYPY
 from ..utils import with_module
 
 T = TypeVar("T")
@@ -61,7 +61,7 @@ class AggregateCannotProvide(CompatExceptionGroup[CannotProvide], CannotProvide)
         self.is_demonstrative = is_demonstrative
         self.parent_notes_gen = parent_notes_gen
 
-    if not HAS_NATIVE_EXC_GROUP:
+    if not HAS_NATIVE_EXC_GROUP or IS_PYPY:
         def __new__(
             cls,
             message: str,
