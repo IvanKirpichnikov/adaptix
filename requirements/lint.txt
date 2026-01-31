@@ -193,7 +193,7 @@ rpds-py==0.25.1
     # via
     #   jsonschema
     #   referencing
-ruff==0.14.0
+ruff==0.14.14
     # via -r requirements/raw/lint.txt
 schematics==2.1.1
     # via -r requirements/raw/bench.txt
@@ -271,7 +271,7 @@ typing-extensions==4.15.0
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-typos==1.39.0
+typos==1.42.3
     # via -r requirements/raw/lint.txt
 urllib3==2.4.0
     # via requests
