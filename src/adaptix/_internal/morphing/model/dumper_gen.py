@@ -1,7 +1,7 @@
 import contextlib
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import replace
-from typing import Any, Callable, NamedTuple, Optional
+from typing import Any, NamedTuple
 
 from ...code_tools.cascade_namespace import BuiltinCascadeNamespace, CascadeNamespace
 from ...code_tools.code_block_tree import (
@@ -71,10 +71,10 @@ class GenState:
         self.trail_element_to_name_idx: dict[TrailElement, int] = {}
 
         self.error_handler_name = error_handler_name
-        self.error_handlers: dict[Optional[OutputField], Callable[[Statement], Statement]] = {}
-        self.field_to_idx: dict[Optional[OutputField], int] = {}
+        self.error_handlers: dict[OutputField | None, Callable[[Statement], Statement]] = {}
+        self.field_to_idx: dict[OutputField | None, int] = {}
 
-    def register_field_idx(self, field: Optional[OutputField]) -> int:
+    def register_field_idx(self, field: OutputField | None) -> int:
         if field in self.field_to_idx:
             return self.field_to_idx[field]
         idx = len(self.field_to_idx)
@@ -103,7 +103,7 @@ class GenState:
         yield
         self._path = past
 
-    def suffix(self, basis: str, key: Optional[CrownPathElem] = None) -> str:
+    def suffix(self, basis: str, key: CrownPathElem | None = None) -> str:
         path = self._path if key is None else (*self._path, key)
         if not path:
             return basis
@@ -153,7 +153,7 @@ class AssignmentStatement(Statement):
 
 
 class ErrorHandling(Statement):
-    def __init__(self, state: GenState, field: Optional[OutputField]):
+    def __init__(self, state: GenState, field: OutputField | None):
         self._state = state
         self._field = field
 
@@ -209,9 +209,9 @@ class OutVarStatement(NamedTuple):
 
 
 class DictFragment(NamedTuple):
-    before: Optional[Statement] = None
-    item: Optional[DictItem] = None
-    after: Optional[Statement] = None
+    before: Statement | None = None
+    item: DictItem | None = None
+    after: Statement | None = None
 
 
 class BuiltinModelDumperGen(ModelDumperGen):
@@ -483,7 +483,7 @@ class BuiltinModelDumperGen(ModelDumperGen):
         self,
         state: GenState,
         key: str,
-        sieve: Optional[Sieve],
+        sieve: Sieve | None,
         sub_crown: OutCrown,
     ) -> DictFragment:
         out_stmt = self._get_crown_out_stmt(state, key, sub_crown)
@@ -546,7 +546,7 @@ class BuiltinModelDumperGen(ModelDumperGen):
             ),
         )
 
-    def _get_extra_extraction(self, state: GenState) -> Optional[OutVarStatement]:
+    def _get_extra_extraction(self, state: GenState) -> OutVarStatement | None:
         if isinstance(self._name_layout.extra_move, ExtraTargets):
             return self._get_extra_target_extraction(state, self._name_layout.extra_move)
         if isinstance(self._name_layout.extra_move, ExtraExtract):
@@ -633,7 +633,7 @@ class BuiltinModelDumperGen(ModelDumperGen):
             var=var,
         )
 
-    def _get_error_collector(self, state: GenState, field: Optional[OutputField]) -> Statement:
+    def _get_error_collector(self, state: GenState, field: OutputField | None) -> Statement:
         if field is None:
             return RawStatement("errors.append(e)")
 

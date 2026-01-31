@@ -1,8 +1,9 @@
 import collections.abc
 from abc import ABC, abstractmethod
 from collections import deque
+from collections.abc import Callable
 from dataclasses import replace
-from typing import Any, Callable, ForwardRef, Union, final
+from typing import Any, ForwardRef, Union, final
 
 from ..common import Coercer, OneArgCoercer, TypeHint
 from ..morphing.utils import try_normalize_type

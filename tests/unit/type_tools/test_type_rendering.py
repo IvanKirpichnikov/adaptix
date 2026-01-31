@@ -1,6 +1,7 @@
 import collections
 import typing
-from typing import Annotated, Callable, Generic, List, Optional, ParamSpec, TypeVar, Union
+from collections.abc import Callable
+from typing import Annotated, Generic, List, Optional, ParamSpec, TypeVar, Union
 
 import pytest
 from tests_helpers import cond_list

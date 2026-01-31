@@ -2,7 +2,7 @@ import collections.abc
 from collections.abc import Mapping, Set
 from contextlib import AbstractContextManager, contextmanager, nullcontext
 from dataclasses import dataclass, replace
-from typing import Any, Optional
+from typing import Any
 
 from ...code_tools.cascade_namespace import BuiltinCascadeNamespace, CascadeNamespace
 from ...code_tools.code_builder import CodeBuilder
@@ -120,7 +120,7 @@ class GenState(Namer):
         self.field_id_to_path: dict[str, CrownPath] = {}
 
         self._last_path_idx = 0
-        self._parent_path: Optional[CrownPath] = None
+        self._parent_path: CrownPath | None = None
         self._crown_stack: list[InpCrown] = [root_crown]
 
         self.type_checked_type_paths: set[CrownPath] = set()
@@ -383,7 +383,7 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
         self,
         state: GenState,
         bad_type_load_error: str,
-        namer: Optional[Namer] = None,
+        namer: Namer | None = None,
     ) -> None:
         if namer is None:
             namer = state
@@ -407,7 +407,7 @@ class BuiltinModelLoaderGen(ModelLoaderGen):
         state: GenState,
         *,
         assign_to: str,
-        on_lookup_error: Optional[str] = None,
+        on_lookup_error: str | None = None,
     ):
         last_path_el = state.path[-1]
         if isinstance(last_path_el, str):

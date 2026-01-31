@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from adaptix import P
 from adaptix.conversion import get_converter, link_constant
@@ -17,7 +16,7 @@ class BookDTO:
     title: str
     price: int
     author: str
-    collection_id: Optional[int]
+    collection_id: int | None
     bookmarks_ids: list[str]
 
 

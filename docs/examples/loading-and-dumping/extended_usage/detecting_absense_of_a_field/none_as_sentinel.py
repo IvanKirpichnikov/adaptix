@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Union
 
 from adaptix import P, Retort, as_sentinel, name_mapping
 from adaptix.load_error import AggregateLoadError, TypeLoadError
@@ -8,8 +8,8 @@ from adaptix.load_error import AggregateLoadError, TypeLoadError
 @dataclass
 class PatchBook:
     id: int
-    title: Optional[str] = None
-    sub_title: Optional[str] = None
+    title: str | None = None
+    sub_title: str | None = None
 
 
 retort = Retort(

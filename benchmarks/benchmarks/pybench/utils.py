@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from importlib import import_module
-from typing import Any, Callable
+from typing import Any
 
 
 def load_by_object_ref(object_ref: str) -> Any:

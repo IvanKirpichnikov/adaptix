@@ -123,9 +123,6 @@ output-format = "concise"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-extra-standard-library = [
-    "tomllib",  # because requires-python = '>=3.9'
-]
 
 [tool.ruff.lint]
 
@@ -149,12 +146,6 @@ ignore = [
   'B904',
   'FIX002',
   'RUF012',
-
-  # Turn on full drop support of 3.9
-  'UP045',
-  'UP007',
-  'B905',
-  'UP035',
 
   'PYI019',  # turn on after 3.11
 
@@ -205,17 +196,21 @@ ignore = [
   'PLR2004',
   'N806',
   'FA102',
-  'UP006', # turn on after 3.9
-  'UP035', # turn on after 3.9
-  'UP044', # turn on after 3.9
-  'UP045', # turn on after 3.9
-  'UP049',
+
   'E501',
   'PLC0105',
   'PLC0415',
   'PYI061',
   'PLW1641',
   'FURB157',
+
+  # Test must keep old type hints
+  'UP006',
+  'UP007',
+  'UP035',
+  'UP044',
+  'UP045',
+  'UP049',
 ]
 "tests/*/local_helpers.py" = ['S101', 'PLR2004', 'PLC0105', 'N806', 'FA102']
 "tests/*/data_*.py" = ['F821']
@@ -229,7 +224,7 @@ ignore = [
 ]
 
 "examples/*" = [
-  'UP035', 'UP006', # turn on after 3.9
+  'UP035',
   'PLW1641', 'S101'
 ]
 

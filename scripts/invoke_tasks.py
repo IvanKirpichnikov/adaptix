@@ -2,12 +2,11 @@
 # ruff: noqa: FBT002
 import shlex
 from pathlib import Path
-from typing import Union
 
 from invoke import Context, task
 
 
-def q(value: Union[Path, str]) -> str:
+def q(value: Path | str) -> str:
     return shlex.quote(str(value))
 
 

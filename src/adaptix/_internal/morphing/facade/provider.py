@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from datetime import timezone
 from enum import Enum, EnumMeta
 from types import MappingProxyType
-from typing import Any, Callable, Optional, TypeVar, Union
+from typing import Any, TypeVar
 
 from ...common import Catchable, Dumper, Loader, TypeHint, VarTuple
 from ...model_tools.definitions import Default, DescriptorAccessor, NoDefault, OutputField
@@ -62,7 +62,7 @@ from ..sentinel_provider import SentinelProvider
 T = TypeVar("T")
 
 
-def make_chain(chain: Optional[Chain], provider: Provider) -> Provider:
+def make_chain(chain: Chain | None, provider: Provider) -> Provider:
     if chain is None:
         return provider
 
@@ -72,7 +72,7 @@ def make_chain(chain: Optional[Chain], provider: Provider) -> Provider:
 def loader(
     pred: Pred,
     func: Loader,
-    chain: Optional[Chain] = None,
+    chain: Chain | None = None,
     *,
     json_schema: JSONSchemaOverride = EraseJSONSchema(),
 ) -> Provider:
@@ -113,7 +113,7 @@ def loader(
 def dumper(
     pred: Pred,
     func: Dumper,
-    chain: Optional[Chain] = None,
+    chain: Chain | None = None,
     *,
     json_schema: JSONSchemaOverride = EraseJSONSchema(),
 ) -> Provider:
@@ -228,7 +228,7 @@ def _name_mapping_convert_map(name_map: Omittable[NameMap]) -> VarTuple[Provider
     return tuple(result)
 
 
-def _name_mapping_convert_preds(value: Omittable[Union[Iterable[Pred], Pred]]) -> Omittable[LocStackChecker]:
+def _name_mapping_convert_preds(value: Omittable[Iterable[Pred] | Pred]) -> Omittable[LocStackChecker]:
     if isinstance(value, Omitted):
         return value
     if isinstance(value, Iterable) and not isinstance(value, str):
@@ -237,14 +237,14 @@ def _name_mapping_convert_preds(value: Omittable[Union[Iterable[Pred], Pred]]) -
 
 
 def _name_mapping_convert_omit_default(
-    value: Omittable[Union[Iterable[Pred], Pred, bool]],
+    value: Omittable[Iterable[Pred] | Pred | bool],
 ) -> Omittable[LocStackChecker]:
     if isinstance(value, bool):
         return AnyLocStackChecker() if value else ~AnyLocStackChecker()
     return _name_mapping_convert_preds(value)
 
 
-def _name_mapping_extra(value: Union[str, Iterable[str], T]) -> Union[str, Iterable[str], T]:
+def _name_mapping_extra(value: str | Iterable[str] | T) -> str | Iterable[str] | T:
     if isinstance(value, str):
         return value
     if isinstance(value, Iterable):
@@ -256,20 +256,20 @@ def name_mapping(
     pred: Omittable[Pred] = Omitted(),
     *,
     # filtering which fields are presented
-    skip: Omittable[Union[Iterable[Pred], Pred]] = Omitted(),
-    only: Omittable[Union[Iterable[Pred], Pred]] = Omitted(),
+    skip: Omittable[Iterable[Pred] | Pred] = Omitted(),
+    only: Omittable[Iterable[Pred] | Pred] = Omitted(),
     # mutating names of presented fields
     map: Omittable[NameMap] = Omitted(),  # noqa: A002
     as_list: Omittable[bool] = Omitted(),
     trim_trailing_underscore: Omittable[bool] = Omitted(),
-    name_style: Omittable[Optional[NameStyle]] = Omitted(),
+    name_style: Omittable[NameStyle | None] = Omitted(),
     # filtering of dumped data
-    omit_default: Omittable[Union[Iterable[Pred], Pred, bool]] = Omitted(),
+    omit_default: Omittable[Iterable[Pred] | Pred | bool] = Omitted(),
     # policy for data that does not map to fields
     extra_in: Omittable[ExtraIn] = Omitted(),
     extra_out: Omittable[ExtraOut] = Omitted(),
     # chaining with next matching provider
-    chain: Optional[Chain] = Chain.FIRST,
+    chain: Chain | None = Chain.FIRST,
 ) -> Provider:
     """A name mapping decides which fields will be presented
     to the outside world and how they will look.
@@ -324,16 +324,13 @@ def name_mapping(
     )
 
 
-NameOrProp = Union[str, property]
-
-
 def with_property(
     pred: Pred,
-    prop: NameOrProp,
+    prop: str | property,
     tp: Omittable[TypeHint] = Omitted(),
     /, *,
     default: Default = NoDefault(),
-    access_error: Optional[Catchable] = None,
+    access_error: Catchable | None = None,
     metadata: Mapping[Any, Any] = MappingProxyType({}),
 ) -> Provider:
     """Provider registering property for a model for dumping.
@@ -368,7 +365,7 @@ def with_property(
     )
 
 
-def _ensure_attr_name(prop: NameOrProp) -> str:
+def _ensure_attr_name(prop: str | property) -> str:
     if isinstance(prop, str):
         return prop
 
@@ -379,13 +376,13 @@ def _ensure_attr_name(prop: NameOrProp) -> str:
     return fget.__name__
 
 
-EnumPred = Union[TypeHint, str, EnumMeta, LocStackPattern]
+EnumPred = TypeHint | str | EnumMeta | LocStackPattern
 
 
 def enum_by_name(
     *preds: EnumPred,
-    name_style: Optional[NameStyle] = None,
-    map: Optional[Mapping[Union[str, Enum], str]] = None,  # noqa: A002
+    name_style: NameStyle | None = None,
+    map: Mapping[str | Enum, str] | None = None,  # noqa: A002
 ) -> Provider:
     """Provider that represents enum members to the outside world by their name.
 
@@ -454,8 +451,8 @@ def flag_by_member_names(
     allow_single_value: bool = False,
     allow_duplicates: bool = True,
     allow_compound: bool = True,
-    name_style: Optional[NameStyle] = None,
-    map: Optional[Mapping[Union[str, Enum], str]] = None,  # noqa: A002
+    name_style: NameStyle | None = None,
+    map: Mapping[str | Enum, str] | None = None,  # noqa: A002
 ) -> Provider:
     """Provider that represents flag members to the outside world by list of their names.
 
@@ -496,7 +493,7 @@ def flag_by_member_names(
 def validator(
     pred: Pred,
     func: Callable[[Any], bool],
-    error: Union[str, Callable[[Any], LoadError], None] = None,
+    error: str | Callable[[Any], LoadError] | None = None,
     chain: Chain = Chain.LAST,
 ) -> Provider:
     exception_factory = (
@@ -523,7 +520,7 @@ def default_dict(pred: Pred, default_factory: Callable) -> Provider:
     return bound(pred, DefaultDictProvider(default_factory))
 
 
-def datetime_by_timestamp(pred: Pred = P.ANY, *, tz: Optional[timezone] = timezone.utc) -> Provider:
+def datetime_by_timestamp(pred: Pred = P.ANY, *, tz: timezone | None = timezone.utc) -> Provider:
     """Provider that can load/dump datetime object from/to UNIX timestamp.
 
     :param pred: Predicate specifying where the provider should be used.

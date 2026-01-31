@@ -5,7 +5,7 @@ import types
 import typing
 from abc import ABC, abstractmethod
 from collections import abc as c_abc, defaultdict
-from collections.abc import Hashable, Iterable, Sequence
+from collections.abc import Callable, Hashable, Iterable, Sequence
 from copy import copy
 from dataclasses import InitVar, dataclass
 from enum import Enum, EnumMeta
@@ -13,7 +13,6 @@ from functools import lru_cache, partial
 from typing import (
     Annotated,
     Any,
-    Callable,
     ClassVar,
     Final,
     ForwardRef,
@@ -137,7 +136,7 @@ def _type_and_value_iter(args):
     return [(type(arg), arg) for arg in args]
 
 
-LiteralArg = Union[str, int, bytes, Enum]
+LiteralArg = str | int | bytes | Enum
 
 
 class _LiteralNormType(_BasicNormType):
@@ -214,7 +213,7 @@ class Constraints:
     value: VarTuple[BaseNormType]
 
 
-TypeVarLimit = Union[Bound, Constraints]
+TypeVarLimit = Bound | Constraints
 
 
 class _BaseNormTypeVarLike(BaseNormType):
@@ -257,7 +256,7 @@ class _BaseNormTypeVarLike(BaseNormType):
 class NormTV(_BaseNormTypeVarLike):
     __slots__ = (*_BaseNormTypeVarLike.__slots__, "_limit", "_variance", "_default")
 
-    def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[BaseNormType]):
+    def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: BaseNormType | None):
         super().__init__(var, source=source)
         self._limit = limit
 
@@ -279,26 +278,26 @@ class NormTV(_BaseNormTypeVarLike):
         return self._limit
 
     @property
-    def default(self) -> Optional[BaseNormType]:
+    def default(self) -> BaseNormType | None:
         return self._default
 
 
 class NormTVTuple(_BaseNormTypeVarLike):
     __slots__ = (*_BaseNormTypeVarLike.__slots__, "_default")
 
-    def __init__(self, var: Any, *, source: TypeHint, default: Optional[tuple[BaseNormType, ...]]):
+    def __init__(self, var: Any, *, source: TypeHint, default: tuple[BaseNormType, ...] | None):
         super().__init__(var, source=source)
         self._default = default
 
     @property
-    def default(self) -> Optional[tuple[BaseNormType, ...]]:
+    def default(self) -> tuple[BaseNormType, ...] | None:
         return self._default
 
 
 class NormParamSpec(_BaseNormTypeVarLike):
     __slots__ = (*_BaseNormTypeVarLike.__slots__, "_limit", "_default")
 
-    def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: Optional[tuple[BaseNormType, ...]]):
+    def __init__(self, var: Any, limit: TypeVarLimit, *, source: TypeHint, default: tuple[BaseNormType, ...] | None):
         super().__init__(var, source=source)
         self._default = default
         self._limit = limit
@@ -308,7 +307,7 @@ class NormParamSpec(_BaseNormTypeVarLike):
         return self._limit
 
     @property
-    def default(self) -> Optional[tuple[BaseNormType, ...]]:
+    def default(self) -> tuple[BaseNormType, ...] | None:
         return self._default
 
 
@@ -354,7 +353,7 @@ class _NormParamSpecKwargs(NormParamSpecMarker):
         return typing.ParamSpecKwargs
 
 
-AnyNormTypeVarLike = Union[NormTV, NormTVTuple, NormParamSpec]
+AnyNormTypeVarLike = NormTV | NormTVTuple | NormParamSpec
 
 
 class NormTypeAlias(BaseNormType):
@@ -467,7 +466,7 @@ def _replace_source_with_union(norm: BaseNormType, sources: list) -> BaseNormTyp
     )
 
 
-NormAspect = Callable[["TypeNormalizer", Any, Any, tuple], Optional[BaseNormType]]
+NormAspect = Callable[["TypeNormalizer", Any, Any, tuple], BaseNormType | None]
 
 
 class AspectStorage(list[str]):
@@ -479,7 +478,7 @@ class AspectStorage(list[str]):
     def add(self, func: NormAspect) -> NormAspect:
         ...
 
-    def add(self, func: Optional[NormAspect] = None, *, condition: object = True) -> Any:
+    def add(self, func: NormAspect | None = None, *, condition: object = True) -> Any:
         if func is None:
             return partial(self.add, condition=condition)
 
@@ -502,7 +501,7 @@ TN = TypeVar("TN", bound="TypeNormalizer")
 class TypeNormalizer:
     def __init__(self, implicit_params_getter: ImplicitParamsGetter):
         self.implicit_params_getter = implicit_params_getter
-        self._namespace: Optional[dict[str, Any]] = None
+        self._namespace: dict[str, Any] | None = None
 
     def _with_namespace(self: TN, namespace: dict[str, Any]) -> TN:
         self_copy = copy(self)

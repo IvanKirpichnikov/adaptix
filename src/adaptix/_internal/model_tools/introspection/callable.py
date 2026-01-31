@@ -2,7 +2,7 @@ import inspect
 import typing
 from inspect import Parameter, Signature
 from types import MappingProxyType
-from typing import Any, Optional
+from typing import Any
 
 from ...common import VarTuple
 from ...feature_requirement import HAS_PY_312
@@ -32,8 +32,8 @@ def _is_empty(value):
 
 
 def _unpack_typed_dict_kwargs(
-    param_kwargs: Optional[ParamKwargs],
-) -> tuple[VarTuple[InputField], VarTuple[Param], Optional[ParamKwargs]]:
+    param_kwargs: ParamKwargs | None,
+) -> tuple[VarTuple[InputField], VarTuple[Param], ParamKwargs | None]:
     if not HAS_PY_312 or param_kwargs is None:
         return (), (), param_kwargs
 

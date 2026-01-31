@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Union
 
 from adaptix import Retort, as_sentinel, name_mapping
 from adaptix.load_error import AggregateLoadError, TypeLoadError
@@ -13,8 +12,8 @@ class MySentinel(Enum):
 @dataclass
 class PatchBook:
     id: int
-    title: Union[str, MySentinel] = MySentinel.VALUE
-    sub_title: Union[Optional[str], MySentinel] = MySentinel.VALUE
+    title: str | MySentinel = MySentinel.VALUE
+    sub_title: str | None | MySentinel = MySentinel.VALUE
 
 
 retort = Retort(

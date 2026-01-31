@@ -1,7 +1,6 @@
 import sys
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from inspect import Parameter, Signature
-from typing import Callable, Optional
 
 from ..code_tools.compiler import BasicClosureCompiler, ClosureCompiler
 from ..code_tools.name_sanitizer import BuiltinNameSanitizer, NameSanitizer
@@ -157,13 +156,13 @@ class ModelCoercerProvider(CoercerProvider):
         request: CoercerRequest,
         dst_shape: InputShape,
         src_shape: OutputShape,
-    ) -> Iterable[tuple[InputField, Optional[LinkingResult]]]:
+    ) -> Iterable[tuple[InputField, LinkingResult | None]]:
         sources = tuple(
             request.src.append_with(output_field_to_loc(src_field))
             for src_field in src_shape.fields
         )
 
-        def fetch_field_linking(dst_field: InputField) -> tuple[InputField, Optional[LinkingResult]]:
+        def fetch_field_linking(dst_field: InputField) -> tuple[InputField, LinkingResult | None]:
             destination = request.dst.append_with(input_field_to_loc(dst_field))
             try:
                 linking = mediator.provide(
@@ -195,7 +194,7 @@ class ModelCoercerProvider(CoercerProvider):
 
         return mandatory_apply_by_iterable(
             fetch_field_linking,
-            zip(dst_shape.fields),
+            zip(dst_shape.fields, strict=False),
             lambda: "Cannot create coercer for models. Linkings for some fields are not found",
         )
 
@@ -288,7 +287,7 @@ class ModelCoercerProvider(CoercerProvider):
         mediator: Mediator,
         request: CoercerRequest,
         field_linkings: Iterable[tuple[InputField, LinkingResult]],
-        parent_func: Optional[Callable],
+        parent_func: Callable | None,
     ) -> Mapping[InputField, BroachingPlan]:
         def generate_sub_plan(input_field: InputField, linking_result: LinkingResult):
             if isinstance(linking_result.linking, ConstantLinking):
@@ -340,7 +339,7 @@ class ModelCoercerProvider(CoercerProvider):
 
         return {
             dst_field: sub_plan
-            for (dst_field, linking), sub_plan in zip(field_linkings, field_sub_plans)
+            for (dst_field, linking), sub_plan in zip(field_linkings, field_sub_plans, strict=True)
         }
 
     def _make_broaching_plan(
@@ -375,7 +374,7 @@ class ModelCoercerProvider(CoercerProvider):
     def _make_constructor_call(
         self,
         dst_shape: InputShape,
-        field_to_linking: Mapping[InputField, Optional[LinkingResult]],
+        field_to_linking: Mapping[InputField, LinkingResult | None],
         field_to_sub_plan: Mapping[InputField, BroachingPlan],
     ) -> BroachingPlan:
         args: list[FuncCallArg[BroachingPlan]] = []

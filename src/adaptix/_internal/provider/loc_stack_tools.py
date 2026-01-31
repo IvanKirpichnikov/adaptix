@@ -1,5 +1,5 @@
+from collections.abc import Callable
 from itertools import pairwise
-from typing import Callable
 
 from ..common import TypeHint
 from ..type_tools.type_rendering import TypeHintRenderer

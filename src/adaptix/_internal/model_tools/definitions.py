@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from collections.abc import Hashable, Mapping
+from collections.abc import Callable, Hashable, Mapping
 from dataclasses import dataclass, field
 from enum import Enum
 from itertools import pairwise
-from typing import Any, Callable, Generic, Optional, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 from ..common import Catchable, TypeHint, VarTuple
 from ..feature_requirement import DistributionRequirement, DistributionVersionRequirement
@@ -39,7 +39,12 @@ class DefaultFactoryWithSelf(Generic[S, T]):
     factory: Callable[[S], T]
 
 
-Default = Union[NoDefault, DefaultValue[Any], DefaultFactory[Any], DefaultFactoryWithSelf[Any, Any]]
+Default = (
+    NoDefault
+    | DefaultValue[Any]
+    | DefaultFactory[Any]
+    | DefaultFactoryWithSelf[Any, Any]
+)
 
 
 class Accessor(Hashable, ABC):
@@ -50,7 +55,7 @@ class Accessor(Hashable, ABC):
 
     @property
     @abstractmethod
-    def access_error(self) -> Optional[Catchable]:
+    def access_error(self) -> Catchable | None:
         ...
 
     @property
@@ -60,7 +65,7 @@ class Accessor(Hashable, ABC):
 
 
 class DescriptorAccessor(Accessor, ABC):
-    def __init__(self, attr_name: str, access_error: Optional[Catchable]):
+    def __init__(self, attr_name: str, access_error: Catchable | None):
         self._attr_name = attr_name
         self._access_error = access_error
 
@@ -69,7 +74,7 @@ class DescriptorAccessor(Accessor, ABC):
         return getattr(obj, self._attr_name)
 
     @property
-    def access_error(self) -> Optional[Catchable]:
+    def access_error(self) -> Catchable | None:
         return self._access_error
 
     @property
@@ -93,7 +98,7 @@ class DescriptorAccessor(Accessor, ABC):
 
 
 class ItemAccessor(Accessor):
-    def __init__(self, key: Union[int, str], access_error: Optional[Catchable], path_element: TrailElement):
+    def __init__(self, key: int | str, access_error: Catchable | None, path_element: TrailElement):
         self.key = key
         self._access_error = access_error
         self._path_element = path_element
@@ -103,7 +108,7 @@ class ItemAccessor(Accessor):
         return obj[self.key]
 
     @property
-    def access_error(self) -> Optional[Catchable]:
+    def access_error(self) -> Catchable | None:
         return self._access_error
 
     @property
@@ -139,7 +144,7 @@ def create_attr_accessor(attr_name: str, *, is_required: bool) -> DescriptorAcce
     )
 
 
-def create_key_accessor(key: Union[str, int], access_error: Optional[Catchable]) -> ItemAccessor:
+def create_key_accessor(key: str | int, access_error: Catchable | None) -> ItemAccessor:
     return ItemAccessor(
         key=key,
         access_error=access_error,
@@ -255,7 +260,7 @@ class InputShape(BaseShape, Generic[T]):
     """
     fields: VarTuple[InputField]
     params: VarTuple[Param]
-    kwargs: Optional[ParamKwargs]
+    kwargs: ParamKwargs | None
     constructor: Callable[..., T]
     fields_dict: Mapping[str, InputField] = field(init=False, hash=False, repr=False, compare=False)
 
@@ -313,8 +318,8 @@ class OutputShape(BaseShape):
     fields_dict: Mapping[str, OutputField] = field(init=False, hash=False, repr=False, compare=False)
 
 
-Inp = TypeVar("Inp", bound=Optional[InputShape])
-Out = TypeVar("Out", bound=Optional[OutputShape])
+Inp = TypeVar("Inp", bound=InputShape | None)
+Out = TypeVar("Out", bound=OutputShape | None)
 
 
 @dataclass(frozen=True)

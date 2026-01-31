@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 from adaptix import Retort, name_mapping
 
@@ -7,7 +6,7 @@ from adaptix import Retort, name_mapping
 @dataclass
 class Book:
     title: str
-    sub_title: Optional[str] = None
+    sub_title: str | None = None
     authors: list[str] = field(default_factory=list)
 
 

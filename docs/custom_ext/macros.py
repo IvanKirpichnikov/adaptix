@@ -1,9 +1,9 @@
-import tomllib
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
 from pathlib import Path
 from textwrap import dedent, indent
 
+import tomllib
 from docutils.statemachine import StringList
 from sphinx.util import docutils
 from sphinx.util.docutils import SphinxDirective

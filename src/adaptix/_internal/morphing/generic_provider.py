@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from os import PathLike
 from pathlib import Path
-from typing import Any, ForwardRef, Literal, Optional, TypeVar
+from typing import Any, ForwardRef, Literal, TypeVar
 
 from ..common import Dumper, Loader, TypeHint
 from ..provider.essential import CannotProvide, Mediator
@@ -151,7 +151,7 @@ class LiteralProvider(LoaderProvider, DumperProvider):
             requests,
             lambda: "Cannot create dumper for literal. Dumpers for enums cannot be created",
         )
-        return dict(zip(enum_classes, dumpers))
+        return dict(zip(enum_classes, dumpers, strict=True))
 
     def _fetch_bytes_dumper(
         self,
@@ -343,7 +343,7 @@ class LiteralProvider(LoaderProvider, DumperProvider):
     def _make_dumper(
         self,
         enum_dumpers_wrapper: MappingHashWrapper[Mapping[type[Enum], Dumper[Enum]]],
-        bytes_dumper: Optional[Dumper[bytes]],
+        bytes_dumper: Dumper[bytes] | None,
     ):
         enum_dumpers = enum_dumpers_wrapper.mapping
 

@@ -15,7 +15,7 @@ from datetime import date, datetime, time
 from ipaddress import IPv4Address, IPv4Interface, IPv4Network, IPv6Address, IPv6Interface, IPv6Network
 from itertools import chain
 from pathlib import Path, PosixPath, PurePath, PurePosixPath, PureWindowsPath, WindowsPath
-from typing import Any, Optional, TypeVar, overload
+from typing import Any, TypeVar, overload
 from uuid import UUID
 
 from ...common import Dumper, Loader, TypeHint, VarTuple
@@ -230,7 +230,7 @@ class AdornedRetort(OperatingRetort):
         recipe: Iterable[Provider] = (),
         strict_coercion: bool = True,
         debug_trail: DebugTrail = DebugTrail.ALL,
-        error_renderer: Optional[ErrorRenderer] = default_error_renderer,
+        error_renderer: ErrorRenderer | None = default_error_renderer,
     ):
         self._strict_coercion = strict_coercion
         self._debug_trail = debug_trail
@@ -246,7 +246,7 @@ class AdornedRetort(OperatingRetort):
         *,
         strict_coercion: Omittable[bool] = Omitted(),
         debug_trail: Omittable[DebugTrail] = Omitted(),
-        error_renderer: Omittable[Optional[ErrorRenderer]] = Omitted(),
+        error_renderer: Omittable[ErrorRenderer | None] = Omitted(),
     ) -> AR:
         with self._clone() as clone:
             if not isinstance(strict_coercion, Omitted):
@@ -339,10 +339,10 @@ class AdornedRetort(OperatingRetort):
         ...
 
     @overload
-    def dump(self, data: Any, tp: Optional[TypeHint] = None, /) -> Any:
+    def dump(self, data: Any, tp: TypeHint | None = None, /) -> Any:
         ...
 
-    def dump(self, data: Any, tp: Optional[TypeHint] = None, /) -> Any:
+    def dump(self, data: Any, tp: TypeHint | None = None, /) -> Any:
         if tp is None:
             tp = type(data)
             if is_generic_class(tp):

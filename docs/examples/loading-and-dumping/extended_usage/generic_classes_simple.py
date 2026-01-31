@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Optional, TypeVar
+from typing import Generic, TypeVar
 
 from adaptix import Retort
 
@@ -8,8 +8,8 @@ T = TypeVar("T")
 
 @dataclass
 class MinMax(Generic[T]):
-    min: Optional[T] = None
-    max: Optional[T] = None
+    min: T | None = None
+    max: T | None = None
 
 
 retort = Retort()

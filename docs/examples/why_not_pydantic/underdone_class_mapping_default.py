@@ -1,6 +1,5 @@
 # mypy: disable-error-code="call-arg"
 from dataclasses import dataclass
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -13,7 +12,7 @@ class Book:
 
 class BookDTO(BaseModel):
     title: str
-    writer: Optional[str] = None  # alias is forgotten!
+    writer: str | None = None  # alias is forgotten!
 
 
 book = Book(title="Fahrenheit 451", author="Ray Bradbury")
