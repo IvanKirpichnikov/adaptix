@@ -15,7 +15,7 @@ data = {
 
 retort = Retort(
     recipe=[
-        native_pydantic(Book),
+        native_pydantic(Book, to_python={"by_alias": True}),
     ],
 )
 

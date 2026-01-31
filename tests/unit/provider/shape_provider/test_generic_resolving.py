@@ -559,6 +559,7 @@ def test_pydantic():
     assert_distinct_fields_types(MyModel[T], input={"a": Any}, output={"a": Any, "b": Any, "_c": Any})
 
 
+HAS_PYDANTIC_NEW_VERSION = DistributionVersionRequirement("pydantic", "2.12.5")
 NOTHING_TYPEVAR_MAKER = lambda default: TypeVar("tv_int", default=default)  # noqa: E731
 
 
@@ -574,7 +575,11 @@ NOTHING_TYPEVAR_MAKER = lambda default: TypeVar("tv_int", default=default)  # no
 def test_tv_default(model_spec, tv_maker):
     with (
         pytest.raises(NotImplementedError)
-        if model_spec.kind == ModelSpec.PYDANTIC and tv_maker != NOTHING_TYPEVAR_MAKER else
+        if (
+            model_spec.kind == ModelSpec.PYDANTIC
+            and tv_maker != NOTHING_TYPEVAR_MAKER
+            and not HAS_PYDANTIC_NEW_VERSION
+        ) else
         nullcontext()
     ):
         tv_int = tv_maker(default=int)

@@ -192,7 +192,7 @@ HAS_MSGSPEC_PKG = DistributionRequirement("msgspec")
 HAS_SUPPORTED_SQLALCHEMY_PKG = DistributionVersionRequirement("sqlalchemy", "2.0.0")
 HAS_SQLALCHEMY_PKG = DistributionRequirement("sqlalchemy")
 
-HAS_SUPPORTED_PYDANTIC_PKG = DistributionVersionRequirement("pydantic", "2.0.0")
+HAS_SUPPORTED_PYDANTIC_PKG = DistributionVersionRequirement("pydantic", "2.1.0")
 HAS_PYDANTIC_PKG = DistributionRequirement("pydantic")
 
 IS_CPYTHON = PythonImplementationRequirement("cpython")
