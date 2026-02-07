@@ -2,19 +2,18 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from typing import Any, Callable, Union
 
-from tests_helpers import raises_exc
-
 from adaptix import Omitted, Retort, TypeHint
 from adaptix._internal.common import VarTuple
 from adaptix._internal.definitions import Direction
 from adaptix._internal.morphing.facade.func import DumpedJSONSchema, generate_json_schema
 from adaptix._internal.morphing.json_schema.schema_model import JSONSchemaType
 from adaptix._internal.morphing.load_error import LoadError
+from tests_helpers import raises_exc
 
 try:
-    import jsonschema
+    import jsonschema as jsonschema_py
 except ImportError:
-    jsonschema = None
+    jsonschema_py = None
 
 
 try:
@@ -24,16 +23,16 @@ except ImportError:
 
 
 def _validate_json_schema(json_schema: DumpedJSONSchema) -> DumpedJSONSchema:
-    if jsonschema is not None:
-        jsonschema.Draft202012Validator.check_schema(json_schema)
+    if jsonschema_py is not None:
+        jsonschema_py.Draft202012Validator.check_schema(json_schema)
     if jsonschema_rs is not None:
         jsonschema_rs.meta.validate(json_schema)
     return json_schema
 
 
 def _validate_by_json_schema(data, json_schema: DumpedJSONSchema) -> None:
-    if jsonschema is not None:
-        jsonschema.Draft202012Validator(json_schema).validate(data)
+    if jsonschema_py is not None:
+        jsonschema_py.Draft202012Validator(json_schema).validate(data)
     if jsonschema_rs is not None:
         jsonschema_rs.validate(json_schema, data)
 
@@ -164,7 +163,7 @@ def _assert_json_schema_errors(
 ) -> None:
     errors_list = list(errors)
     assert len(errors_list) == len(templates)
-    for error, template in zip(errors_list, templates):
+    for error, template in zip(errors_list, templates, strict=False):
         assert path_getter(error) == template.path
         asserter_getter(template)(error)
 
@@ -186,9 +185,9 @@ def assert_load_error(
     )
     input_json_schema = generate_json_schema(retort, tp, direction=Direction.INPUT)
 
-    if jsonschema is not None:
+    if jsonschema_py is not None:
         _assert_json_schema_errors(
-            errors=jsonschema.Draft202012Validator(input_json_schema).iter_errors(data),
+            errors=jsonschema_py.Draft202012Validator(input_json_schema).iter_errors(data),
             templates=json_schema_errors,
             asserter_getter=lambda t: t.py_asserter,
             path_getter=lambda e: tuple(e.path),

@@ -1,7 +1,7 @@
 # ruff: noqa: SIM113
 import collections.abc
-from collections.abc import Iterable, Mapping
-from typing import Callable, TypeVar
+from collections.abc import Callable, Iterable, Mapping
+from typing import TypeVar
 
 from ..common import Dumper, Loader, TypeHint
 from ..compat import CompatExceptionGroup
@@ -237,7 +237,7 @@ class IterableProvider(MorphingProvider):
         return iter_dumper
 
     def provide_json_schema(self, mediator: Mediator, request: JSONSchemaRequest) -> JSONSchema:
-        origin, arg = self._parse_origin_and_arg(request.last_loc.type)
+        _, arg = self._parse_origin_and_arg(request.last_loc.type)
         item_schema = mediator.mandatory_provide(
             request.append_loc(
                 GenericParamLoc(

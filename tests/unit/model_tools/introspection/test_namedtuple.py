@@ -62,7 +62,7 @@ def test_order_ab():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -83,7 +83,7 @@ def test_order_ab():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
     )
@@ -129,7 +129,7 @@ def test_order_ba():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -150,7 +150,7 @@ def test_order_ba():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
     )
@@ -213,7 +213,7 @@ def test_defaults():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -242,7 +242,7 @@ def test_defaults():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
         )
     )
@@ -314,7 +314,7 @@ def test_rename():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"abc", "_1", "ghi", "_3"}),
+                overridden_types=frozenset({"abc", "_1", "ghi", "_3"}),
             ),
             output=OutputShape(
                 fields=(
@@ -351,10 +351,11 @@ def test_rename():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"abc", "_1", "ghi", "_3"}),
+                overridden_types=frozenset({"abc", "_1", "ghi", "_3"}),
             ),
         )
     )
+
 
 @requires(MAX_PY_314)
 def test_class_hinted_namedtuple():
@@ -397,7 +398,7 @@ def test_class_hinted_namedtuple():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
             output=OutputShape(
                 fields=(
@@ -418,7 +419,7 @@ def test_class_hinted_namedtuple():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b"}),
+                overridden_types=frozenset({"a", "b"}),
             ),
         )
 
@@ -483,7 +484,7 @@ def test_hinted_namedtuple():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
             output=OutputShape(
                 fields=(
@@ -512,7 +513,7 @@ def test_hinted_namedtuple():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a", "b", "c"}),
+                overridden_types=frozenset({"a", "b", "c"}),
             ),
         )
     )
@@ -549,7 +550,7 @@ def test_inheritance():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
             output=OutputShape(
                 fields=(
@@ -562,13 +563,13 @@ def test_inheritance():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset(),
+                overridden_types=frozenset(),
             ),
         )
     )
 
 
-def test_inheritance_overriden_types():
+def test_inheritance_overridden_types():
     class Parent(NamedTuple):
         a: int
         b: str
@@ -614,7 +615,7 @@ def test_inheritance_overriden_types():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -635,13 +636,13 @@ def test_inheritance_overriden_types():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
 
 
-def test_inheritance_overriden_types_functional_parent():
+def test_inheritance_overridden_types_functional_parent():
     Parent = namedtuple("Parent", "a b")
 
     class Child(Parent):
@@ -685,7 +686,7 @@ def test_inheritance_overriden_types_functional_parent():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
             output=OutputShape(
                 fields=(
@@ -706,7 +707,7 @@ def test_inheritance_overriden_types_functional_parent():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"a"}),
+                overridden_types=frozenset({"a"}),
             ),
         )
     )
@@ -740,7 +741,7 @@ def test_annotated():
                         kind=ParamKind.POS_OR_KW,
                     ),
                 ),
-                overriden_types=frozenset({"annotated_field"}),
+                overridden_types=frozenset({"annotated_field"}),
             ),
             output=OutputShape(
                 fields=(
@@ -753,7 +754,7 @@ def test_annotated():
                         original=ANY,
                     ),
                 ),
-                overriden_types=frozenset({"annotated_field"}),
+                overridden_types=frozenset({"annotated_field"}),
             ),
         )
     )

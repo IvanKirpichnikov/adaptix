@@ -67,6 +67,7 @@ def test_int(accum):
                     },
                     "required": ["field1", "field2"],
                     "type": "object",
+                    "title": "ExampleInt",
                 },
             },
             "$ref": "#/$defs/ExampleInt",

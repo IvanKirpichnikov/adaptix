@@ -1,7 +1,7 @@
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from copy import copy, deepcopy
 from dataclasses import fields, replace
-from typing import Any, Callable, TypeVar
+from typing import Any, TypeVar
 
 from ...provider.provider_wrapper import Chain
 from ...utils import Omitted

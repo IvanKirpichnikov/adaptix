@@ -1,8 +1,8 @@
 import itertools
 from abc import ABC, abstractmethod
-from collections.abc import Collection, Container, Iterable, Mapping, Set
+from collections.abc import Callable, Collection, Container, Iterable, Mapping, Set
 from dataclasses import dataclass
-from typing import Any, Callable, TypeVar, Union
+from typing import Any, TypeVar
 
 from ...code_tools.code_builder import CodeBuilder
 from ...code_tools.compiler import ClosureCompiler
@@ -154,7 +154,7 @@ def get_extra_targets_at_crown(name_layout: BaseNameLayout) -> Collection[str]:
 
 
 def get_optional_fields_at_list_crown(
-    fields_map: Mapping[str, Union[InputField, OutputField]],
+    fields_map: Mapping[str, InputField | OutputField],
     crown: BaseCrown,
 ) -> Collection[str]:
     if isinstance(crown, BaseDictCrown):
@@ -178,7 +178,7 @@ def get_optional_fields_at_list_crown(
     raise TypeError
 
 
-def get_wild_extra_targets(shape: BaseShape, extra_move: Union[InpExtraMove, OutExtraMove]) -> Collection[str]:
+def get_wild_extra_targets(shape: BaseShape, extra_move: InpExtraMove | OutExtraMove) -> Collection[str]:
     if not isinstance(extra_move, ExtraTargets):
         return []
 

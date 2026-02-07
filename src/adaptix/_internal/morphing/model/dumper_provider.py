@@ -98,6 +98,7 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
         shape: OutputShape,
     ) -> ModelOutputJSONSchemaGen:
         return ModelOutputJSONSchemaGen(
+            loc_stack=request.loc_stack,
             shape=shape,
             field_default_dumper=partial(self._dump_field_default, mediator, request),
             field_json_schema_getter=partial(self._get_field_json_schema, mediator, request),
@@ -225,7 +226,7 @@ class ModelDumperProvider(DumperProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create dumper for model. Dumpers for some fields cannot be created",
         )
-        return {field.id: dumper for field, dumper in zip(shape.fields, dumpers)}
+        return {field.id: dumper for field, dumper in zip(shape.fields, dumpers, strict=True)}
 
     def _validate_params(self, shape: OutputShape, name_layout: OutputNameLayout) -> None:
         optional_fields_at_list_crown = get_optional_fields_at_list_crown(

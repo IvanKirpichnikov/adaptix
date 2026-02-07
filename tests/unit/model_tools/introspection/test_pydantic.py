@@ -74,7 +74,7 @@ def test_basic():
                     is_required=False,
                 ),
             ),
-            overriden_types=frozenset({"c", "e", "d", "a", "b"}),
+            overridden_types=frozenset({"c", "e", "d", "a", "b"}),
             params=(
                 Param(field_id="a", name="a", kind=ParamKind.KW_ONLY),
                 Param(field_id="b", name="b", kind=ParamKind.KW_ONLY),
@@ -126,7 +126,7 @@ def test_basic():
                     accessor=create_attr_accessor(attr_name="e", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"c", "e", "d", "a", "b"}),
+            overridden_types=frozenset({"c", "e", "d", "a", "b"}),
         ),
     )
 
@@ -165,7 +165,7 @@ def test_fields_with_ellipsis_default():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"a", "b", "c"}),
+            overridden_types=frozenset({"a", "b", "c"}),
             params=(
                 Param(field_id="a", name="a", kind=ParamKind.KW_ONLY),
                 Param(field_id="b", name="b", kind=ParamKind.KW_ONLY),
@@ -201,7 +201,7 @@ def test_fields_with_ellipsis_default():
                     accessor=create_attr_accessor(attr_name="c", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"a", "b", "c"}),
+            overridden_types=frozenset({"a", "b", "c"}),
         ),
     )
 
@@ -228,7 +228,7 @@ def test_private_attrs():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
             params=(Param(field_id="a", name="a", kind=ParamKind.KW_ONLY),),
             kwargs=ParamKwargs(type=Any),
             constructor=MyModel,
@@ -292,7 +292,7 @@ def test_private_attrs():
                     accessor=create_attr_accessor(attr_name="_b", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"_b", "_c", "_d", "_e", "_f", "a", "_g"}),
+            overridden_types=frozenset({"_b", "_c", "_d", "_e", "_f", "a", "_g"}),
         ),
     )
 
@@ -334,7 +334,7 @@ def test_computed_fields():
     assert get_pydantic_shape(MyModel) == Shape(
         input=InputShape(
             fields=(InputField(id="a", type=str, default=NoDefault(), metadata={}, original=ANY, is_required=True),),
-            overriden_types=frozenset({"a"}),
+            overridden_types=frozenset({"a"}),
             params=(Param(field_id="a", name="a", kind=ParamKind.KW_ONLY),),
             kwargs=ParamKwargs(type=Any),
             constructor=MyModel,
@@ -406,7 +406,7 @@ def test_computed_fields():
                     accessor=create_attr_accessor(attr_name="_b", is_required=True),
                 ),
             ),
-            overriden_types=frozenset(
+            overridden_types=frozenset(
                 {
                     "_b",
                     "_private",
@@ -462,7 +462,7 @@ def test_order():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f1", "f4"}),
+            overridden_types=frozenset({"f1", "f4"}),
             params=(
                 Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),
                 Param(field_id="f4", name="f4", kind=ParamKind.KW_ONLY),
@@ -521,7 +521,7 @@ def test_order():
                     accessor=create_attr_accessor(attr_name="_f6", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"_f3", "_f6", "f1", "f2", "f4", "f5"}),
+            overridden_types=frozenset({"_f3", "_f6", "f1", "f2", "f4", "f5"}),
         ),
     )
 
@@ -552,7 +552,7 @@ def test_kwargs(extra, param_kwargs):
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
             params=(Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),),
             kwargs=param_kwargs,
             constructor=MyModel,
@@ -568,7 +568,7 @@ def test_kwargs(extra, param_kwargs):
                     accessor=create_attr_accessor(attr_name="f1", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
         ),
     )
 
@@ -583,7 +583,7 @@ def test_allowed_custom_init():
     assert get_pydantic_shape(MyModel) == Shape(
         input=InputShape(
             fields=(InputField(id="f1", type=str, default=NoDefault(), metadata={}, original=ANY, is_required=True),),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
             params=(Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),),
             kwargs=ParamKwargs(type=Any),
             constructor=MyModel,
@@ -599,7 +599,7 @@ def test_allowed_custom_init():
                     accessor=create_attr_accessor(attr_name="f1", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
         ),
     )
 
@@ -662,7 +662,7 @@ def test_annotated():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
             params=(Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),),
             kwargs=ParamKwargs(type=Any),
             constructor=MyModel,
@@ -702,7 +702,7 @@ def test_annotated():
                     accessor=create_attr_accessor(attr_name="_f4", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f3", "_f4", "f1", "f2"}),
+            overridden_types=frozenset({"f3", "_f4", "f1", "f2"}),
         ),
     )
 
@@ -723,7 +723,7 @@ def test_field_constraints():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
             params=(Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),),
             kwargs=ParamKwargs(type=Any),
             constructor=MyModel,
@@ -739,7 +739,7 @@ def test_field_constraints():
                     accessor=create_attr_accessor(attr_name="f1", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f1"}),
+            overridden_types=frozenset({"f1"}),
         ),
     )
 
@@ -790,7 +790,7 @@ def test_simple_aliases(populate_by_name):
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f3", "f2", "f4", "f1"}),
+            overridden_types=frozenset({"f3", "f2", "f4", "f1"}),
             params=(
                 Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),
                 Param(field_id="f2", name="f2" if populate_by_name else "a2", kind=ParamKind.KW_ONLY),
@@ -835,7 +835,7 @@ def test_simple_aliases(populate_by_name):
                     accessor=create_attr_accessor(attr_name="f4", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f3", "f2", "f4", "f1"}),
+            overridden_types=frozenset({"f3", "f2", "f4", "f1"}),
         ),
     )
 
@@ -853,7 +853,7 @@ def test_alias_choices():
                 InputField(id="f2", type=int, default=NoDefault(), metadata={}, original=ANY, is_required=True),
                 InputField(id="f3", type=int, default=NoDefault(), metadata={}, original=ANY, is_required=True),
             ),
-            overriden_types=frozenset({"f1", "f3", "f2"}),
+            overridden_types=frozenset({"f1", "f3", "f2"}),
             params=(
                 Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),
                 Param(field_id="f2", name="a2", kind=ParamKind.KW_ONLY),
@@ -889,7 +889,7 @@ def test_alias_choices():
                     accessor=create_attr_accessor(attr_name="f3", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f1", "f3", "f2"}),
+            overridden_types=frozenset({"f1", "f3", "f2"}),
         ),
     )
 
@@ -905,7 +905,7 @@ def test_alias_choices_with_alias_path():
                 InputField(id="f1", type=int, default=NoDefault(), metadata={}, original=ANY, is_required=True),
                 InputField(id="f2", type=int, default=NoDefault(), metadata={}, original=ANY, is_required=True),
             ),
-            overriden_types=frozenset({"f1", "f2"}),
+            overridden_types=frozenset({"f1", "f2"}),
             params=(
                 Param(field_id="f1", name="f1", kind=ParamKind.KW_ONLY),
                 Param(field_id="f2", name="a2", kind=ParamKind.KW_ONLY),
@@ -932,7 +932,7 @@ def test_alias_choices_with_alias_path():
                     accessor=create_attr_accessor(attr_name="f2", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f1", "f2"}),
+            overridden_types=frozenset({"f1", "f2"}),
         ),
     )
 
@@ -988,7 +988,7 @@ def test_alias_generator_is_resolved_by_pydantic():
                     is_required=True,
                 ),
             ),
-            overriden_types=frozenset({"f3", "f1", "f2"}),
+            overridden_types=frozenset({"f3", "f1", "f2"}),
             params=(
                 Param(field_id="f1", name="f1_gen", kind=ParamKind.KW_ONLY),
                 Param(field_id="f2", name="va2", kind=ParamKind.KW_ONLY),
@@ -1024,6 +1024,6 @@ def test_alias_generator_is_resolved_by_pydantic():
                     accessor=create_attr_accessor(attr_name="f3", is_required=True),
                 ),
             ),
-            overriden_types=frozenset({"f3", "f1", "f2"}),
+            overridden_types=frozenset({"f3", "f1", "f2"}),
         ),
     )

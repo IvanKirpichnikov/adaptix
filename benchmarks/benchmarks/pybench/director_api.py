@@ -1,4 +1,3 @@
-# pylint: disable=import-error,no-name-in-module
 # ruff: noqa: T201, S603
 import importlib.metadata
 import inspect
@@ -7,13 +6,13 @@ import os
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from copy import copy
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Callable, Literal, Optional, TypeVar, Union
+from typing import Any, Literal, TypeVar
 
 import pyperf
 from pyperf._cli import format_checks
@@ -41,18 +40,18 @@ EnvSpec = Mapping[str, str]
 
 @dataclass(frozen=True)
 class CheckParams:
-    stdev_rel_threshold: Optional[float] = None
-    ignore_pyperf_warnings: Optional[bool] = None
+    stdev_rel_threshold: float | None = None
+    ignore_pyperf_warnings: bool | None = None
 
 
 @dataclass(frozen=True)
 class BenchSchema:
-    entry_point: Union[Callable, str]
+    entry_point: Callable | str
     base: str
     tags: Iterable[str]
     kwargs: Mapping[str, Any]
     used_distributions: Sequence[str]
-    skip_if: Optional[Callable[[EnvSpec], bool]] = None
+    skip_if: Callable[[EnvSpec], bool] | None = None
     check_params: Callable[[EnvSpec], CheckParams] = lambda env_spec: CheckParams()
 
 
@@ -73,9 +72,9 @@ class BenchStorageFactory:
 
     def create(
         self,
-        storage_type: Optional[Literal["fs", "sqlite"]] = None,
-        sqlite_db: Optional[Path] = None,
-        fs_data_dir: Optional[Path] = None,
+        storage_type: Literal["fs", "sqlite"] | None = None,
+        sqlite_db: Path | None = None,
+        fs_data_dir: Path | None = None,
     ) -> BenchStorage:
         if storage_type is None or storage_type == "sqlite":
             return SqliteBenchStorage(
@@ -116,7 +115,7 @@ class BenchAccessor:
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument("--env-spec", action="extend", nargs="+", required=False, metavar="KEY=VALUE")
 
-    def override_state(self, env_spec: Optional[Iterable[str]]):
+    def override_state(self, env_spec: Iterable[str] | None):
         if env_spec is not None:
             update_data = {}
             for item in env_spec:
@@ -175,7 +174,7 @@ class BenchAccessor:
             if schema.skip_if is None or not schema.skip_if(self.env_spec)
         ]
 
-    def get_case_result(self, schema: BenchSchema) -> Optional[BenchCaseResult]:
+    def get_case_result(self, schema: BenchSchema) -> BenchCaseResult | None:
         return self._storage.get_case_result(self.get_id(schema))
 
     def get_existing_case_result(self, schema: BenchSchema) -> BenchCaseResult:
@@ -214,7 +213,7 @@ class BenchChecker:
             if not line.startswith("Use")
         ]
 
-    def get_warnings(self, schema: BenchSchema) -> Optional[Sequence[str]]:
+    def get_warnings(self, schema: BenchSchema) -> Sequence[str] | None:
         data = self.accessor.get_case_result(schema)
         if data is None:
             return None
@@ -279,8 +278,8 @@ class BenchRunner:
     def run_benchmarks(
         self,
         *,
-        include: Optional[Sequence[str]] = None,
-        exclude: Optional[Sequence[str]] = None,
+        include: Sequence[str] | None = None,
+        exclude: Sequence[str] | None = None,
         missing: bool = False,
         unstable: bool = False,
     ) -> None:
@@ -430,7 +429,7 @@ class BenchmarkDirector:
     def add_iter(self, schemas: Iterable[BenchSchema]) -> None:
         self.schemas.extend(schemas)
 
-    def cli(self, args: Optional[Sequence[str]] = None):
+    def cli(self, args: Sequence[str] | None = None):
         accessor = self.make_accessor()
         self._validate_schemas(accessor)
 

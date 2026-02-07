@@ -1,4 +1,3 @@
-# ruff: noqa: FBT001, FBT003
 import typing
 from types import MappingProxyType
 from typing import Annotated, TypedDict
@@ -83,7 +82,7 @@ def test_total():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -112,7 +111,7 @@ def test_total():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -169,7 +168,7 @@ def test_non_total():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -198,7 +197,7 @@ def test_non_total():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -241,7 +240,7 @@ def test_inheritance_first():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -254,7 +253,7 @@ def test_inheritance_first():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -298,7 +297,7 @@ def test_inheritance_second():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -319,7 +318,7 @@ def test_inheritance_second():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -376,7 +375,7 @@ def test_inheritance_third():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -405,7 +404,7 @@ def test_inheritance_third():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -439,7 +438,7 @@ def test_annotated():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -452,7 +451,7 @@ def test_annotated():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -484,7 +483,7 @@ def test_annotated():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -497,7 +496,7 @@ def test_annotated():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -604,7 +603,7 @@ def test_required():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -657,7 +656,7 @@ def test_required():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )
@@ -764,7 +763,7 @@ def test_required_annotated():
                         kind=ParamKind.KW_ONLY,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
             output=OutputShape(
                 fields=(
@@ -817,7 +816,7 @@ def test_required_annotated():
                         original=None,
                     ),
                 ),
-                overriden_types=frozenset({}),
+                overridden_types=frozenset({}),
             ),
         )
     )

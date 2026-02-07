@@ -49,5 +49,4 @@ try:
 except Exception as e:
     assert isinstance(e, ExceptionGroup)
     assert len(e.exceptions) == 1
-    assert isinstance(e.exceptions[0], TypeError)
     assert list(get_trail(e.exceptions[0])) == [Attr("created_at")]

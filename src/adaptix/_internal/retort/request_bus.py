@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
-from typing import Any, Callable, Generic, Optional, TypeVar
+from collections.abc import Callable, Iterable
+from typing import Any, Generic, TypeVar
 
 from ..provider.essential import (
     AggregateCannotProvide,
@@ -114,7 +114,7 @@ class BasicRequestBus(RequestBus[RequestT, ResponseT], Generic[RequestT, Respons
 
 class RecursionResolver(ABC, Generic[RequestT, ResponseT]):
     @abstractmethod
-    def track_request(self, request: RequestT) -> Optional[ResponseT]:
+    def track_request(self, request: RequestT) -> ResponseT | None:
         ...
 
     @abstractmethod

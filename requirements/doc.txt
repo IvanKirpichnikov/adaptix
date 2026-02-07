@@ -2,6 +2,8 @@
 #    uv pip compile requirements/raw/doc.txt -o requirements/doc.txt --allow-unsafe --strip-extras --no-strip-markers
 -e ./benchmarks
     # via -r requirements/raw/bench.txt
+-e ./tests/tests_helpers
+    # via -r requirements/raw/bench.txt
 alabaster==1.0.0
     # via sphinx
 annotated-types==0.7.0
@@ -53,13 +55,13 @@ markupsafe==3.0.2
     # via jinja2
 marshmallow==3.20.1
     # via -r requirements/raw/bench.txt
-mashumaro==3.10
+mashumaro==3.17
     # via -r requirements/raw/bench.txt
 mdit-py-plugins==0.4.2
     # via myst-parser
 mdurl==0.1.2
     # via markdown-it-py
-msgspec==0.19.0 ; implementation_name != 'pypy'
+msgspec==0.20.0 ; implementation_name != 'pypy'
     # via -r requirements/raw/bench.txt
 myst-parser==4.0.1
     # via -r requirements/raw/doc.txt
@@ -81,9 +83,9 @@ psutil==5.9.5
     # via
     #   -r requirements/raw/bench.txt
     #   pyperf
-pydantic==2.10.3
+pydantic==2.12.5
     # via -r requirements/raw/bench.txt
-pydantic-core==2.27.1
+pydantic-core==2.41.5
     # via pydantic
 pygments==2.19.1
     # via
@@ -152,11 +154,14 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 sphinxext-opengraph==0.10.0
     # via -r requirements/raw/doc.txt
-typing-extensions==4.13.2
+typing-extensions==4.15.0
     # via
     #   beautifulsoup4
     #   mashumaro
     #   pydantic
     #   pydantic-core
+    #   typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
 urllib3==2.4.0
     # via requests

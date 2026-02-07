@@ -51,7 +51,7 @@ def is_protocol(tp):
 
 
 def create_union(args: tuple):
-    return Union[args]
+    return Union[args]  # noqa: UP007
 
 
 def is_parametrized(tp: TypeHint) -> bool:
@@ -104,7 +104,7 @@ def is_generic_class(cls: type) -> bool:
     return (
         cls in BUILTIN_ORIGIN_TO_TYPEVARS
         or (
-            issubclass(cls, Generic)  # type: ignore[arg-type]
+            issubclass(cls, Generic)
             and bool(cls.__parameters__)  # type: ignore[attr-defined]
         )
     )
@@ -115,8 +115,8 @@ def get_type_vars_of_parametrized(tp: TypeHint) -> VarTuple[TypeVar]:
     if not params:
         return ()
     if isinstance(tp, type):
-        if isinstance(tp, types.GenericAlias):
-            return params
+        if isinstance(tp, types.GenericAlias):  # type: ignore[unreachable]
+            return params  # type: ignore[unreachable]
         return ()
     if strip_alias(tp) != tp and get_generic_args(tp) == ():
         return ()

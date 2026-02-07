@@ -1,4 +1,4 @@
-# ruff: noqa: FBT003, PT011
+# ruff: noqa: FBT003
 from dataclasses import dataclass
 from types import MappingProxyType, SimpleNamespace
 from typing import Any, Callable, Dict, Optional, Type
@@ -57,7 +57,7 @@ def shape(*fields: TestField):
             )
             for fld in fields
         ),
-        overriden_types=frozenset(fld.id for fld in fields),
+        overridden_types=frozenset(fld.id for fld in fields),
     )
 
 

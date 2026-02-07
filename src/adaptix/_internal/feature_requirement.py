@@ -162,12 +162,6 @@ class PythonImplementationRequirement(Requirement):
         return f"{self.implementation_name} is required"
 
 
-HAS_PY_310 = PythonVersionRequirement((3, 10))
-HAS_TYPE_UNION_OP = HAS_PY_310
-HAS_TYPE_GUARD = HAS_PY_310
-HAS_TYPE_ALIAS = HAS_PY_310
-HAS_PARAM_SPEC = HAS_PY_310
-
 HAS_PY_311 = PythonVersionRequirement((3, 11))
 HAS_NATIVE_EXC_GROUP = HAS_PY_311
 HAS_TYPED_DICT_REQUIRED = HAS_PY_311
@@ -178,6 +172,7 @@ HAS_UNPACK = HAS_PY_311
 HAS_PY_312 = PythonVersionRequirement((3, 12))
 MAX_PY_312 = MaxPythonVersionRequirement((3, 12))
 HAS_TV_SYNTAX = HAS_PY_312
+HAS_TYPE_ALIAS_SYNTAX = HAS_PY_312
 
 HAS_PY_313 = PythonVersionRequirement((3, 13))
 MAX_PY_313 = MaxPythonVersionRequirement((3, 13))
@@ -197,7 +192,7 @@ HAS_MSGSPEC_PKG = DistributionRequirement("msgspec")
 HAS_SUPPORTED_SQLALCHEMY_PKG = DistributionVersionRequirement("sqlalchemy", "2.0.0")
 HAS_SQLALCHEMY_PKG = DistributionRequirement("sqlalchemy")
 
-HAS_SUPPORTED_PYDANTIC_PKG = DistributionVersionRequirement("pydantic", "2.0.0")
+HAS_SUPPORTED_PYDANTIC_PKG = DistributionVersionRequirement("pydantic", "2.1.0")
 HAS_PYDANTIC_PKG = DistributionRequirement("pydantic")
 
 IS_CPYTHON = PythonImplementationRequirement("cpython")

@@ -1,5 +1,3 @@
-from typing import Union
-
 from ...provider.essential import CannotProvide, Mediator
 from ...provider.located_request import LocatedRequestMethodsProvider
 from ...provider.methods_provider import method_handler
@@ -56,7 +54,7 @@ class EraseJSONSchema(metaclass=SingletonMeta):
     pass
 
 
-JSONSchemaOverride = Union[JSONSchema, KeepJSONSchema, EraseJSONSchema, JSONSchemaPatch]
+JSONSchemaOverride = JSONSchema | KeepJSONSchema | EraseJSONSchema | JSONSchemaPatch
 
 
 class JSONSchemaOverrideProvider(JSONSchemaProvider):

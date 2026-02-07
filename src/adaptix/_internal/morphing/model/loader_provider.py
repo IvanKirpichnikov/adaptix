@@ -103,6 +103,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
 
         schema_gen = self._get_schema_gen(
             shape=shape,
+            request=request,
             field_name_to_json_schema=self._fetch_field_json_schemas(mediator, request, shape),
             field_name_to_json_schema_of_default=self._fetch_field_json_schemas_of_default(mediator, request, shape),
         )
@@ -111,10 +112,12 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
     def _get_schema_gen(
         self,
         shape: InputShape,
+        request: JSONSchemaRequest,
         field_name_to_json_schema: Mapping[str, JSONSchema],
         field_name_to_json_schema_of_default: Mapping[str, JSONValue],
     ) -> ModelInputJSONSchemaGen:
         return ModelInputJSONSchemaGen(
+            loc_stack=request.loc_stack,
             shape=shape,
             field_name_to_json_schema=field_name_to_json_schema,
             field_name_to_json_schema_of_default=field_name_to_json_schema_of_default,
@@ -151,7 +154,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create JSON Schema for model. JSON Schemas for some fields cannot be created",
         )
-        return {field.id: json_schema for field, json_schema in zip(shape.fields, json_schemas)}
+        return {field.id: json_schema for field, json_schema in zip(shape.fields, json_schemas, strict=True)}
 
     def _fetch_field_json_schemas_of_default(
         self,
@@ -177,7 +180,10 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create JSON Schema for model. Dumpers for some field defaults cannot be created",
         )
-        return {field.id: dumper(default) for (field, default), dumper in zip(fields_and_defaults, dumpers)}
+        return {
+            field.id: dumper(default)
+            for (field, default), dumper in zip(fields_and_defaults, dumpers, strict=True)
+        }
 
     def _fetch_model_identity(
         self,
@@ -257,7 +263,7 @@ class ModelLoaderProvider(LoaderProvider, JSONSchemaProvider):
             ],
             lambda: "Cannot create loader for model. Loaders for some fields cannot be created",
         )
-        return {field.id: loader for field, loader in zip(shape.fields, loaders)}
+        return {field.id: loader for field, loader in zip(shape.fields, loaders, strict=True)}
 
     def _validate_params(
         self,

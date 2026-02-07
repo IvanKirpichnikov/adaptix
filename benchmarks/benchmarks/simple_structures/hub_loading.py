@@ -1,5 +1,4 @@
 import sys
-from pathlib import Path
 
 from adaptix import DebugTrail
 from benchmarks.pybench.director_api import BenchmarkDirector, BenchSchema, CheckParams

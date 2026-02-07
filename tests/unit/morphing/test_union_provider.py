@@ -4,7 +4,7 @@ from typing import Callable, Literal, Optional, Union
 
 import pytest
 from tests_helpers import raises_exc
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix import DebugTrail, Omitted, Retort, dumper, loader
 from adaptix._internal.compat import CompatExceptionGroup
@@ -173,7 +173,7 @@ def test_bad_optional_dumping(debug_trail):
         "__main__": __name__,
     }
     if HAS_UNION_TYPE_MERGED:
-        replaces["Union[int, typing.Callable[[int], str]]"] = "int | typing.Callable[[int], str]"
+        replaces["Union[int, Callable[[int], str]]"] = "int | Callable[[int], str]"
     raises_exc_text(
         lambda: (
             retort.replace(
@@ -191,7 +191,7 @@ def test_bad_optional_dumping(debug_trail):
           × Cannot create dumper for model. Dumpers for some fields cannot be created
           │ Location: ‹SomeClass›
           ╰──▷ All cases of union must be class or Literal
-             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
+             │ Location: ‹SomeClass.field: Union[int, Callable[[int], str]]›
              ╰──▷ Found ‹Callable[[int], str]›
         """,
         replaces,

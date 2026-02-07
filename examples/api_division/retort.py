@@ -10,7 +10,7 @@ from .models import Receipt, ReceiptType, RecItem
 from .money import Money, TooPreciseAmountError
 
 
-def load_phone_number(num_obj: PhoneNumber):
+def dump_phone_number(num_obj: PhoneNumber):
     return phonenumbers.format_number(num_obj, phonenumbers.PhoneNumberFormat.E164)
 
 
@@ -60,7 +60,7 @@ _base_retort = Retort(
         dumper(Money, Money.rubles),
 
         loader(PhoneNumber, phonenumbers.parse),
-        dumper(PhoneNumber, load_phone_number),
+        dumper(PhoneNumber, dump_phone_number),
 
         # We need to represent Decimal as JSON float instead of string.
         # JSON serializer library will take pure Decimal and produce JSON float,

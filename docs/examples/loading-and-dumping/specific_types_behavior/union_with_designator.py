@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal, Union
+from typing import Literal
 
 from adaptix import Retort
 
@@ -22,6 +22,6 @@ class Dog:
 
 retort = Retort()
 data = {"name": "Tardar Sauce", "breed": "mixed", "kind": "cat"}
-cat = retort.load(data, Union[Cat, Dog])
+cat = retort.load(data, Cat | Dog)
 assert cat == Cat(name="Tardar Sauce", breed="mixed")
 assert retort.dump(cat) == data

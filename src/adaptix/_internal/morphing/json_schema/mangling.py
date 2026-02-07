@@ -1,7 +1,6 @@
 from collections import defaultdict
 from collections.abc import Container, Mapping, Sequence
 from itertools import count
-from typing import Optional
 
 from .resolver import LocalRefSourceGroup, RefMangler
 
@@ -45,7 +44,7 @@ class QualnameRefMangler(RefMangler):
             for sources_group in sources_groups
         }
 
-    def _generate_name(self, sources_group: LocalRefSourceGroup) -> Optional[str]:
+    def _generate_name(self, sources_group: LocalRefSourceGroup) -> str | None:
         if len(sources_group.sources) > 1:
             tps = {source.loc_stack.last.type for source in sources_group.sources}
             if len(tps) > 1:

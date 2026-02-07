@@ -31,6 +31,7 @@ schema = {
     "$ref": "#/$defs/Product",
     "$defs": {
         "Product": {
+            "title": "Product",
             "type": "object",
             "description": "My custom description",
             "required": ["id"],
