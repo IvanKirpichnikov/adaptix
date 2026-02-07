@@ -131,13 +131,13 @@ def _get_input_shape(
     autoincrement_column = _get_autoincrement_column(table)
     fields = []
     params = []
-    for column in columns:
+    for field_name, column in columns.items():
         if not isinstance(column, sqlalchemy.Column):
             continue
 
         fields.append(
             InputField(
-                id=column.key,
+                id=field_name,
                 type=_get_type_for_column(column, type_hints),
                 default=_get_default(column.default),
                 is_required=_is_input_required_for_column(column, autoincrement_column),
@@ -147,8 +147,8 @@ def _get_input_shape(
         )
         params.append(
             Param(
-                field_id=column.key,
-                name=column.key,
+                field_id=field_name,
+                name=field_name,
                 kind=ParamKind.KW_ONLY,
             ),
         )
@@ -193,14 +193,14 @@ def _get_output_shape(
 ) -> OutputShape:
     output_fields = [
         OutputField(
-            id=column.name,
+            id=field_name,
             type=_get_type_for_column(column, type_hints),
             default=_get_default(column.default),
             metadata=column.info,
             original=IdWrapper(column),
-            accessor=create_attr_accessor(column.name, is_required=True),
+            accessor=create_attr_accessor(field_name, is_required=True),
         )
-        for column in columns
+        for field_name, column in columns.items()
         if isinstance(column, sqlalchemy.Column)
     ]
     for relationship in relationships:

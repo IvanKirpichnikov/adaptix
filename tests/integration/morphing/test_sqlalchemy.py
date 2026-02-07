@@ -135,3 +135,63 @@ def test_o2m_relationship(accum, list_tp):
         ==
         {"id": 1, "text": "abc", "children": [{"id": 2, "parent_id": None}]}
     )
+
+
+def test_o2o_relationship_with_custom_name_pos(accum):
+    mapper_registry = registry()
+
+    @mapper_registry.mapped
+    class Declarative1:
+        __tablename__ = "DeclarativeModel1"
+
+        id: Mapped[int] = mapped_column("Id", primary_key=True)
+
+        __eq__ = sqlalchemy_equals
+
+    @mapper_registry.mapped
+    class Declarative2:
+        __tablename__ = "DeclarativeModel2"
+
+        id: Mapped[int] = mapped_column("Id", primary_key=True)
+        text: Mapped[str] = mapped_column("Text")
+
+        parent_id: Mapped[Optional[int]] = mapped_column("ParentId", ForeignKey(Declarative1.id))
+        parent: Mapped[Optional[Declarative1]] = relationship()
+
+        __eq__ = sqlalchemy_equals
+
+    retort = Retort(recipe=[accum])
+
+    loader = retort.get_loader(Declarative2)
+    assert (
+        loader({"id": 1, "text": "abc", "parent_id": 100})
+        ==
+        Declarative2(id=1, text="abc", parent_id=100)
+    )
+    assert (
+        loader({"id": 1, "text": "abc", "parent": {"id": 100}})
+        ==
+        Declarative2(id=1, text="abc", parent=Declarative1(id=100))
+    )
+    assert (
+        loader({"id": 1, "text": "abc", "parent_id": 100, "parent": {"id": 100}})
+        ==
+        Declarative2(id=1, text="abc", parent_id=100, parent=Declarative1(id=100))
+    )
+
+    dumper = retort.get_dumper(Declarative2)
+    assert (
+        dumper(Declarative2(id=1, text="abc", parent_id=100))
+        ==
+        {"id": 1, "text": "abc", "parent_id": 100, "parent": None}
+    )
+    assert (
+        dumper(Declarative2(id=1, text="abc", parent=Declarative1(id=100)))
+        ==
+        {"id": 1, "text": "abc", "parent_id": None, "parent": {"id": 100}}
+    )
+    assert (
+        dumper(Declarative2(id=1, text="abc", parent_id=100, parent=Declarative1(id=100)))
+        ==
+        {"id": 1, "text": "abc", "parent_id": 100, "parent": {"id": 100}}
+    )
