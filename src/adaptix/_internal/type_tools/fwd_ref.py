@@ -11,6 +11,8 @@ def _get_caller_module(stack_offset: int):
 
     for _ in range(stack_offset):
         frame = frame.f_back
+        if frame is None:
+            raise RuntimeError("Unexpected end of call stack")
     return sys.modules[frame.f_globals["__name__"]]
 
 

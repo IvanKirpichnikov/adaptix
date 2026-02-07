@@ -356,6 +356,7 @@ def test_rename():
         )
     )
 
+
 @requires(MAX_PY_314)
 def test_class_hinted_namedtuple():
     BarA = NamedTuple("BarA", a=int, b=str)
