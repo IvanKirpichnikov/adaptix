@@ -70,23 +70,23 @@ they provide a reliable way to determine when a field value was not explicitly s
 ``Omitted`` is the builtin sentinel type. Let's examine how it can be used:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 1-19
+   :lines: 1-18
 
 Enabling ``omit_default`` policy is required here. It allow to skip this value at dumping.
 All missing fields are filled by default value (``Omitted``), and this fields are omitted at dumping.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 21-28
+   :lines: 20-27
 
 ``None`` value is accepted as usual for None-able fields:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 30-37
+   :lines: 29-36
 
 But ``None`` value is forbidden for fields without ``None`` type:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 39-46
+   :lines: 38-44
 
 
 Also, you can create own sentinel types via :func:`.as_sentinel`.

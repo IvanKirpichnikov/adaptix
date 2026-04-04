@@ -16,7 +16,6 @@ Adaptix
    loading-and-dumping/tutorial
    loading-and-dumping/extended-usage
    loading-and-dumping/specific-types-behavior
-   loading-and-dumping/json-schema
 
 .. toctree::
    :maxdepth: 2
