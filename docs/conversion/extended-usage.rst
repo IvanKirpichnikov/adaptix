@@ -29,6 +29,14 @@ The first argument of function receives a model instance. The function has to re
 
 The input and output types are not checked, because there is no runtime tool to ensure that types are compatible.
 
+Structure flattening
+---------------------------
+
+The default linking only links fields at one nesting level.
+You can flatten input structure using :func:`.conversion.link_function`.
+
+.. literalinclude:: /examples/conversion/extended_usage/link_function_structure_flattening.py
+
 Using converter extra parameters
 ----------------------------------
 

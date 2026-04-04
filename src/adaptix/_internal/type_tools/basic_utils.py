@@ -122,6 +122,7 @@ def get_type_vars_of_parametrized(tp: TypeHint) -> VarTuple[TypeVar]:
         return ()
     return params
 
+
 if HAS_PY_314:
     def eval_forward_ref(namespace: dict[str, Any], forward_ref: ForwardRef):
         return forward_ref.evaluate(globals=namespace)  # type: ignore[attr-defined]

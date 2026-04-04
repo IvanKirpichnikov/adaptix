@@ -674,8 +674,8 @@ class Renderer(HubProcessor):
     )
     DARK_COLOR_SCHEME = ColorScheme(
         bg_color="#131416",
-        bar_color="#1a687d",
-        bar_bordercolor="#4abdd4",
+        bar_color="#135061",
+        bar_bordercolor="#1a687d",
         button_bordercolor="white",
         button_bgcolor="#202020",
         button_font_color="rgb(171, 171, 171)",
