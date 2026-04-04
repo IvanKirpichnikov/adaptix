@@ -26,10 +26,9 @@ retort = Retort()
 
 defs, schemas = generate_json_schemas_namespace(
     [
-        (retort, Category),
-        (retort, Product),
+        (retort, Direction.INPUT, Category),
+        (retort, Direction.INPUT, Product),
     ],
-    Direction.INPUT,
 )
 assert defs == {
     "Category": {
