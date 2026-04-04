@@ -1,1 +1,0 @@
-Fixed `impl_converter` failure with signatures when forward references is used (`from __future__ import annotations`)
