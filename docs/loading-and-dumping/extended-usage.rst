@@ -255,13 +255,13 @@ Default behavior. All extra data is ignored.
 :obj:`.ExtraForbid`
 """""""""""""""""""""""
 
-This policy raises :class:`.load_error.ExtraFieldsError` in case of any unknown field is found.
+This policy raises :class:`.load_error.ExtraFieldsLoadError` in case of any unknown field is found.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/unknown_fields_processing/on_loading_extra_forbid.py
 
 .. custom-non-guaranteed-behavior::
 
-  Order of fields inside :class:`.load_error.ExtraFieldsError` is not guaranteed and can be unstable between runs.
+  Order of fields inside :class:`.load_error.ExtraFieldsLoadError` is not guaranteed and can be unstable between runs.
 
 .. _on-loading-extra-kwargs:
 

@@ -33,10 +33,10 @@ Adaptix
    reference/integrations
    reference/known-issues
    reference/examples
+   reference/bugs-found-in-python
    API <reference/api/modules>
    reference/changelog
    reference/contributing
-   reference/bugs-found-in-python
 
 .. toctree::
    :maxdepth: 2
