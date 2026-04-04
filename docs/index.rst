@@ -31,6 +31,7 @@ Adaptix
    :caption: Reference
 
    reference/integrations
+   reference/known-issues
    reference/examples
    API <reference/api/modules>
    reference/changelog
