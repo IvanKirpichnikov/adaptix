@@ -1,6 +1,86 @@
 ----------------------------------------------------
 
 
+.. _v3.0.0b12:
+
+`3.0.0b12 <https://github.com/reagento/adaptix/tree/v3.0.0b12>`__ -- 2026-04-04
+===============================================================================
+
+.. _v3.0.0b12-Features:
+
+Features
+--------
+
+- Improve formatting types inside generics for error messages
+
+  .. code-block:: text
+     :caption: Old error example
+
+      adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.Foo'>
+      × Cannot create dumper for model. Dumpers for some fields cannot be created
+      │ Location: ‹Foo›
+      ╰──▷ Cannot create dumper for model. Dumpers for some fields cannot be created
+         │ Location: ‹Foo.limit: __main__.MinMax[__main__.Bar]›
+         ├──▷ Cannot create dumper for union. Dumpers for some union cases cannot be created
+         │  │ Location: ‹__main__.MinMax[__main__.Bar].min: Optional[__main__.Bar]›
+         │  ╰──▷ Cannot find dumper
+         │       Location: ‹Bar›
+         ╰──▷ Cannot create dumper for union. Dumpers for some union cases cannot be created
+            │ Location: ‹__main__.MinMax[__main__.Bar].max: Optional[__main__.Bar]›
+            ╰──▷ Cannot find dumper
+                 Location: ‹Bar›
+
+
+  .. code-block:: text
+     :caption: New error example
+
+      adaptix.ProviderNotFoundError: Cannot produce dumper for type <class '__main__.Foo'>
+        × Cannot create dumper for model. Dumpers for some fields cannot be created
+        │ Location: ‹Foo›
+        ╰──▷ Cannot create dumper for model. Dumpers for some fields cannot be created
+           │ Location: ‹Foo.limit: MinMax[Bar]›
+           ├──▷ Cannot create dumper for union. Dumpers for some union cases cannot be created
+           │  │ Location: ‹MinMax[Bar].min: Optional[Bar]›
+           │  ╰──▷ Cannot find dumper
+           │       Location: ‹Bar›
+           ╰──▷ Cannot create dumper for union. Dumpers for some union cases cannot be created
+              │ Location: ‹MinMax[Bar].max: Optional[Bar]›
+              ╰──▷ Cannot find dumper
+                   Location: ‹Bar›
+- Add support for CPython 3.14
+- Add support for PyPy 3.11
+- Add support for ``ForwardRef`` inside conversion
+- Allow to dump ``Union`` with ``Annotated`` as one of cases
+
+.. _v3.0.0b12-Breaking Changes:
+
+Breaking Changes
+----------------
+
+- Drop support for Python 3.9
+
+.. _v3.0.0b12-Bug Fixes:
+
+Bug Fixes
+---------
+
+- Fixed ``impl_converter`` failure with signatures when forward references is used (``from __future__ import annotations``) `#393 <https://github.com/reagento/adaptix/issues/393>`__
+- Fix introspection of SQLAlchemy models with custom column name
+- Predicates correctly matches ``Final``, ``Annotated``, ``ClassVar`` and ``InitVar``
+
+.. _v3.0.0b12-Other:
+
+Other
+-----
+
+- Switched package build-backend from `setuptools <https://pypi.org/project/setuptools/>`_ to `uv_build <https://pypi.org/project/uv-build/>`_. `#397 <https://github.com/reagento/adaptix/issues/397>`__
+- Add ``real_world_app`` example to documentation
+- Add ``Known Issues`` page to documentation
+- Improve style of documentation
+
+----------------------------------------------------
+
+
 .. _v3.0.0b11:
 
 `3.0.0b11 <https://github.com/reagento/adaptix/tree/v3.0.0b11>`__ -- 2025-05-09
@@ -98,7 +178,7 @@ Features
 - Now you can easily distinguish between a missing field and a None value.
   The new :func:`.as_sentinel` function allows you to mark types as sentinels,
   ensuring they remain hidden from the outside world.
-  See :ref:`detecting-absense-of-a-field` for detail. `#214 <https://github.com/reagento/adaptix/issues/214>`__
+  See :ref:`detecting-absence-of-a-field` for detail. `#214 <https://github.com/reagento/adaptix/issues/214>`__
 - Add support for ``ZoneInfo``. `#375 <https://github.com/reagento/adaptix/issues/375>`__
 
 

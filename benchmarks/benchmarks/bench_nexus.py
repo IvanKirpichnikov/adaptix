@@ -9,16 +9,16 @@ from collections import defaultdict
 from concurrent.futures import Executor, ThreadPoolExecutor
 from dataclasses import dataclass
 from functools import partial
+from itertools import pairwise
 from pathlib import Path
 from textwrap import dedent
-from typing import Any, Callable, DefaultDict, Dict, Iterable, List, Mapping, Optional, Sequence, Set, TypeVar, Union
+from typing import Any, Callable, DefaultDict, Dict, Iterable, List, Mapping, Sequence, Set, TypeVar
 from zipfile import ZIP_BZIP2, ZipFile
 
 import plotly
 import plotly.graph_objects as go
 import pyperf
 
-from adaptix._internal.utils import pairs
 from benchmarks.pybench.director_api import BenchAccessor, BenchChecker, BenchmarkDirector, BenchStorageFactory
 
 T = TypeVar("T")
@@ -39,7 +39,7 @@ class BenchmarkMeasure:
     pyperf: pyperf.Benchmark
 
 
-def pyperf_bench_to_measure(data: Union[str, bytes]) -> BenchmarkMeasure:
+def pyperf_bench_to_measure(data: str | bytes) -> BenchmarkMeasure:
     pybench_data = json.loads(data)["pybench_data"]
     return BenchmarkMeasure(
         base=pybench_data["base"],
@@ -135,7 +135,7 @@ class ClusterAxisBounder(AxisBounder):
     def _split_into_clusters(self, measures: Iterable[BenchmarkMeasure]) -> Sequence[Sequence[BenchmarkMeasure]]:
         clusters: List[List[BenchmarkMeasure]] = []
         current_cluster: List[BenchmarkMeasure] = []
-        for prev, current in pairs(measures):
+        for prev, current in pairwise(measures):
             if current.pyperf.mean() / prev.pyperf.mean() >= self.boundary_rate:
                 clusters.append(current_cluster)
                 current_cluster = [current]
@@ -243,10 +243,10 @@ class HubProcessor(Foundation, ABC):
     def __init__(
         self,
         namespace: Namespace,
-        include: Optional[Sequence[str]] = None,
-        exclude: Optional[Sequence[str]] = None,
-        env_include: Optional[Sequence[str]] = None,
-        env_exclude: Optional[Sequence[str]] = None,
+        include: Sequence[str] | None = None,
+        exclude: Sequence[str] | None = None,
+        env_include: Sequence[str] | None = None,
+        env_exclude: Sequence[str] | None = None,
     ):
         self.include = include
         self.exclude = exclude
@@ -328,7 +328,7 @@ class HubProcessor(Foundation, ABC):
                     env_description: self._submit_python(executor, env_description, env_spec_printer)
                     for env_description in self.filtered_envs()
                 }
-                for hub_description, env_spec_printer in zip(hub_descriptions, env_spec_printers)
+                for hub_description, env_spec_printer in zip(hub_descriptions, env_spec_printers, strict=False)
             }
             return {
                 hub_description: {
@@ -354,7 +354,7 @@ class CaseState:
     accessor: BenchAccessor
     checker: BenchChecker
     local_ids_with_warnings: Sequence[str]
-    max_tries: Optional[int]
+    max_tries: int | None
     tries_count: int = 0
 
     @property
@@ -388,12 +388,12 @@ class Orchestrator(HubProcessor):
     def __init__(
         self,
         namespace: Namespace,
-        include: Optional[Sequence[str]] = None,
-        exclude: Optional[Sequence[str]] = None,
-        env_include: Optional[Sequence[str]] = None,
-        env_exclude: Optional[Sequence[str]] = None,
+        include: Sequence[str] | None = None,
+        exclude: Sequence[str] | None = None,
+        env_include: Sequence[str] | None = None,
+        env_exclude: Sequence[str] | None = None,
         series: int = 2,
-        max_tries: Optional[int] = None,
+        max_tries: int | None = None,
     ):
         super().__init__(
             namespace=namespace,
@@ -551,11 +551,11 @@ class Renderer(HubProcessor):
     def __init__(
         self,
         namespace: Namespace,
-        include: Optional[Sequence[str]] = None,
-        exclude: Optional[Sequence[str]] = None,
-        env_include: Optional[Sequence[str]] = None,
-        env_exclude: Optional[Sequence[str]] = None,
-        output: Optional[str] = None,
+        include: Sequence[str] | None = None,
+        exclude: Sequence[str] | None = None,
+        env_include: Sequence[str] | None = None,
+        env_exclude: Sequence[str] | None = None,
+        output: str | None = None,
     ):
         super().__init__(
             namespace=namespace,
@@ -674,8 +674,8 @@ class Renderer(HubProcessor):
     )
     DARK_COLOR_SCHEME = ColorScheme(
         bg_color="#131416",
-        bar_color="#1a687d",
-        bar_bordercolor="#4abdd4",
+        bar_color="#135061",
+        bar_bordercolor="#1a687d",
         button_bordercolor="white",
         button_bgcolor="#202020",
         button_font_color="rgb(171, 171, 171)",

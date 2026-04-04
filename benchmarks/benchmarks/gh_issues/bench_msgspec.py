@@ -1,6 +1,6 @@
 from datetime import datetime
 from functools import partial
-from typing import List, Optional
+from typing import List
 
 import msgspec
 import pytest
@@ -22,7 +22,7 @@ class SimpleUser(msgspec.Struct, omit_defaults=True):
     id: int
     node_id: str
     avatar_url: str
-    gravatar_id: Optional[str]
+    gravatar_id: str | None
     url: str
     html_url: str
     followers_url: str
@@ -36,9 +36,9 @@ class SimpleUser(msgspec.Struct, omit_defaults=True):
     received_events_url: str
     type: str
     site_admin: bool
-    name: Optional[str] = None
-    email: Optional[str] = None
-    starred_at: Optional[datetime] = None
+    name: str | None = None
+    email: str | None = None
+    starred_at: datetime | None = None
 
 
 class Label(msgspec.Struct):
@@ -46,7 +46,7 @@ class Label(msgspec.Struct):
     node_id: str
     url: str
     name: str
-    description: Optional[str]
+    description: str | None
     color: str
     default: bool
 
@@ -65,11 +65,11 @@ class Reactions(msgspec.Struct, rename=reactions_rename):
 
 
 class PullRequest(msgspec.Struct, omit_defaults=True):
-    diff_url: Optional[str]
-    html_url: Optional[str]
-    patch_url: Optional[str]
-    url: Optional[str]
-    merged_at: Optional[datetime] = None
+    diff_url: str | None
+    html_url: str | None
+    patch_url: str | None
+    url: str | None
+    merged_at: datetime | None = None
 
 
 class Issue(msgspec.Struct, omit_defaults=True):
@@ -83,25 +83,25 @@ class Issue(msgspec.Struct, omit_defaults=True):
     html_url: str
     number: int
     state: IssueState
-    state_reason: Optional[StateReason]
+    state_reason: StateReason | None
     title: str
-    user: Optional[SimpleUser]
+    user: SimpleUser | None
     labels: List[Label]
-    assignee: Optional[SimpleUser]
-    assignees: Optional[List[SimpleUser]]
+    assignee: SimpleUser | None
+    assignees: List[SimpleUser] | None
     locked: bool
-    active_lock_reason: Optional[str]
+    active_lock_reason: str | None
     comments: int
-    closed_at: Optional[datetime]
-    created_at: Optional[datetime]
-    updated_at: Optional[datetime]
+    closed_at: datetime | None
+    created_at: datetime | None
+    updated_at: datetime | None
     author_association: AuthorAssociation
-    reactions: Optional[Reactions] = None
-    pull_request: Optional[PullRequest] = None
-    body_html: Optional[str] = None
-    body_text: Optional[str] = None
-    timeline_url: Optional[str] = None
-    body: Optional[str] = None
+    reactions: Reactions | None = None
+    pull_request: PullRequest | None = None
+    body_html: str | None = None
+    body_text: str | None = None
+    timeline_url: str | None = None
+    body: str | None = None
 
 
 class GetRepoIssuesResponse(msgspec.Struct):
@@ -113,7 +113,7 @@ class SimpleUserNoGC(msgspec.Struct, omit_defaults=True, gc=False):
     id: int
     node_id: str
     avatar_url: str
-    gravatar_id: Optional[str]
+    gravatar_id: str | None
     url: str
     html_url: str
     followers_url: str
@@ -127,9 +127,9 @@ class SimpleUserNoGC(msgspec.Struct, omit_defaults=True, gc=False):
     received_events_url: str
     type: str
     site_admin: bool
-    name: Optional[str] = None
-    email: Optional[str] = None
-    starred_at: Optional[datetime] = None
+    name: str | None = None
+    email: str | None = None
+    starred_at: datetime | None = None
 
 
 class LabelNoGC(msgspec.Struct, gc=False):
@@ -137,7 +137,7 @@ class LabelNoGC(msgspec.Struct, gc=False):
     node_id: str
     url: str
     name: str
-    description: Optional[str]
+    description: str | None
     color: str
     default: bool
 
@@ -156,11 +156,11 @@ class ReactionsNoGC(msgspec.Struct, rename=reactions_rename, gc=False):
 
 
 class PullRequestNoGC(msgspec.Struct, omit_defaults=True, gc=False):
-    diff_url: Optional[str]
-    html_url: Optional[str]
-    patch_url: Optional[str]
-    url: Optional[str]
-    merged_at: Optional[datetime] = None
+    diff_url: str | None
+    html_url: str | None
+    patch_url: str | None
+    url: str | None
+    merged_at: datetime | None = None
 
 
 class IssueNoGC(msgspec.Struct, omit_defaults=True, gc=False):
@@ -174,25 +174,25 @@ class IssueNoGC(msgspec.Struct, omit_defaults=True, gc=False):
     html_url: str
     number: int
     state: IssueState
-    state_reason: Optional[StateReason]
+    state_reason: StateReason | None
     title: str
-    user: Optional[SimpleUserNoGC]
+    user: SimpleUserNoGC | None
     labels: List[LabelNoGC]
-    assignee: Optional[SimpleUserNoGC]
-    assignees: Optional[List[SimpleUserNoGC]]
+    assignee: SimpleUserNoGC | None
+    assignees: List[SimpleUserNoGC] | None
     locked: bool
-    active_lock_reason: Optional[str]
+    active_lock_reason: str | None
     comments: int
-    closed_at: Optional[datetime]
-    created_at: Optional[datetime]
-    updated_at: Optional[datetime]
+    closed_at: datetime | None
+    created_at: datetime | None
+    updated_at: datetime | None
     author_association: AuthorAssociation
-    reactions: Optional[ReactionsNoGC] = None
-    pull_request: Optional[PullRequestNoGC] = None
-    body_html: Optional[str] = None
-    body_text: Optional[str] = None
-    timeline_url: Optional[str] = None
-    body: Optional[str] = None
+    reactions: ReactionsNoGC | None = None
+    pull_request: PullRequestNoGC | None = None
+    body_html: str | None = None
+    body_text: str | None = None
+    timeline_url: str | None = None
+    body: str | None = None
 
 
 class GetRepoIssuesResponseNoGC(msgspec.Struct, gc=False):

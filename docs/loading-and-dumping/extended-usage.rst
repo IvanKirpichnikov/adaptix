@@ -12,7 +12,7 @@ Generic classes are supported out of the box.
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/generic_classes_simple.py
 
 If a generic class is not parametrized, Python specification requires to assume ``Any`` for each position.
-Adaptix acts slightly differently,
+|adaptix| acts slightly differently,
 it derives implicit parameters based on ``TypeVar`` properties.
 
 .. list-table::
@@ -54,7 +54,7 @@ Dealing with ``if TYPE_CHECKING``
 .. include:: /common/dealing-with-if-type-checking.rst
 
 
-.. _detecting-absense-of-a-field:
+.. _detecting-absence-of-a-field:
 
 
 Detecting absence of a field
@@ -70,23 +70,23 @@ they provide a reliable way to determine when a field value was not explicitly s
 ``Omitted`` is the builtin sentinel type. Let's examine how it can be used:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 1-19
+   :lines: 1-18
 
 Enabling ``omit_default`` policy is required here. It allow to skip this value at dumping.
 All missing fields are filled by default value (``Omitted``), and this fields are omitted at dumping.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 21-28
+   :lines: 20-27
 
 ``None`` value is accepted as usual for None-able fields:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 30-37
+   :lines: 29-36
 
 But ``None`` value is forbidden for fields without ``None`` type:
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/detecting_absense_of_a_field/omitted.py
-   :lines: 39-46
+   :lines: 38-44
 
 
 Also, you can create own sentinel types via :func:`.as_sentinel`.
@@ -255,13 +255,13 @@ Default behavior. All extra data is ignored.
 :obj:`.ExtraForbid`
 """""""""""""""""""""""
 
-This policy raises :class:`.load_error.ExtraFieldsError` in case of any unknown field is found.
+This policy raises :class:`.load_error.ExtraFieldsLoadError` in case of any unknown field is found.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/unknown_fields_processing/on_loading_extra_forbid.py
 
 .. custom-non-guaranteed-behavior::
 
-  Order of fields inside :class:`.load_error.ExtraFieldsError` is not guaranteed and can be unstable between runs.
+  Order of fields inside :class:`.load_error.ExtraFieldsLoadError` is not guaranteed and can be unstable between runs.
 
 .. _on-loading-extra-kwargs:
 
@@ -425,7 +425,7 @@ The first provider override parameters of next providers.
 Private fields dumping
 -----------------------------------
 
-By default, adaptix skips private fields (any field starting with underscore) at dumping.
+By default, |adaptix| skips private fields (any field starting with underscore) at dumping.
 
 .. literalinclude:: /examples/loading-and-dumping/extended_usage/private_fields_skipping_pydantic.py
 

@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-from typing import Literal, Union
-
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from typing import Literal
 
 from adaptix import Retort
 from adaptix.integrations.sqlalchemy import AdaptixJSON
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 @dataclass
@@ -23,7 +22,7 @@ class UserChanged:
     tag: Literal["user_changed"] = "user_changed"
 
 
-AnyAuditLog = Union[UserCreated, UserChanged]
+AnyAuditLog = UserCreated | UserChanged
 
 
 class Base(DeclarativeBase):

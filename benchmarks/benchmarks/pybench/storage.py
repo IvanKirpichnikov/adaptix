@@ -5,7 +5,7 @@ from collections.abc import Iterable, Mapping
 from contextlib import AbstractContextManager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Optional, TypedDict
+from typing import Any, TypedDict
 
 from pyperf._formatter import format_timedelta
 
@@ -35,7 +35,7 @@ class BenchStorage(ABC):
         ...
 
     @abstractmethod
-    def get_case_result(self, case_id: str) -> Optional[BenchCaseResult]:
+    def get_case_result(self, case_id: str) -> BenchCaseResult | None:
         ...
 
 
@@ -43,7 +43,7 @@ class UninitedBenchStorage(BenchStorage):
     def write_case_result(self, result: BenchCaseResult, stats: BenchCaseResultStats) -> None:
         raise NotImplementedError
 
-    def get_case_result(self, case_id: str) -> Optional[BenchCaseResult]:
+    def get_case_result(self, case_id: str) -> BenchCaseResult | None:
         raise NotImplementedError
 
 
@@ -59,7 +59,7 @@ class FilesystemBenchStorage(BenchStorage):
         result_file.parent.mkdir(parents=True, exist_ok=True)
         result_file.write_text(json.dumps(result))
 
-    def get_case_result(self, case_id: str) -> Optional[BenchCaseResult]:
+    def get_case_result(self, case_id: str) -> BenchCaseResult | None:
         try:
             result_text = self._get_result_file(case_id).read_text()
         except FileNotFoundError:
@@ -196,7 +196,7 @@ class SqliteBenchStorage(BenchStorage):
             )
             connection.commit()
 
-    def get_case_result(self, case_id: str) -> Optional[BenchCaseResult]:
+    def get_case_result(self, case_id: str) -> BenchCaseResult | None:
         with self._connect() as connection:
             result = connection.execute(
                 self.GET_BENCH_RESULT_QUERY,

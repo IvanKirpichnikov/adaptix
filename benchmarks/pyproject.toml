@@ -1,0 +1,13 @@
+[build-system]
+requires = ["uv_build == 0.8.22"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = "."
+
+[project]
+name = "benchmarks"
+version = "0.0.0"
+
+[project.scripts]
+bench_nexus = "benchmarks.bench_nexus:main"

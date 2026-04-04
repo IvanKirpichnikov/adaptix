@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-from tests_helpers.misc import raises_exc_text, requires
+from tests_helpers.pytest_tools import raises_exc_text
 
-from adaptix._internal.feature_requirement import HAS_PY_310
 from adaptix.conversion import get_converter
 
 
@@ -64,7 +63,6 @@ def test_destination_is_not_a_model():
     )
 
 
-@requires(HAS_PY_310)
 def test_both_are_not_a_model():
     class Book:
         title: str

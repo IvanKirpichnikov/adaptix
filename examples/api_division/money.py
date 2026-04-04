@@ -1,6 +1,5 @@
 from decimal import Decimal
 from functools import total_ordering
-from typing import Union
 
 
 class TooPreciseAmountError(Exception):
@@ -38,5 +37,5 @@ class Money:
         return cls(int(kopek))
 
 
-def rubles(value: Union[int, str, Decimal]) -> Money:
+def rubles(value: int | str | Decimal) -> Money:
     return Money.from_decimal_rubles(Decimal(value))

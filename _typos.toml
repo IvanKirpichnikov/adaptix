@@ -1,0 +1,12 @@
+[files]
+extend-exclude = [
+  "docs/_static/",
+  "*.json",
+  "*.svg",
+]
+
+[default.extend-words]
+# For line: `password_hash": "ZghOT0eRm4U9s"`
+ot = "ot"
+# For line: `FooBA = namedtuple("FooBA", "b a")`
+ba = "ba"

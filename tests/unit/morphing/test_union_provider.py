@@ -4,10 +4,11 @@ from typing import Callable, Literal, Optional, Union
 
 import pytest
 from tests_helpers import raises_exc
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix import DebugTrail, Omitted, Retort, dumper, loader
 from adaptix._internal.compat import CompatExceptionGroup
+from adaptix._internal.feature_requirement import HAS_UNION_TYPE_MERGED
 from adaptix._internal.morphing.load_error import BadVariantLoadError, LoadError, TypeLoadError, UnionLoadError
 from adaptix._internal.type_tools import normalize_type
 
@@ -167,6 +168,12 @@ def test_bad_optional_dumping(debug_trail):
         field: Union[int, Callable[[int], str]]
 
     retort = Retort()
+    replaces = {
+        "SomeClass": SomeClass.__qualname__,
+        "__main__": __name__,
+    }
+    if HAS_UNION_TYPE_MERGED:
+        replaces["Union[int, Callable[[int], str]]"] = "int | Callable[[int], str]"
     raises_exc_text(
         lambda: (
             retort.replace(
@@ -184,13 +191,10 @@ def test_bad_optional_dumping(debug_trail):
           × Cannot create dumper for model. Dumpers for some fields cannot be created
           │ Location: ‹SomeClass›
           ╰──▷ All cases of union must be class or Literal
-             │ Location: ‹SomeClass.field: Union[int, typing.Callable[[int], str]]›
+             │ Location: ‹SomeClass.field: Union[int, Callable[[int], str]]›
              ╰──▷ Found ‹Callable[[int], str]›
         """,
-        {
-            "SomeClass": SomeClass.__qualname__,
-            "__main__": __name__,
-        },
+        replaces,
     )
 
 

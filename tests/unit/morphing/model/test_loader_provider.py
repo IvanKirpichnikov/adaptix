@@ -1,4 +1,3 @@
-# ruff: noqa: PT011
 from collections.abc import Mapping as CollectionsMapping, Sequence as CollectionsSequence
 from dataclasses import dataclass, replace
 from types import MappingProxyType
@@ -87,7 +86,7 @@ def shape(*fields: TestField, kwargs: Optional[ParamKwargs] = None):
         ),
         constructor=gauge,
         kwargs=kwargs,
-        overriden_types=frozenset(fld.id for fld in fields),
+        overridden_types=frozenset(fld.id for fld in fields),
         params=tuple(
             Param(
                 field_id=fld.id,

@@ -1,7 +1,6 @@
-from pydantic import BaseModel, Field
-
 from adaptix import Retort
 from adaptix.integrations.pydantic import native_pydantic
+from pydantic import BaseModel, Field
 
 
 class Book(BaseModel):
@@ -16,7 +15,7 @@ data = {
 
 retort = Retort(
     recipe=[
-        native_pydantic(Book),
+        native_pydantic(Book, to_python={"by_alias": True}),
     ],
 )
 

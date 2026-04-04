@@ -16,7 +16,7 @@ Installation
 
 .. code-block:: text
 
-    pip install adaptix==3.0.0b11
+    pip install adaptix==3.0.0b12
 
 
 Example
@@ -33,7 +33,7 @@ Example
 Requirements
 ==================
 
-* Python 3.9+
+* Python 3.10+
 
 
 Use cases

@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 
 class IssueState(str, Enum):
@@ -32,7 +31,7 @@ class SimpleUser:
     id: int
     node_id: str
     avatar_url: str
-    gravatar_id: Optional[str]
+    gravatar_id: str | None
     url: str
     html_url: str
     followers_url: str
@@ -46,9 +45,9 @@ class SimpleUser:
     received_events_url: str
     type: str
     site_admin: bool
-    name: Optional[str] = None
-    email: Optional[str] = None
-    starred_at: Optional[datetime] = None
+    name: str | None = None
+    email: str | None = None
+    starred_at: datetime | None = None
 
 
 @dataclass
@@ -57,7 +56,7 @@ class Label:
     node_id: str
     url: str
     name: str
-    description: Optional[str]
+    description: str | None
     color: str
     default: bool
 
@@ -78,11 +77,11 @@ class Reactions:
 
 @dataclass
 class PullRequest:
-    diff_url: Optional[str]
-    html_url: Optional[str]
-    patch_url: Optional[str]
-    url: Optional[str]
-    merged_at: Optional[datetime] = None
+    diff_url: str | None
+    html_url: str | None
+    patch_url: str | None
+    url: str | None
+    merged_at: datetime | None = None
 
 
 @dataclass
@@ -97,25 +96,25 @@ class Issue:
     html_url: str
     number: int
     state: IssueState
-    state_reason: Optional[StateReason]
+    state_reason: StateReason | None
     title: str
-    user: Optional[SimpleUser]
+    user: SimpleUser | None
     labels: list[Label]
-    assignee: Optional[SimpleUser]
-    assignees: Optional[list[SimpleUser]]
+    assignee: SimpleUser | None
+    assignees: list[SimpleUser] | None
     locked: bool
-    active_lock_reason: Optional[str]
+    active_lock_reason: str | None
     comments: int
-    closed_at: Optional[datetime]
-    created_at: Optional[datetime]
-    updated_at: Optional[datetime]
+    closed_at: datetime | None
+    created_at: datetime | None
+    updated_at: datetime | None
     author_association: AuthorAssociation
-    reactions: Optional[Reactions] = None
-    pull_request: Optional[PullRequest] = None
-    body_html: Optional[str] = None
-    body_text: Optional[str] = None
-    timeline_url: Optional[str] = None
-    body: Optional[str] = None
+    reactions: Reactions | None = None
+    pull_request: PullRequest | None = None
+    body_html: str | None = None
+    body_text: str | None = None
+    timeline_url: str | None = None
+    body: str | None = None
 
 
 @dataclass

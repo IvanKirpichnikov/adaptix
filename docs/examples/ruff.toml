@@ -1,0 +1,9 @@
+line-length = 79
+
+extend = '../../pyproject.toml'
+
+[lint]
+extend-ignore = [
+  'E501',
+  'PLC0415',
+]

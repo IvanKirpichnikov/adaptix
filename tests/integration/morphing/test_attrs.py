@@ -1,22 +1,40 @@
 from attr import Factory, define, field
+from tests_helpers.morphing import JSONSchemaOptItem, assert_morphing
 
 from adaptix import Retort, name_mapping
 
 
-@define
-class Coordinates:
-    x: int
-    y: int
-
-
 def test_coordinates(accum):
+    @define
+    class Coordinates:
+        x: int
+        y: int
+
     retort = Retort(recipe=[accum])
 
-    loader = retort.get_loader(Coordinates)
-    assert loader({"x": 1, "y": 2}) == Coordinates(x=1, y=2)
-
-    dumper = retort.get_dumper(Coordinates)
-    assert dumper(Coordinates(x=1, y=2)) == {"x": 1, "y": 2}
+    assert_morphing(
+        retort=retort,
+        tp=Coordinates,
+        data={"x": 1, "y": 2},
+        loaded=Coordinates(x=1, y=2),
+        dumped={"x": 1, "y": 2},
+        json_schema={
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$defs": {
+                "test_coordinates._locals_.Coordinates": {
+                    "type": "object",
+                    "title": Coordinates.__qualname__,
+                    "properties": {
+                        "x": {"type": "integer"},
+                        "y": {"type": "integer"},
+                    },
+                    "required": ["x", "y"],
+                    "additionalProperties": JSONSchemaOptItem(input=True),
+                },
+            },
+            "$ref": "#/$defs/test_coordinates._locals_.Coordinates",
+        },
+    )
 
 
 @define

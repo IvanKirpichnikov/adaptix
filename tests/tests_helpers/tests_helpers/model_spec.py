@@ -18,7 +18,7 @@ from adaptix._internal.feature_requirement import (
 )
 from adaptix._internal.type_tools import get_all_type_hints
 
-from .misc import FailedRequirement
+from .requirements import FailedRequirement
 
 
 def sqlalchemy_equals(self, other):

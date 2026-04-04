@@ -16,14 +16,12 @@ How to setup the repository
 
 #. Install all needed python interpreters
 
-   * CPython 3.9
    * CPython 3.10
    * CPython 3.11
    * CPython 3.12
    * CPython 3.13
-   * PyPy 3.8
-   * PyPy 3.9
    * PyPy 3.10
+   * PyPy 3.11
 
 #. Clone repository with submodules
 

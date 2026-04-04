@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
 
 
 @dataclass
@@ -19,8 +18,8 @@ class Forecast:
     clouds: int
     dew_point: float
 
-    sunrise: Optional[datetime] = None
-    sunset: Optional[datetime] = None
+    sunrise: datetime | None = None
+    sunset: datetime | None = None
 
 
 @dataclass
@@ -39,7 +38,7 @@ class ForecastPack:
     timezone: str
     timezone_offset: int
 
-    current: Optional[Forecast] = None
+    current: Forecast | None = None
     minutely: list[Forecast] = field(default_factory=list)
     hourly: list[Forecast] = field(default_factory=list)
     daily: list[Forecast] = field(default_factory=list)

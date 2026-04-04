@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 import pytest
-from tests_helpers.misc import AndRequirement
+from tests_helpers.requirements import AndRequirement
 
 from adaptix._internal.feature_requirement import (
     HAS_PY_311,

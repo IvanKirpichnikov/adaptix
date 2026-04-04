@@ -2,7 +2,7 @@
 Bugs found in Python
 ========================
 
-Adaptix is a sophisticated project with scrupulous approach to testing.
+|Adaptix| is a sophisticated project with scrupulous approach to testing.
 This leads to the situation where sometimes bugs are found in the Python interpreter itself.
 
 Type alias cannot be created from type alias
@@ -10,7 +10,7 @@ Type alias cannot be created from type alias
 
 The first release of Python 3.11 contains bug preventing parametrizing type aliases with ``TypeVar``
 due to support of ``TypeVarTuple``.
-Therefore adaptix couldn't even be imported. The next Python patch fixes this.
+Therefore |adaptix| couldn't even be imported. The next Python patch fixes this.
 
 :octicon:`mark-github` `Issue #98852 <https://github.com/python/cpython/issues/98852>`__
 

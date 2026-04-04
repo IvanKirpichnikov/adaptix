@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, PositiveInt
 
@@ -8,7 +7,7 @@ from pydantic import BaseModel, PositiveInt
 class UserPydantic(BaseModel):
     id: int
     name: str = "John Doe"
-    signup_ts: Optional[datetime]
+    signup_ts: datetime | None
     tastes: dict[str, PositiveInt]
 
 
@@ -16,5 +15,5 @@ class UserPydantic(BaseModel):
 class UserDataclass:
     id: int
     name: str = "John Doe"
-    signup_ts: Optional[datetime]
+    signup_ts: datetime | None
     tastes: dict[str, PositiveInt]

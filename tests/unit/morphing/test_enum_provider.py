@@ -5,7 +5,7 @@ from typing import Union
 
 import pytest
 from tests_helpers import parametrize_bool, raises_exc
-from tests_helpers.misc import raises_exc_text
+from tests_helpers.pytest_tools import raises_exc_text
 
 from adaptix import DebugTrail, NameStyle, Retort, dumper, enum_by_name, enum_by_value, flag_by_member_names
 from adaptix._internal.morphing.load_error import (

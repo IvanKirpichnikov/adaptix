@@ -1,4 +1,4 @@
-set windows-powershell := true
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
 [private]
 @default:
@@ -9,8 +9,8 @@ set windows-powershell := true
     pip install -r requirements/pre.txt
     uv pip install -e .
     uv pip install -r requirements/dev.txt
-    pre-commit
-    pre-commit install
+    prek
+    prek install
 
 # sync version of installed packages
 @venv-sync:

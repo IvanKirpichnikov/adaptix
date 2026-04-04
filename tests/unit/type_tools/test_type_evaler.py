@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from pathlib import Path
 
-from tests_helpers.misc import import_local_module, temp_module
+from tests_helpers.import_magic import import_local_module, temp_module
 
 from adaptix._internal.type_tools import get_all_type_hints
 from adaptix.type_tools import exec_type_checking

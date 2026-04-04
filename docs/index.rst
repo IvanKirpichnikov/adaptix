@@ -3,7 +3,7 @@ Adaptix
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
    overview
    benchmarks
@@ -11,7 +11,7 @@ Adaptix
 
 .. toctree::
    :maxdepth: 2
-   :caption: Loading & Dumping:
+   :caption: Loading & Dumping
 
    loading-and-dumping/tutorial
    loading-and-dumping/extended-usage
@@ -19,7 +19,7 @@ Adaptix
 
 .. toctree::
    :maxdepth: 2
-   :caption: Conversion:
+   :caption: Conversion
 
    conversion/tutorial
    conversion/extended-usage
@@ -27,18 +27,19 @@ Adaptix
 
 .. toctree::
    :maxdepth: 2
-   :caption: Reference:
+   :caption: Reference
 
    reference/integrations
+   reference/known-issues
    reference/examples
+   reference/bugs-found-in-python
    API <reference/api/modules>
    reference/changelog
    reference/contributing
-   reference/bugs-found-in-python
 
 .. toctree::
    :maxdepth: 2
-   :caption: Project Links:
+   :caption: Project Links
 
    GitHub <https://github.com/reagento/adaptix>
    PyPI <https://pypi.org/project/adaptix>

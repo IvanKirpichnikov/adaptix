@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 import pytest
 from tests_helpers import cond_list, raises_exc
+from tests_helpers.morphing import assert_load_error, json_schema_error
 
 from adaptix import Retort
 from adaptix._internal.feature_requirement import HAS_PY_311, IS_PYPY
@@ -19,6 +20,7 @@ from adaptix._internal.morphing.concrete_provider import (
     DateTimestampProvider,
     DatetimeTimestampProvider,
 )
+from adaptix._internal.morphing.json_schema.schema_model import JSONSchemaType
 from adaptix.load_error import FormatMismatchLoadError, TypeLoadError, ValueLoadError
 
 INVALID_INPUT_ISO_FORMAT = (
@@ -456,7 +458,15 @@ def test_bool_loader_provider(strict_coercion, debug_trail):
     assert loader(True) is True  # noqa: FBT003
 
     if strict_coercion:
-        raises_exc(TypeLoadError(bool, None), lambda: loader(None))
+        assert_load_error(
+            retort=retort,
+            tp=bool,
+            data=None,
+            exc=TypeLoadError(bool, None),
+            json_schema_errors=[
+                json_schema_error.at().type(expected=JSONSchemaType.BOOLEAN),
+            ],
+        )
     else:
         assert loader(None) is False
 
